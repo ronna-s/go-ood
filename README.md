@@ -38,25 +38,25 @@ It is named A Path to OOD and not OOP because different language features mean d
 
 ## Introduction to OOP
 
-### Is Go an Object-Oriented language? 
+#### Is Go an Object-Oriented language? 
 This question is so loaded that all I had to do was advertise this workshop to receive loads of feedback on it from total strangers.
 Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc. These are technical concepts that have become synonymous with OOP. 
 However, as we will see, Go has a variety of very strong features for Object Oriented Programming that enable Gophers to express their code in a manner that follows the OO principals. 
 I called this workshop a path to OOD with Go and not OOP with Go, because it doesn't follow the same design principals - in particular it should impact how we arrange our packages and when done well it reduces the amount of actual coding. 
 
-### What is OOP?
+#### What is OOP?
 What we can all agree on: The central idea behind Object Oriented is to divide software into "things" or "objects" or "instances" that communicate via "messages" or "methods" or "member functions".
 This core idea has not changed in the 4-5+ decades since it was conceptualized.
 It is meant to allow the developer to build code and assign responsibilities just like in the real world, which is what we are familiar with, and how we generally think.
 
-### Do you need OOP?
+#### Do you need OOP?
 
 Just like in the real world, wherever there are things, there can be a mess. *__That's why Marie Kondo.__*
 Just as you can write sane procedural code, you can write sane OO code. You and your team should define design best practices that match your needs.
 
 The following exercise demonstrates the benefits of OOP.
 
-### Exercise 1 - Understanding the benefits:
+## Exercise 1 - Understanding the benefits:
 Where we will understand some OO basics using an example of a gopher and a maze.
 
 *This exercise is heavily inspired by the Intro to CS first home assignment that Prof. Jeff Rosendchein gave my CS class in 2003.
@@ -118,7 +118,7 @@ We see that:
 Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
 That package defines the interface to abstract away our robot.Robot struct - this ability is very uncommon in programming languages. 
 
-### OO fundamentals and Go
+## OO fundamentals and Go
 The basics concepts that we need to understand to work with OOP well are:
 1. Encapsulation (hiding/ black-boxing)
 2. Abstraction (separating implementation from behavior)
@@ -180,7 +180,7 @@ This concept is made for the internet - any piece of software can be plugged fro
 [It's duck typing, but safe.
 ](https://research.swtch.com/interfaces)
 
-### Exercise 2 - Interfaces
+## Exercise 2 - Interfaces
 
 [Bill Kennedy](https://www.ardanlabs.com/blog/), has often made comments about how the example for Animal MakeSound() is irrelevant to the industry so that's what we will do next.
 Please implement the following types in `pkg/animal` and `cmd/habitat` (failing tests provided):
@@ -194,7 +194,7 @@ make test-habitat
 make run-habitat
 ````
 
-### Organizing your packages
+## Organizing your packages
 
 Whether you choose the common structures with cmd, pkg, etc. you should follow certain guidelines:
 1. Support multiple binaries: Your packages structure should allow compiling multiple binaries (have multiple main packages that should be easy to find).
@@ -210,7 +210,7 @@ Whether you choose the common structures with cmd, pkg, etc. you should follow c
 8. Your packages should be things that exist and have clear boundaries - domain and app aren't.
 9. The internal package is for code that you don't want to allow to import, not for your entire application. 
 
-### More theory
+## More theory
 
 #### Emerging patterns:
 1. [Functional options](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
@@ -243,7 +243,7 @@ What we used to until recently is to generate code that converts differnt types 
 But recently we got generics...
 
 
-### Generics
+## Generics
 
 It was a long time consensus that "real gophers" don't need generics so much so that around the time the generics draft of 2020 was released, many gophers expressed that they will likely never use this feature.
 Let's understand firs the point that they were trying to make.
@@ -308,7 +308,7 @@ Of course, you are not likely to use linked lists in your day to day, but you ar
 3. The [concurrent map in the sync package](https://pkg.go.dev/sync#Map) which uses the empty interface.
 4. [The heap](https://pkg.go.dev/container/heap#example-package-IntHeap) 
 
-### Exercise 3 - Generics
+## Exercise 3 - Generics
 Implement a new Heap OOP style in `pkg/heap` (failing tests provided).
 
 ```bash
@@ -317,7 +317,7 @@ make test-heap
 make run-heap
 ````
 
-### Conclusion
+## Conclusion
 What we've learned today:
 1. The value of OOP 
 2. How to use methods for encapsulation
