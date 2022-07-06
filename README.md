@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # A path to OOP with Go - Workshop
 
 ## Schedule
@@ -20,7 +19,6 @@
   - Code generation, why? When?
   - The `[]T{}` to `interface{}...` conversion problem
 - 11:30-11:50: Generics
-  - 
   - Constraints
     - any 
     - Comparables
