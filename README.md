@@ -8,30 +8,42 @@ It is named A Path to OOD and not OOP because different language features mean d
 - 09:00-09:10: Introduction to OOP [link](#introduction-to-oop)
 - 09:10-09:30: Exercise 1- understanding the benefits [link](#exercise-1---understanding-the-benefits)
 - 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go) 
-  - types
-  - aliases
-  - interfaces
-  - embedding
-  - composition
-  - type assertions 
-  - methods - receivers, pointer receivers
+  <details>
+    - types
+    - aliases
+    - interfaces
+    - embedding
+    - composition
+    - type assertions 
+    - methods - receivers, pointer receivers
+  </details>
 - 09:50-10:00: Break
 - 10:00-10:30: Exercise 2 (interfaces) [link](#exercise-2---interfaces)
 - 10:30-10:50: Organizing your packages [link](#organizing-your-packages) 
+  <details>
+
   - Inner packages
   - Package `internal`
+  </details>
 - 10:50-11:00: Break
-- 11:00-11:20: More theory: 
+- 11:00-11:20: More theory [link](#more-theorye)
+  <details>
+
   - Emerging patterns
     - functional options
     - Default variables
   - Short-lived objects, contexts
   - Code generation, why? When?
     - The `[]T{}` to `interface{}...` conversion problem
+  </details>
 - 11:30-11:50: Generics [link](#generics)
+  <details>
+
   - Constraints
     - any 
     - comparable
+    - the [constraints package](https://pkg.go.dev/golang.org/x/exp/constraints)
+  </details>
 - 11:50-12:00: Break
 - 12:00-12:45: Exercise 3 (generics) [link](#exercise-3---generics)
 - 12:45-13:00: Conclusion [link](#conclusion)
@@ -86,9 +98,10 @@ make run-maze > tmp/maze.html
 Open tmp/maze.html file in your browser to see the results of your code.
 You can run the app multiple times to see your gopher running through different mazes.
 
----
 
-Now that you are done, let's review the code that made this possible and examine the features that made it possible
+Done?
+
+Let's review the code that made this possible and examine the features that made it possible
 
 Run
 ```bash
