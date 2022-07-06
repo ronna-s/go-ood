@@ -83,7 +83,7 @@ When your test passes (it only tests very basic navigation), run:
 make run-maze > tmp/maze.html 
 ```
 
-Open the maze.html file in the browser to see the result.
+Open tmp/maze.html file in your browser to see the results of your code.
 You can run the app multiple times to see your gopher running through different mazes.
 
 ---
