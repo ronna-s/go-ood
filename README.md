@@ -6,7 +6,7 @@ It is named A Path to OOD and not OOP because different language features mean d
 ## Schedule
 
 - 09:00-09:10: Introduction to OOP [link](#introduction-to-oop)
-- 09:10-09:30: Warm up coding exercise [link](#exercise-1---understanding-the-benefits)
+- 09:10-09:30: Exercise 1- understanding the benefits [link](#exercise-1---understanding-the-benefits)
 - 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go) 
   - types
   - aliases
@@ -14,11 +14,12 @@ It is named A Path to OOD and not OOP because different language features mean d
   - embedding
   - composition
   - type assertions 
+  - methods - receivers, pointer receivers
 - 09:50-10:00: Break
-- 10:00-10:30: Exercise 2 (interfaces)
+- 10:00-10:30: Exercise 2 (interfaces) [link](#exercise-2---interfaces)
 - 10:30-10:50: Organizing your packages 
-  - Who provides interfaces and emerging patterns
-  - Inner package, when?
+  - Emerging patterns
+  - Inner packages
   - Package `internal`
 - 10:50-11:00: Break
 - 11:00-11:20: More theory: 
@@ -115,10 +116,13 @@ We see that:
 8. Methods are added to types using Receivers
 9. Methods that can change/mutate a type needs a pointer receiver.
 
+Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
+That package defines the interface to abstract away our robot.Robot struct - this ability is very uncommon in programming languages. 
+
 ### OO fundamentals and Go
 The basics concepts that we need to understand to work with OOP well are:
 1. Encapsulation (hiding/ black-boxing)
-2. Abstraction (separating the implementation from behavior)
+2. Abstraction (separating implementation from behavior)
 3. Generalization (very similar to abstraction, we will get to it later)
 
 >_The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle._
@@ -175,8 +179,25 @@ This concept is made for the internet - any piece of software can be plugged fro
 [It's duck typing, but safe.
 ](https://research.swtch.com/interfaces)
 
+### Exercise 2 - Interfaces
+
+[Bill Kennedy](https://www.ardanlabs.com/blog/), has often made comments about how the example for Animal MakeSound() is irrelevant to teaching OOP 
+but that if we can come up with a business example for it, he will happily build the startup with you because **that** problem has been solved(!) so that's what we will do.
+
+![](docs/animal.png)
+
+![](docs/habitat.png)
 
 
+
+
+
+
+
+
+
+
+-------
 
 
 
