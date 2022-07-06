@@ -184,9 +184,7 @@ This concept is made for the internet - any piece of software can be plugged fro
 [Bill Kennedy](https://www.ardanlabs.com/blog/), has often made comments about how the example for Animal MakeSound() is irrelevant to teaching OOP 
 but that if we can come up with a business example for it, he will happily build the startup with you because **that** problem has been solved(!) so that's what we will do.
 
-![](docs/animal.png)
-
-![](docs/habitat.png)
+![](docs/animal.png) ![](docs/habitat.png)
 
 
 
