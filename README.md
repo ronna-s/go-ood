@@ -79,6 +79,33 @@ make run-maze > tmp/maze.html
 Open the maze.html file in the browser to see the result.
 You can run the app multiple times to see your gopher running through different mazes.
 
+### Let's review the code that made this possible.
+Run
+```bash
+make godoc
+```
+The repo started with one package in the pkg directory called maze which offers a basic maze generator and nothing else.
+Go to: http://127.0.0.1:8080/pkg/github.com/ronnas/go-ood/pkg/maze
+
+The package defines 5 types:
+1. Cell (an alias type to int)
+2. Coords (a new type defined as a pair of integers - array of 2 ints)
+3. Direction (an alias type to int)
+4. Maze (a generated 2D maze) is a struct
+5. Wall
+
+We see that:
+1. There are no constructors in Go (since there are no classes), but we can create functions that serve as constructors.
+2. The godoc tool identified our constructor function New and added it under the Maze type.
+3. We have structs, that have fields.
+4. You can define a new type out of anything.
+5. Any type can have methods (except primitives)
+6. You can alias to any type
+7. If you want to add methods to primitives, just define a new type.
+8. Methods are added to types using Receivers
+9. Methods that can change/mutate a type needs a pointer receiver.
+
+
 ### OO fundamentals
 The basics concepts that we need to understand to work with OOP well are:
 1. Encapsulation (hiding/ black-boxing)
@@ -129,31 +156,6 @@ This concept is made for the internet - any piece of software can be plugged fro
 
 
 
-#### Let's review the code that made this possible.
-Run 
-```bash
-make godoc
-```
-The repo started with one package in the pkg directory called maze which offers a basic maze generator and nothing else. 
-Go to: http://127.0.0.1:8080/pkg/github.com/ronnas/go-ood/pkg/maze
-
-The package defines 5 types:
-1. Cell (an alias type to int)
-2. Coords (a new type defined as a pair of integers - array of 2 ints)
-3. Direction (an alias type to int)
-4. Maze (a generated 2D maze) is a struct
-5. Wall
-
-We see that:
-1. There are no constructors in Go (since there are no classes), but we can create functions that serve as constructors. 
-2. The godoc tool identified our constructor function New and added it under the Maze type.
-3. We have structs, that have fields.
-4. You can define a new type out of anything.
-5. Any type can have methods (except primitives)
-6. You can alias to any type
-7. If you want to add methods to primitives, just define a new type.
-8. Methods are added to types using Receivers 
-9. Methods that can change/mutate a type needs a pointer receiver.
 
 
 
