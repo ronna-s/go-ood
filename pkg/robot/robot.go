@@ -17,25 +17,24 @@ type Robot struct {
 	steps []Step
 }
 
-// New returns a new gopher
+// New returns a new Robot
 func New(t travel.Travel) Robot {
-	r := Robot{Travel: t, steps: []Step{{t.Maze.CellFromCoords(t.Coords), t.Dir}}}
-	return r
+	return Robot{Travel: t, steps: []Step{{t.Maze.CellFromCoords(t.Coords), t.Dir}}}
 }
 
-// Steps returns a copy of the gopher's steps
+// Steps returns a copy of the robot's steps
 func (r Robot) Steps() []Step {
 	steps := make([]Step, len(r.steps))
 	copy(steps, r.steps)
 	return steps
 }
 
-// Finished returns true or false if the gopher is done going through the maze
+// Finished returns true or false if the robot is done going through the maze
 func (r Robot) Finished() bool {
 	return r.Coords[maze.X] == r.Maze.DimX-1 && r.Coords[maze.Y] == r.Maze.DimY-1
 }
 
-// Move moves the gopher in its current direction. Returns an error if impossible to move.
+// Move moves the robot in its current direction. Returns an error if impossible to move.
 func (r *Robot) Move() error {
 	if err := r.Travel.Move(); err != nil {
 		return err

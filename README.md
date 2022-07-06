@@ -75,9 +75,14 @@ make run-maze > tmp/maze.html
 Open the maze.html file in the browser to see the result.
 You can run the app multiple times to see your gopher running through different mazes.
 
-#### Wasn't that simple?
-
+### Back to OOP (wasn't that simple?)
 OOP is all about ease and simplicity in being able to express our ideas and translate them into code as simply as possible while delegating responsibilities to things.
+
+The basics concepts that we need to understand to work with OOP well are:
+1. Encapsulation (hiding/ black-boxing)
+2. Abstraction (separating the implementation from the behavior)
+3. Generalization - very similar to abstraction 
+
 
 #### Let's review the code that made this possible.
 Run 
@@ -94,11 +99,11 @@ The package defines 5 types:
 4. Maze (a generated 2D maze) is a struct
 5. Wall
 
-We can already note:
+We see that:
 1. There are no constructors in Go (since there are no classes), but we can create functions that serve as constructors. 
-2. The godoc tool identified our constructor function and added it under the Maze type  
-3. There are structs
-4. You can define a new type out of any type
+2. The godoc tool identified our constructor function New and added it under the Maze type.
+3. We have structs, that have fields.
+4. You can define a new type out of anything.
 5. Any type can have methods (except primitives)
 6. You can alias to any type
 7. If you want to add methods to primitives, just define a new type.
