@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # A path to OOP with Go - Workshop
 
 ## Schedule
@@ -228,3 +229,18 @@ Let's consider this structrue of a package:
 |--|-- 
 
 This is not a powerful package.
+=======
+# go-ood
+
+```
+git@github.com:ronna-s/go-ood.git
+```
+or
+```
+git clone https://github.com/ronna-s/go-ood.git
+```
+should get you started 
+
+GOTO
+/cmd/app/app.go
+>>>>>>> 2a749f954f04485ab14c0abda6eb4919128b0da0
