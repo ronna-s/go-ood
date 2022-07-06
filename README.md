@@ -1,4 +1,8 @@
-# A path to OOP with Go - Workshop
+# A path to OOD with Go - Workshop
+
+This workshop is aimed to clarify the OOP features that Go provides.
+It is named A Path to OOD and not OOP because different language features mean different design concepts.  
+
 
 ## Schedule
 
@@ -46,7 +50,7 @@ Just like in the real world, wherever there are things, there can be a mess. *__
 Just as you can write sane procedural code, you can write sane OO code. You and your team should define design best practices that match your needs. 
 The following exercise demonestrates the benefits of OOP.
 
-### Exercise 1:
+### Exercise 1 - Understanding the benefits:
 Where we will understand some OO basics using an example of a gopher and a maze.
 
 *This exercise is heavily inspired by the Intro to CS first home assignment that Prof. Jeff Rosendchein gave my CS class in 2003.
@@ -75,7 +79,7 @@ make run-maze > tmp/maze.html
 Open the maze.html file in the browser to see the result.
 You can run the app multiple times to see your gopher running through different mazes.
 
-### OOP fundemental
+### OO fundamentals
 The basics concepts that we need to understand to work with OOP well are:
 1. Encapsulation (hiding/ black-boxing)
 2. Abstraction (separating the implementation from behavior)
@@ -83,54 +87,44 @@ The basics concepts that we need to understand to work with OOP well are:
 
 To understands the features that Go provides for OOP we are going to compare it with two other languages: C++ and Java.
 
-In C++:
-✓ Classes
-✓ Structs (which are very similar to classes in C++)
-✓ No interfaces (but classes can have pure virtual functions).
-- Only classes and structs can have methods
-- Multiple inheritance, we can express the idea that A is B and A is also C.
-- Class A must inherit explicitely from class B to be used as an object of type B.
-✗ Virtual table.
+In C++:<br>
+✓ Classes, structs and pure virtual functions<br>
+✓ Inheritance (vtable)<br>
+⍻ Only classes and structs can have methods<br>
+⍻ Multiple inheritance, we can express the idea that A is B and A is also C.<br>
+⍻ Class A must inherit explicitly from class B to be used as an object of type B.<br>
 
-In Java:
- ✓ Classes
- ✓ Interfaces
- ⍻ Only classes can have methods
- ⍻ A class can only inherit from 1 other class, so we cannot express the idea that A is B and A is also C.
- ⍻ Class A must inherit explicitely from class B to be used as an object of type B.
- ⍻ Class A must implement explicitely from interface I in order to be used as an object of type I.
- ✗ Virtual table.
+In Java:<br>
+✓ Classes and interfaces.<br>
+✓ Inheritance (vtable)<br>
+⍻ Only classes can have methods.<br>
+⍻ A class can only inherit from one other class, so we cannot express the idea that A is B and A is also C.<br>
+⍻ Class A must inherit explicitly from class B to be used as an object of type B.<br>
+⍻ Class A must implement explicitly from interface I in order to be used as an object of type I.<br>
 
-In Go:
-✓ Structs
-✓ Any new type can have methods
-✓ You can compose structs and interfaces using embedding and derive methods.
-✓ Any type can implement any interface implicitely so long as it implements its methods (primitives only implenent the empty interface which has no methods)
-✗ No virtual table.
-
-
+In Go:<br>
+✓ Structs<br>
+✓ Any new type can have methods. You can create a type out of anything - primitives, functions, structs, etc. <br>
+✓ You can compose structs and interfaces using embedding and derive methods.<br>
+✓ Any type can implement any interface implicitly so long as it implements its methods (primitives only implenent the empty interface which has no methods)<br>
+✗ No inheritance (vtable)<br>
 -> 
 
 In Go, we don't need to think about how a type will be used when we create it. We don't have to provide an interface for it. This is a limitation of C++ and Java that doesn't exist in Go. In C++ and Java you must create extra code for potential future use even if it will never happen.
+When we provide a package, whoever is importing it can write their own interfaces that interact with our types.
+They can reduce the interface that they will create only to the functionality they use.
+This concept is made for the internet - any piece of software can be plugged from anywhere.
 
+[It's duck typing, but safe.
+](https://research.swtch.com/interfaces)
 
-
-```
-             |       Java          |        C++          |       Go
--------------+---------------------+---------------------+--------------
-Classes      | yes                 | yes                 | no      
--------------+---------------------+---------------------+--------------
-Inheritance  | yes                 | yes                 | no
--------------+---------------------+---------------------+--------------
-Embedding    | no                  | no                  | yes
--------------+---------------------+---------------------+--------------
-Methods for  | no                  | no                  | yes
-any type     |                     |                     |
--------------+---------------------+---------------------+--------------
-Interfaces   | explicit, only      | kinda, only         | implicit,
-             | for class instances | for class instances | anything goes
--------------+-----------+---------+---------------------+--------------
-```
+|                      | Java                               | C++                           | Go                      |
+|----------------------|------------------------------------|-------------------------------|-------------------------|
+| Classes              | yes                                | yes                           | no                      |
+| Inheritance          | yes                                | yes                           | no                      |
+| Embedding            | no                                 | no                            | yes                     |
+| Methods for any type | no                                 | no                            | yes                     |
+| Interfaces           | explicit, only for class instances | yes, only for class instances | implicit, anything goes |
 
 
 
