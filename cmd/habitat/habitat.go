@@ -14,6 +14,7 @@ func main() {
 	fmt.Println(h.Add(animal.NewDeer()))
 }
 
+// Habitat represents the habitat of a group of animals
 type Habitat struct {
 	Animals []animal.Animal
 	Name    string
