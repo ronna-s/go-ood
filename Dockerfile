@@ -14,4 +14,6 @@ COPY . /root
 # Add and compile the packages
 RUN go install /root/cmd/maze
 RUN go install /root/cmd/habitat
+RUN go install /root/cmd/heap
+
 CMD maze

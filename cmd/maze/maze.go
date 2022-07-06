@@ -110,3 +110,12 @@ func drawHTML(g robot.Robot, w io.Writer) {
 		panic(err)
 	}
 }
+
+// code that will fail if the constants change value since the JS code depends on it
+func _() {
+	var x [1]struct{}
+	_ = x[maze.Right-0]
+	_ = x[maze.Down-1]
+	_ = x[maze.Up-2]
+	_ = x[maze.Left-3]
+}

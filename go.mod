@@ -2,7 +2,10 @@ module github.com/ronnas/go-ood
 
 go 1.18
 
-require github.com/stretchr/testify v1.7.2
+require (
+	github.com/stretchr/testify v1.7.2
+	golang.org/x/exp v0.0.0-20220706164943-b4a6d9510983
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

@@ -17,25 +17,24 @@ It is named A Path to OOD and not OOP because different language features mean d
   - methods - receivers, pointer receivers
 - 09:50-10:00: Break
 - 10:00-10:30: Exercise 2 (interfaces) [link](#exercise-2---interfaces)
-- 10:30-10:50: Organizing your packages 
-  - Emerging patterns
+- 10:30-10:50: Organizing your packages [link](#organizing-your-packages) 
   - Inner packages
   - Package `internal`
 - 10:50-11:00: Break
 - 11:00-11:20: More theory: 
+  - Emerging patterns
+    - functional options
+    - Default variables
   - Short-lived objects, contexts
-  - Default variables
-  - The options, builder pattern
   - Code generation, why? When?
-  - The `[]T{}` to `interface{}...` conversion problem
-- 11:30-11:50: Generics
+    - The `[]T{}` to `interface{}...` conversion problem
+- 11:30-11:50: Generics [link](#generics)
   - Constraints
     - any 
-    - Comparables
-    - Indexables
+    - comparable
 - 11:50-12:00: Break
-- 12:00-12:45: Exercise 3 (generics)
-- 12:45-13:00: Conclusion
+- 12:00-12:45: Exercise 3 (generics) [link](#exercise-3---generics)
+- 12:45-13:00: Conclusion [link](#conclusion)
 
 ## Introduction to OOP
 
@@ -169,8 +168,10 @@ __In Go:__<br>
 
 **Note:** A struct is not a class. A struct in Go is a type that has fields and like any other type can have methods.
 
-In conclusion:
-In Go, we don't need to think about how a type will be used when we create it. We don't have to provide an interface for it. This is a limitation of C++ and Java that doesn't exist in Go. In C++ and Java you must create extra code for potential future use even if it will never happen.
+In conclusion:<br>
+In Go, we don't need to think about how a type will be used when we create it. We don't have to provide an interface for it. 
+This is a limitation doesn't exist in Go. In C++ and Java you must create extra code for potential future use even if it will never happen.
+What's the most common usage for those interfaces? Mocks. To allow code that imports your code to test their code while abstracting away its dependencies you must provide interfaces. Not in Go.
 When we provide a package, whoever is importing it can write their own interfaces that interact with our types.
 They can reduce the interface that they will create only to the functionality they use.
 This concept is made for the internet - any piece of software can be plugged from anywhere.
@@ -181,166 +182,145 @@ This concept is made for the internet - any piece of software can be plugged fro
 
 ### Exercise 2 - Interfaces
 
-[Bill Kennedy](https://www.ardanlabs.com/blog/), has often made comments about how the example for Animal MakeSound() is irrelevant to teaching OOP 
-but that if we can come up with a business example for it, he will happily build the startup with you because **that** problem has been solved(!) so that's what we will do.
+[Bill Kennedy](https://www.ardanlabs.com/blog/), has often made comments about how the example for Animal MakeSound() is irrelevant to the industry so that's what we will do next.
+Please implement the following types in `pkg/animal` and `cmd/habitat` (failing tests provided):
 
 ![](docs/animal.png) ![](docs/habitat.png)
 
+```bash
+make build
+make test-animal
+make test-habitat
+make run-habitat
+````
+
+### Organizing your packages
+
+Whether you choose the common structures with cmd, pkg, etc. you should follow certain guidelines:
+1. Support multiple binaries: Your packages structure should allow compiling multiple binaries (have multiple main packages that should be easy to find).
+2. Don't try to reduce the number of your imports: If you have a problem it's probably the structure and unclear responsibilities, not the amount.
+3. An inner package is supposed to extend the functionality of the upper package and import it (not the other way around), for example:
+   - `net/http`
+   - `image/draw`
+   - and the example in this repo `maze/travel`
+4. We already said this, but just to be clear: A package does not provide interfaces except for those it uses for its dependencies.
+5. Use godoc to see what your package looks like without the code. It helps. 
+6. Keep your packages' hierarchy flat. Just like your functions, imports don't do spaghetti well. 
+7. Try to adhere to open/close principals to reduce the number of changes in your code. It's a good sign if you add functionality but not change everything with every feature.
+8. Your packages should be things that exist and have clear boundaries - domain and app aren't.
+9. The internal package is for code that you don't want to allow to import, not for your entire application. 
+
+### More theory
+
+#### Emerging patterns:
+1. [Functional options](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
+2. Default variables [net/http](https://pkg.go.dev/net/http) also in this repo - the `animal.Time` function 
+
+#### Short Lived Objects
+[Consider this conversation](https://twitter.com/matryer/status/1293504405896073218)
+
+#### Code generation, why? When?
+I like this simple explanation by (Gabriele Tomassetti)[https://tomassetti.me/code-generation/]
+> _The reasons to use code generation are fundamentally four: productivity, simplification, portability, and consistency._
+
+It's about automating a process of writing repetitive error-prone code.
+Consider the simple [stringer](https://pkg.go.dev/golang.org/x/tools/cmd/stringer)
+Consider [Mockery](github.com/vektra/mockery) 
+
+Now consider [this snippet](https://go.dev/play/p/fMsIH2NHHX_X):
+```go
+func Yalla(i ...interface{}) {
+    fmt.Println(i...)
+}
+
+func main() {
+    Yalla([]int{1,2,3}...)
+}
+```
+This code produces an error because we cannot convert slices even if the individual elements implement the expected type of the other slice.
+This is a property of Go's type safety.
+What we used to until recently is to generate code that converts differnt types of slices to the empty interface.
+But recently we got generics...
 
 
+### Generics
 
+It was a long time consensus that "real gophers" don't need generics so much so that around the time the generics draft of 2020 was released, many gophers expressed that they will likely never use this feature.
+Let's understand firs the point that they were trying to make.
 
+Let's look at [this code](https://gist.github.com/Xaymar/7c82ed127c8f1def53075f414a7df153), made using C++.
+We see here generic code (templates) that allows an event to add functions (listeners) to its subscribers.
+Let's ignore for a second that this code adds functions, not objects and let's assume it did take in objects with the function `Handle(e Event)`. 
+We don't need generics in Go to make this work because interfaces are implicit. As we saw already in C++ and object has to be aware of it's implementations, this is why to allow plugging-in of functionality we have to use generics in C++ (and in Java).
 
-
-
-
-
--------
-
-
-
-
-
-
-
-In Java:
-To express that type A is B you can use inheritance exactly once, and unlimited number of interfaces
-A class has to be aware of the interfaces it implements. 
-To use type A as an interface it doesn't explicitly implement you must provide some code (either another class or generic behavior)
-You can only inherit once (unlike in C++) so inheritance is very limited.
-You have abstract classes
-
-In C++:
-You can inherit as many classes as you like
-There is 
-You have aliases
-
-In Go: any type (except for primitives) can have methods.
-You can make anything into a type. 
-To express the concept that type A is B use interfaces
-To express that type A is made of B - use composition (embedding)
-An interface can also be a composition of interfaces
-You can force a type to implement an interface if you need to.
-
-In Ruby:
-You can inherit exactly once
-Ruby is moving more and more from inheritance to modules to express composition
-
-Because interfaces are implicit:
-1. Packages never provide the intervaces 
-
-Inheritance:
-To  
-
-In an ideal world an application and all of its components are limited to absolutely necessary types.
-
-###How does Go deal with that?
-- Anything can be boxed into a type - primitives, structs, functions, etc.
-- All types can have methods.
-- Composition for structs and interfaces
-- No CTORs: 
-  - No more CTORs that don't reflect the reality of the construction of the object.     
-  - Objects should be naturally instantiated with values according to the context that they were created for, requiring us to think in actions that lead to the creation of objects where those are appropriate (os.Open will return a File instead of using a File constructors)
-  Interfaces are implicit - if it matches its requirements it implements the interface, a class doesn't have to provide all the interfaces that it will implement.
-
-
-
-
-
-
-
-No classes - only structs
-Any type can have methods
-Mutating objects requires working with pointers
-
-
-A package never provides an interface to its objects - that practice comes from languages where interfaces are explicite
-Interfaces determine what your object is
-Embeds determine what your object is made of (composed of)
+In Go this code would look something like [this](https://go.dev/play/p/Tqm_Hb0vcZb):
 
 ```go
-type UserModel struct{
-        Model
-        Name string
-} 
+package main
 
-type Model struct{
-        ID int ``
-		
+import "fmt"
+
+type Listener interface {
+	Handle(Event)
+}
+
+type Event struct {
+	Lis []Listener
+}
+
+func (e *Event) Add(l Listener) {
+	e.Lis = append(e.Lis, l)
+}
+
+func main() {
+	var l Listener //nil
+	var e Event
+	e.Add(l)
+	fmt.Println(e)
 }
 ```
 
+However, there are cases in Go where we have to use generics and until recently we used code generation for.
+Those cases are when the behavior is derived from the type.
 
+For example:
+The linked list
+```go
+package main
 
+import "fmt"
 
-###Why?
-It was a long time concensus that "real gophers" don't need generics so much so that around the time the generics draft of 2020 was released, many gophers expressed that they will likely never use this feature.
+type Node[T interface{}] struct {
+  Value T
+  Next  *Node[T]
+}
 
-But before we let any good feature go to waste, this is a good time to examine the Go features related to types in general, OOD in particular and how generics play into them.
-
-###What is ODD?
-Extracting functionality into things so that we can perform actions on them.
-An object is a set of fields aggregated together and a set of functions (called methods) related to the logical entity that it represents
-For instance if we described a person as an object, it will have certain attributes or field 
-
-###What is abstraction?
-Decoupling behavior from implementation 
-
-###What is generalization?
-It is very similar to abstraction
-
-###What is encapsulation?
-Hiding implementation including costs
-
-###Creating objects in different languages
-##The struct
-The struct datatype comes from Algol, and it is commonly a set of fields aggregated in memory together and therefore instantiated together
-In c++ it can also have methods and a constructor
-In go it also has methods
-
-##The class
-The class is similar to the struct but will have a constructor and methods (there are other differences in c++ between a class and a struct, but they are not relevant to this comparison)
-Typically has a constructor, or many constructors that allow defining initial values for its members (a comprehensive state)
-Destructors only make sense when the user can predict when they will execute, this paradigm doesn't exist in the GC languages world, but it is very much alive in C++ still when the user manages the heap and therefore can determine when destructors are invoked.
-The evolution of moving towards having no destructors and therefore having to maintain explicit control over operations like close might have had something to do with Go's choice not to have constructors. Another is perhaps that the creation of an object is in its own an action, not a reflexive concept, instead a file object is logically the result of opening a file      
-have destructors, but since 
-Inheritance (in C++ multiple inheritance is possible making it possible to create composites)
-
-##The interface
-In C++:
-No interface - you inherit 
-
-In C++
-In many 
-In C++ we have structs
-
-
-
-###What is polymorphism?
-
-
-
-#packages
-Packages are not often looked at when considering OOD because it's assumed that they will naturally fall into place as you work but that's often not the case.
-Let's consider this structrue of a package:
-
-- pkg
-|--animal
-|--|-- 
-
-This is not a powerful package.
-
-
-# go-ood
-
+func main() {
+  n1 := Node[int]{1, nil}
+  n2 := Node[int]{3, &n1}
+  fmt.Println(n2.Value, n2.Next.Value)
+}
 ```
-git@github.com:ronna-s/go-ood.git
-```
-or
-```
-git clone https://github.com/ronna-s/go-ood.git
-```
-should get you started 
 
-GOTO
-/cmd/app/app.go
+Of course, you are not likely to use linked lists in your day to day, but you are likely to use:
+1. Repositories per type
+2. Event handlers processors per type
+3. The [concurrent map in the sync package](https://pkg.go.dev/sync#Map) which uses the empty interface.
+4. [The heap](https://pkg.go.dev/container/heap#example-package-IntHeap) 
+
+### Exercise 3 - Generics
+Implement a new Heap OOP style in `pkg/heap` (failing tests provided).
+
+```bash
+make build
+make test-heap
+make run-heap
+````
+
+### Conclusion
+What we've learned today:
+1. The value of OOP 
+2. How to use methods for encapsulation
+3. How to use interfaces for abstractions
+4. How to use generics for generalization (and not abstraction)
+5. To generate code otherwise

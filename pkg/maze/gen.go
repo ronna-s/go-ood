@@ -61,15 +61,6 @@ func init() {
 	neighbours[Up] = Coords{0, -1}
 }
 
-// code that will fail if the constants change value
-func _() {
-	var x [1]struct{}
-	_ = x[Right-0]
-	_ = x[Down-1]
-	_ = x[Up-2]
-	_ = x[Left-3]
-}
-
 // Wall represents a wall between 2 cells in a 2D maze
 type Wall struct {
 	C, T Cell      // C for current Cell, T for target cell

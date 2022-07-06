@@ -1,6 +1,8 @@
-package sync
+package _map
 
-import "sync"
+import (
+	"sync"
+)
 
 type Map[K comparable, V any] struct {
 	M  map[K]V
