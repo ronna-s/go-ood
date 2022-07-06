@@ -94,7 +94,6 @@ The package defines 5 types:
 4. Maze (a generated 2D maze) is a struct
 5. Wall
 
-
 We can already note:
 1. There are no constructors in Go (since there are no classes), but we can create functions that serve as constructors. 
 2. The godoc tool identified our constructor function and added it under the Maze type  
@@ -103,7 +102,8 @@ We can already note:
 5. Any type can have methods (except primitives)
 6. You can alias to any type
 7. If you want to add methods to primitives, just define a new type.
-8. Pointer receivers
+8. Methods are added to types using Receivers 
+9. Methods that can change/mutate a type needs a pointer receiver.
 
 
 
