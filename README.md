@@ -6,9 +6,15 @@ It is named A Path to OOD and not OOP because different language features mean d
 
 ## Schedule
 
-- 09:00-09:10: Introduction to OOP
-- 09:10-09:30: Warm up coding exercise
-- 09:30-09:50: Types and Interfaces (types, aliases, interfaces, embedding, composition, type assertions) 
+- 09:00-09:10: Introduction to OOP [link](#introduction-to-oop)
+- 09:10-09:30: Warm up coding exercise [link](#exercise-1---understanding-the-benefits)
+- 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go) 
+  - types
+  - aliases
+  - interfaces
+  - embedding
+  - composition
+  - type assertions 
 - 09:50-10:00: Break
 - 10:00-10:30: Exercise 2 (interfaces)
 - 10:30-10:50: Organizing your packages 
@@ -106,7 +112,7 @@ We see that:
 9. Methods that can change/mutate a type needs a pointer receiver.
 
 
-### OO fundamentals
+### OO fundamentals and go
 The basics concepts that we need to understand to work with OOP well are:
 1. Encapsulation (hiding/ black-boxing)
 2. Abstraction (separating the implementation from behavior)
@@ -135,15 +141,7 @@ In Go:<br>
 ✓ You can compose structs and interfaces using embedding and derive methods.<br>
 ✓ Any type can implement any interface implicitly so long as it implements its methods (primitives only implenent the empty interface which has no methods)<br>
 ✗ No inheritance (vtable)<br>
--> 
 
-In Go, we don't need to think about how a type will be used when we create it. We don't have to provide an interface for it. This is a limitation of C++ and Java that doesn't exist in Go. In C++ and Java you must create extra code for potential future use even if it will never happen.
-When we provide a package, whoever is importing it can write their own interfaces that interact with our types.
-They can reduce the interface that they will create only to the functionality they use.
-This concept is made for the internet - any piece of software can be plugged from anywhere.
-
-[It's duck typing, but safe.
-](https://research.swtch.com/interfaces)
 
 |                      | Java                               | C++                           | Go                      |
 |----------------------|------------------------------------|-------------------------------|-------------------------|
@@ -153,8 +151,14 @@ This concept is made for the internet - any piece of software can be plugged fro
 | Methods for any type | no                                 | no                            | yes                     |
 | Interfaces           | explicit, only for class instances | yes, only for class instances | implicit, anything goes |
 
+In conclusion:
+In Go, we don't need to think about how a type will be used when we create it. We don't have to provide an interface for it. This is a limitation of C++ and Java that doesn't exist in Go. In C++ and Java you must create extra code for potential future use even if it will never happen.
+When we provide a package, whoever is importing it can write their own interfaces that interact with our types.
+They can reduce the interface that they will create only to the functionality they use.
+This concept is made for the internet - any piece of software can be plugged from anywhere.
 
-
+[It's duck typing, but safe.
+](https://research.swtch.com/interfaces)
 
 
 
