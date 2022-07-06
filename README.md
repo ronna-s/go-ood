@@ -82,9 +82,12 @@ When your test passes (it only tests very basic navigation), run:
 ```bash
 make run-maze > tmp/maze.html 
 ```
+
 Open the maze.html file in the browser to see the result.
 You can run the app multiple times to see your gopher running through different mazes.
+
 ---
+
 Now that you are done, let's review the code that made this possible and examine the features that made it possible
 
 Run
