@@ -14,3 +14,7 @@ test-maze:
 	docker run go-ood go test github.com/ronnas/go-ood/cmd/maze
 run-maze:
 	@docker run go-ood
+test-habitat:
+	docker run go-ood go test github.com/ronnas/go-ood/cmd/habitat
+run-habitat:
+	@docker run go-ood habitat

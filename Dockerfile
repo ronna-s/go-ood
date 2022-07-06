@@ -10,7 +10,8 @@ COPY go.mod /root
 COPY go.sum /root
 RUN go mod download
 COPY . /root
-# Add and compile the packages
 
+# Add and compile the packages
 RUN go install /root/cmd/maze
+RUN go install /root/cmd/habitat
 CMD maze
