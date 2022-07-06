@@ -3,7 +3,6 @@
 This workshop is aimed to clarify the OOP features that Go provides.
 It is named A Path to OOD and not OOP because different language features mean different design concepts.  
 
-
 ## Schedule
 
 - 09:00-09:10: Introduction to OOP [link](#introduction-to-oop)
@@ -53,8 +52,9 @@ It is meant to allow the developer to build code and assign responsibilities jus
 ### Do you need OOP?
 
 Just like in the real world, wherever there are things, there can be a mess. *__That's why Marie Kondo.__*
-Just as you can write sane procedural code, you can write sane OO code. You and your team should define design best practices that match your needs. 
-The following exercise demonestrates the benefits of OOP.
+Just as you can write sane procedural code, you can write sane OO code. You and your team should define design best practices that match your needs.
+
+The following exercise demonstrates the benefits of OOP.
 
 ### Exercise 1 - Understanding the benefits:
 Where we will understand some OO basics using an example of a gopher and a maze.
@@ -84,8 +84,9 @@ make run-maze > tmp/maze.html
 ```
 Open the maze.html file in the browser to see the result.
 You can run the app multiple times to see your gopher running through different mazes.
+---
+Now that you are done, let's review the code that made this possible and examine the features that made it possible
 
-### Let's review the code that made this possible.
 Run
 ```bash
 make godoc
@@ -111,23 +112,31 @@ We see that:
 8. Methods are added to types using Receivers
 9. Methods that can change/mutate a type needs a pointer receiver.
 
-
-### OO fundamentals and go
+### OO fundamentals and Go
 The basics concepts that we need to understand to work with OOP well are:
 1. Encapsulation (hiding/ black-boxing)
 2. Abstraction (separating the implementation from behavior)
 3. Generalization (very similar to abstraction, we will get to it later)
 
-To understands the features that Go provides for OOP we are going to compare it with two other languages: C++ and Java.
+>_The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle._
+(Joe Armstrong)
 
-In C++:<br>
+What did he mean by that?<br>
+The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I.
+For instance, the class Banana will have to extend or inherit from Fruit (or a similar Object class) implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to figure out where it came from. etc.
+What happens if the Banana we imported doesn't implement an interface that we need it to? We create a MyBanana and inherit Banana just to be able to work with the original class but in the context that our application provides for it.
+What happens if when the CTORs that were written for the Banana class don't match our context of creation (we cannot provide all fields and we just need a subset of the class)? - The class might be useless.
+
+To understands the features that Go provides over the above described for OOP we are going to compare it with two other languages: C++ and Java that are very well known for their object-oriented features.
+
+__In C++:__<br>
 ✓ Classes, structs and pure virtual functions<br>
 ✓ Inheritance (vtable)<br>
 ⍻ Only classes and structs can have methods<br>
 ⍻ Multiple inheritance, we can express the idea that A is B and A is also C.<br>
 ⍻ Class A must inherit explicitly from class B to be used as an object of type B.<br>
 
-In Java:<br>
+__In Java:__<br>
 ✓ Classes and interfaces.<br>
 ✓ Inheritance (vtable)<br>
 ⍻ Only classes can have methods.<br>
@@ -135,7 +144,7 @@ In Java:<br>
 ⍻ Class A must inherit explicitly from class B to be used as an object of type B.<br>
 ⍻ Class A must implement explicitly from interface I in order to be used as an object of type I.<br>
 
-In Go:<br>
+__In Go:__<br>
 ✓ Structs<br>
 ✓ Any new type can have methods. You can create a type out of anything - primitives, functions, structs, etc. <br>
 ✓ You can compose structs and interfaces using embedding and derive methods.<br>
@@ -145,17 +154,20 @@ In Go:<br>
 
 |                      | Java                               | C++                           | Go                      |
 |----------------------|------------------------------------|-------------------------------|-------------------------|
-| Classes              | yes                                | yes                           | no                      |
+| Classes              | yes                                | yes                           | structs                 |
 | Inheritance          | yes                                | yes                           | no                      |
 | Embedding            | no                                 | no                            | yes                     |
 | Methods for any type | no                                 | no                            | yes                     |
 | Interfaces           | explicit, only for class instances | yes, only for class instances | implicit, anything goes |
+
+**Note:** A struct is not a class. A struct in Go is a type that has fields and like any other type can have methods.
 
 In conclusion:
 In Go, we don't need to think about how a type will be used when we create it. We don't have to provide an interface for it. This is a limitation of C++ and Java that doesn't exist in Go. In C++ and Java you must create extra code for potential future use even if it will never happen.
 When we provide a package, whoever is importing it can write their own interfaces that interact with our types.
 They can reduce the interface that they will create only to the functionality they use.
 This concept is made for the internet - any piece of software can be plugged from anywhere.
+
 
 [It's duck typing, but safe.
 ](https://research.swtch.com/interfaces)
@@ -194,14 +206,6 @@ Ruby is moving more and more from inheritance to modules to express composition
 
 Because interfaces are implicit:
 1. Packages never provide the intervaces 
->_The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle._
-(Joe Armstrong)
-
-What did he mean by that?
-The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I.
-For instance, the class Banana will have to extend or inherit from Fruit (or a similar Object class) implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to figure out where it came from. etc.
-What happens if the Banana we imported doesn't implement an interface that we need it to? We create a MyBanana and inherit Banana just to be able to work with the original class but in the context that our application provides for it.
-What happens if when the CTORs that were written for the Banana class don't match our context of creation (we cannot provide all fields and we just need a subset of the class)? - The class might be useless.
 
 Inheritance:
 To  
