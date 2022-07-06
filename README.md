@@ -35,8 +35,7 @@ Go doesn't offer classes, which means there are no constructors (or destructors)
 However, as we will see, Go has a variety of very strong features for Object Oriented Programming that enable Gophers to express their code in a manner that follows the OO principals. 
 I called this workshop a path to OOD with Go and not OOP with Go, because it doesn't follow the same design principals - in particular it should impact how we arrange our packages and when done well it reduces the amount of actual coding. 
 
-### But first, what is OOP?
-
+### What is OOP?
 What we can all agree on: The central idea behind Object Oriented is to divide software into "things" or "objects" or "instances" that communicate via "messages" or "methods" or "member functions".
 This core idea has not changed in the 4-5+ decades since it was conceptualized.
 It is meant to allow the developer to build code and assign responsibilities just like in the real world, which is what we are familiar with, and how we generally think.
@@ -45,6 +44,7 @@ It is meant to allow the developer to build code and assign responsibilities jus
 
 Just like in the real world, wherever there are things, there can be a mess. *__That's why Marie Kondo.__*
 Just as you can write sane procedural code, you can write sane OO code. You and your team should define design best practices that match your needs. 
+The following exercise demonestrates the benefits of OOP.
 
 ### Exercise 1:
 Where we will understand some OO basics using an example of a gopher and a maze.
@@ -75,13 +75,64 @@ make run-maze > tmp/maze.html
 Open the maze.html file in the browser to see the result.
 You can run the app multiple times to see your gopher running through different mazes.
 
-### Back to OOP (wasn't that simple?)
-OOP is all about ease and simplicity in being able to express our ideas and translate them into code as simply as possible while delegating responsibilities to things.
-
+### OOP fundemental
 The basics concepts that we need to understand to work with OOP well are:
 1. Encapsulation (hiding/ black-boxing)
-2. Abstraction (separating the implementation from the behavior)
-3. Generalization - very similar to abstraction 
+2. Abstraction (separating the implementation from behavior)
+3. Generalization (very similar to abstraction, we will get to it later)
+
+To understands the features that Go provides for OOP we are going to compare it with two other languages: C++ and Java.
+
+In C++:
+✓ Classes
+✓ Structs (which are very similar to classes in C++)
+✓ No interfaces (but classes can have pure virtual functions).
+- Only classes and structs can have methods
+- Multiple inheritance, we can express the idea that A is B and A is also C.
+- Class A must inherit explicitely from class B to be used as an object of type B.
+✗ Virtual table.
+
+In Java:
+ ✓ Classes
+ ✓ Interfaces
+ ⍻ Only classes can have methods
+ ⍻ A class can only inherit from 1 other class, so we cannot express the idea that A is B and A is also C.
+ ⍻ Class A must inherit explicitely from class B to be used as an object of type B.
+ ⍻ Class A must implement explicitely from interface I in order to be used as an object of type I.
+ ✗ Virtual table.
+
+In Go:
+✓ Structs
+✓ Any new type can have methods
+✓ You can compose structs and interfaces using embedding and derive methods.
+✓ Any type can implement any interface implicitely so long as it implements its methods (primitives only implenent the empty interface which has no methods)
+✗ No virtual table.
+
+
+-> 
+
+In Go, we don't need to think about how a type will be used when we create it. We don't have to provide an interface for it. This is a limitation of C++ and Java that doesn't exist in Go. In C++ and Java you must create extra code for potential future use even if it will never happen.
+
+
+
+```
+             |       Java          |        C++          |       Go
+-------------+---------------------+---------------------+--------------
+Classes      | yes                 | yes                 | no      
+-------------+---------------------+---------------------+--------------
+Inheritance  | yes                 | yes                 | no
+-------------+---------------------+---------------------+--------------
+Embedding    | no                  | no                  | yes
+-------------+---------------------+---------------------+--------------
+Methods for  | no                  | no                  | yes
+any type     |                     |                     |
+-------------+---------------------+---------------------+--------------
+Interfaces   | explicit, only      | kinda, only         | implicit,
+             | for class instances | for class instances | anything goes
+-------------+-----------+---------+---------------------+--------------
+```
+
+
 
 
 #### Let's review the code that made this possible.
