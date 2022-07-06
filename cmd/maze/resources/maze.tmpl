@@ -1,0 +1,116 @@
+{{define "T"}}
+	<style type="text/css">
+		table {
+			border:1px solid black;
+		}
+		td, tr {
+			border:1px solid #D0ECE7;
+		}
+		.no-right{
+			border-right-color: black;
+		}
+    	.right {
+        	border-right-color: #D0ECE7;
+    	}
+		.no-down{
+			border-bottom-color: black;
+		}
+    	.down {
+        	border-bottom-color: #D0ECE7;
+    	}
+		.right-facing {
+		  -webkit-transform: scaleX(-1);
+		  transform: scaleX(-1);
+		}
+		.down-facing{
+			transform: rotate(270deg);
+		}
+		.up-facing{
+			transform: rotate(90deg);
+		}
+
+        /* The slider itself */
+        .slider {
+            appearance: none;
+            width: 500px; /* Full-width */
+            height: 5px; /* Specified height */
+            background: #d3d3d3; /* Grey background */
+            outline: none; /* Remove outline */
+            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+        }
+
+        /* Mouse-over effects */
+        .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+        }
+
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #4CAF50; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+        }
+
+        .slider::-moz-range-thumb {
+            width: 10px; /* Set a specific slider handle width */
+            height: 10px; /* Slider handle height */
+            background: #4CAF50; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+        }
+	</style>
+<div id="slider-container" class="slidecontainer" style="clear: left;height:30px;">
+	<input id="slider" type="range" min="10" max="2000" value="200" class="slider">
+</div>
+
+	<table CELLSPACING=0 id="board" style="float: left">
+	{{$i := 0}}
+	{{$maze := .}}
+	{{$dimX := .DimX}}
+	{{$dimY := .DimY}}
+	{{$step := index .Steps 0}}
+	{{$pos := $step.C }}
+	{{ range $y := Upto .DimY }}
+		<tr>
+		{{ range $x := Upto $dimX }}
+			<td width="60px" height="60px" id="cell_{{$i}}" bgcolor="#D0ECE7" class="{{Passages $i}}">
+			{{ if eq $pos $i}}
+				<img src="https://raw.githubusercontent.com/wwgberlin/go-weather-widget/master/public/static/images/base_gopher.png" width="50px" class="right-facing"/>
+			{{ else }}
+				<img src="https://raw.githubusercontent.com/wwgberlin/go-event-sourcing-exercise/master/public/static/images/transparent.png" width="50px"/>
+			{{ end }}
+			{{$i = Incr $i}}
+			</td>
+		{{ end }}
+		</tr>
+	{{ end }}
+	</table>
+<script>
+function delay(handle,steps,i) {
+  setTimeout(() => {
+	handle(steps, i);
+	delay(move, steps, i+1);
+  }, document.getElementById("slider").value);
+}
+
+var move = function(steps, i){
+	curr = steps[i].C
+	if (i > 0){
+		prev = steps[i-1].C
+		document.getElementById("cell_"+prev).innerHTML = '<img src="https://raw.githubusercontent.com/wwgberlin/go-event-sourcing-exercise/master/public/static/images/transparent.png" width="50px"/>';
+	}
+	document.getElementById("cell_"+curr).innerHTML = '<img id="gophimg" src="https://raw.githubusercontent.com/wwgberlin/go-weather-widget/master/public/static/images/base_gopher.png" width="50px"/>';
+	var opts = ["right-facing","down-facing","up-facing","left-facing"];
+	document.getElementById('gophimg').classList.add(opts[steps[i].D]);
+}
+function animate(){
+	var steps = {{.Steps}};
+	delay(move, steps, 0)
+}
+animate();
+
+</script>
+{{end}}

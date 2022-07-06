@@ -1,0 +1,6 @@
+Lion > Deer
+Piranha > Lion
+Dolphin > Piranha
+Dolphin > Dolphin
+Lion > Dolphin
+Alligator > Deer
