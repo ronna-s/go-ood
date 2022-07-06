@@ -80,14 +80,34 @@ You can run the app multiple times to see your gopher running through different 
 OOP is all about ease and simplicity in being able to express our ideas and translate them into code as simply as possible while delegating responsibilities to things.
 
 #### Let's review the code that made this possible.
+Run 
+```bash
+make godoc
+```
 The repo started with one package in the pkg directory called maze which offers a basic maze generator and nothing else. 
+Go to: http://127.0.0.1:8080/pkg/github.com/ronnas/go-ood/pkg/maze
+
+The package defines 5 types:
+1. Cell (an alias type to int)
+2. Coords (a new type defined as a pair of integers - array of 2 ints)
+3. Direction (an alias type to int)
+4. Maze (a generated 2D maze) is a struct
+5. Wall
+
+
+We can already note:
+1. There are no constructors in Go (since there are no classes), but we can create functions that serve as constructors. 
+2. The godoc tool identified our constructor function and added it under the Maze type  
+3. There are structs
+4. You can define a new type out of any type
+5. Any type can have methods (except primitives)
+6. You can alias to any type
+7. If you want to add methods to primitives, just define a new type.
+8. Pointer receivers
 
 
 
 
-
-
-### Now that we understand how powerful OOP can be (and that Go does offer OOP), let's understand what features Go provides for OOP and how they correlate with those of other languages.
 
 
 
@@ -227,7 +247,8 @@ Let's consider this structrue of a package:
 |--|-- 
 
 This is not a powerful package.
-=======
+
+
 # go-ood
 
 ```
@@ -241,4 +262,3 @@ should get you started
 
 GOTO
 /cmd/app/app.go
->>>>>>> 2a749f954f04485ab14c0abda6eb4919128b0da0
