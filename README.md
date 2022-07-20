@@ -10,13 +10,13 @@ It is named A Path to OOD and not OOP because different language features mean d
 - 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go) 
   <details>
 
-  - defining types
-  - aliases
-  - interfaces
-  - embedding
-  - composition
-  - type assertions 
-  - methods - receivers, pointer receivers
+  - Defining types
+  - Aliases
+  - Methods - receivers, pointer receivers
+  - Interfaces
+  - Embedding
+  - Composition
+  - Type assertions 
   </details>
 - 09:50-10:00: Break
 - 10:00-10:30: Exercise 2 (interfaces) [link](#exercise-2---interfaces)
@@ -104,7 +104,7 @@ Open tmp/maze.html file in your browser to see the results of your code.
 You can run the app multiple times to see your gopher running through different mazes.
 
 
-Done?
+Done? If not, don't worry. You have the entire conference ;) 
 
 Let's review the code that made this possible and examine the features that made it possible
 
@@ -146,17 +146,57 @@ The basics concepts that we need to understand to work with OOP well are:
 (Joe Armstrong)
 
 What did he mean by that?<br>
-Besides the common criticism that OOP encourages developers to overcomplicate their code, there are actual rules that apply to common OOP languages that cause overcomplication:
-The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I.
+He likely meant that OO is overcomplicated but in reality there are actual rules that apply to common OOP languages that cause overcomplication:
+
+The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I. 
+
 For instance, the class Banana will have to extend or inherit from Fruit (or a similar Object class) to be considered a fruit, implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to know where it came from. etc.
 What happens if the Banana we imported doesn't implement an interface that we need it to like holdable? We have to write a new implementation of Banana that wraps the original Banana. There's only one way around this which is generics (but we will get to that).
 
-Remember that cmd/maze created the `Gopher` interface that was implemented by the `travel.Robot` object? - implicit interfaces like that, where a type doesn't have to know about the interfaces it implements, are unfortunatley a very uncommon feature in most packages.
+
+Consider the following Java code:
+
+```java
+class Car extends Vehicle {
+  private String modelName = "Mustang";    // Car attribute
+  public static void main(String[] args) {
+
+    // Create a myCar object
+    Car myCar = new Car();
+
+    // Call the honk() method (from the Vehicle class) on the myCar object
+    myCar.honk();
+
+    // Display the value of the brand attribute (from the Vehicle class) and the value of the modelName from the Car class
+    System.out.println(myCar.brand + " " + myCar.modelName);
+  }
+}
+```
+
+Car has to explicitely extend Vehicle to be used as Vehicle, which is what this statement does.
+
+"But Ronna", you might be asking yourself, "Go doesn't even inheritance that allow for a Car to be Vehicle, why are you bringing Java up?"
+
+Because Java doesn't reall have inheritance either. You can only inherit from one Class. This means that a truck can't be both a Vehicle and a Container. How do you choose which to inherit and what to do with the other? Think about the pointless arguments in the team. You are going end up doing the exact same thing you will do in Go to solve this. 
+
+If you trully need inheritance, use C++, you can have multiple inheritance. Java doesn't really support inheritance. It's not a key feature. If that's what makes sense for your code that's the language for you.
+
+So if inheritance is in your opinion what makes a language Object Oriented, Java just isn't (Ruby too).
+
+
+
+
+
+
+
+Remember that cmd/maze created the `Gopher` interface that was implemented by the `travel.Robot` object? - implicit interfaces like that, where a type doesn't have to know about the interfaces it implements, are unfortunatley a very uncommon feature in most languages.
 Go was written for the 21 century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. This is done in scripting languages with ducktyping, but in Go it's just safe and you get compile time validation of your code.
 
-it is incredibly powerful:
+
+It is incredibly powerful:
 - No need to define interfaces in advance that you won't use.
-- You can define interfaces on the Go only for the subset of methods that you want to abstract away. For instance `travel.Robot` implements more methods than the code in main needed so the `Gopher` interface just has those subset of methods. 
+- You can define interfaces on the go only for the subset of methods that you really need. `Gopher` interfaces doesn't have all the methods that `travel.Robot` has because it doesn't need them.
+- 
 
 
 
