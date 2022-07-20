@@ -5,11 +5,11 @@ It is named A Path to OOD and not OOP because different language features mean d
 
 ## Schedule
 
-- 09:00-09:10: Introduction to OOP [link](#introduction-to-oop)
+- 09:00-09:10: Introduction to Object Oriented Programming [link](#introduction-to-oop)
 - 09:10-09:30: Exercise 1- understanding the benefits [link](#exercise-1---understanding-the-benefits)
 - 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go) 
   <details>
-    - types
+    - defining types
     - aliases
     - interfaces
     - embedding
@@ -51,20 +51,24 @@ It is named A Path to OOD and not OOP because different language features mean d
 ## Introduction to OOP
 
 #### Is Go an Object-Oriented language? 
-This question is so loaded that all I had to do was advertise this workshop to receive loads of feedback on it from total strangers.
-Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc. These are technical concepts that have become synonymous with OOP. 
+This question is so loaded that all I had to do was advertise this workshop to receive feedback from total strangers.
+Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc. 
+These are technical concepts that have become synonymous with Object Oriented Programming.
+The answer to this question depends on the answer to the question "is t an object" in this [sample code](https://go.dev/play/p/ZfWFad7-TyM)
 However, as we will see, Go has a variety of very strong features for Object Oriented Programming that enable Gophers to express their code in a manner that follows the OO principals. 
-I called this workshop a path to OOD with Go and not OOP with Go, because it doesn't follow the same design principals - in particular it should impact how we arrange our packages and when done well it reduces the amount of actual coding. 
+I called this workshop "A path to Object-Oriented Design with Go" and not "A path to Object Oriented Programming with Go" because different language features mean different design choices. 
 
 #### What is OOP?
 What we can all agree on: The central idea behind Object Oriented is to divide software into "things" or "objects" or "instances" that communicate via "messages" or "methods" or "member functions".
 This core idea has not changed in the 4-5+ decades since it was conceptualized.
-It is meant to allow the developer to build code and assign responsibilities just like in the real world, which is what we are familiar with, and how we generally think.
+It is meant to allow the developer to build code and assign responsibilities or concerns just like in the real world (which is what we are familiar with) and how we generally think and solve problems.
 
 #### Do you need OOP?
-
 Just like in the real world, wherever there are things, there can be a mess. *__That's why Marie Kondo.__*
 Just as you can write sane procedural code, you can write sane OO code. You and your team should define design best practices that match your needs.
+This workshop is meant to give you the tools to make good engineering choices. 
+
+Important: Nobody who doesn't maintain your career/ code and business should tell how you should solve your problems. They can make suggestions. That decision is yours.
 
 The following exercise demonstrates the benefits of OOP.
 
@@ -111,11 +115,11 @@ The repo started with one package in the pkg directory called maze which offers 
 Go to: http://127.0.0.1:8080/pkg/github.com/ronnas/go-ood/pkg/maze
 
 The package defines 5 types:
-1. Cell (an alias type to int)
-2. Coords (a new type defined as a pair of integers - array of 2 ints)
-3. Direction (an alias type to int)
-4. Maze (a generated 2D maze) is a struct
-5. Wall
+1. Cell - an alias type to int
+2. Coords - a new type defined as a pair of integers (anarray of 2 ints)
+3. Direction - an alias type to int
+4. Maze - a generated 2D maze that is a struct
+5. Wall - a struct that holds 2 neighboring cells
 
 We see that:
 1. There are no constructors in Go (since there are no classes), but we can create functions that serve as constructors.
@@ -129,7 +133,7 @@ We see that:
 9. Methods that can change/mutate a type needs a pointer receiver.
 
 Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
-That package defines the interface to abstract away our robot.Robot struct - this ability is very uncommon in programming languages. 
+That package defines the interface to abstract away our robot.Robot struct. 
 
 ## OO fundamentals and Go
 The basics concepts that we need to understand to work with OOP well are:
@@ -141,10 +145,24 @@ The basics concepts that we need to understand to work with OOP well are:
 (Joe Armstrong)
 
 What did he mean by that?<br>
+Besides the common criticism that OOP encourages developers to overcomplicate their code, there are actual rules that apply to common OOP languages that cause overcomplication:
 The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I.
-For instance, the class Banana will have to extend or inherit from Fruit (or a similar Object class) implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to figure out where it came from. etc.
-What happens if the Banana we imported doesn't implement an interface that we need it to? We create a MyBanana and inherit Banana just to be able to work with the original class but in the context that our application provides for it.
-What happens if when the CTORs that were written for the Banana class don't match our context of creation (we cannot provide all fields and we just need a subset of the class)? - The class might be useless.
+For instance, the class Banana will have to extend or inherit from Fruit (or a similar Object class) to be considered a fruit, implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to know where it came from. etc.
+What happens if the Banana we imported doesn't implement an interface that we need it to like holdable? We have to write a new implementation of Banana that wraps the original Banana. There's only one way around this which is generics (but we will get to that).
+
+Remember that cmd/maze created the `Gopher` interface that was implemented by the `travel.Robot` object? - implicit interfaces like that, where a type doesn't have to know about the interfaces it implements, are unfortunatley a very uncommon feature in most packages.
+Go was written for the 21 century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. This is done in scripting languages with ducktyping, but in Go it's just safe and you get compile time validation of your code.
+
+it is incredibly powerful:
+- No need to define interfaces in advance that you won't use.
+- You can define interfaces on the Go only for the subset of methods that you want to abstract away. For instance `travel.Robot` implements more methods than the code in main needed so the `Gopher` interface just has those subset of methods. 
+
+
+
+
+
+
+
 
 To understands the features that Go provides over the above described for OOP we are going to compare it with two other languages: C++ and Java that are very well known for their object-oriented features.
 
