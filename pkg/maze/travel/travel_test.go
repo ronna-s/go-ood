@@ -14,8 +14,8 @@ func TestTravel(t *testing.T) {
 	t.Run("travel down", func(t *testing.T) {
 		tr := Travel{Dir: maze.Right, Maze: m}
 		t.Run("out of bounds", func(t *testing.T) {
-			assert.False(t, tr.Up().CanGoDown())   // [0.-1]
-			assert.False(t, tr.Left().CanGoDown()) // [-1,0]
+			assert.False(t, tr.up().CanGoDown())   // [0.-1]
+			assert.False(t, tr.left().CanGoDown()) // [-1,0]
 		})
 		assert.False(t, tr.CanGoDown()) //[0,0]
 		m.RemoveWall(m.CellFromCoords(tr.Coords), maze.Down)
@@ -32,8 +32,8 @@ func TestTravel(t *testing.T) {
 	t.Run("travel right", func(t *testing.T) {
 		tr := Travel{Dir: maze.Right, Maze: m}
 		t.Run("out of bounds", func(t *testing.T) {
-			assert.False(t, tr.Up().CanGoRight())   // [0.-1]
-			assert.False(t, tr.Left().CanGoRight()) // [-1,0]
+			assert.False(t, tr.up().CanGoRight())   // [0.-1]
+			assert.False(t, tr.left().CanGoRight()) // [-1,0]
 		})
 		assert.False(t, tr.CanGoRight()) //[0,0]
 		assert.Error(t, tr.Move())

@@ -9,8 +9,8 @@ import (
 // Travel represents a being that can travel through a maze
 type Travel struct {
 	Dir    maze.Direction
-	Maze   maze.Maze
 	Coords maze.Coords
+	Maze   maze.Maze
 }
 
 // New returns a valid gopher that is ready to roam through a maze
@@ -18,30 +18,30 @@ func New(m maze.Maze) Travel {
 	return Travel{Dir: maze.Right, Coords: maze.Coords{0, 0}, Maze: m}
 }
 
-// Left returns the Coordinates of the cell to the left of the current cell
+// left returns the Coordinates of the cell to the left of the current cell
 // The result coordinates may not be valid (out of bounds)
-func (t Travel) Left() Travel {
+func (t Travel) left() Travel {
 	t.Coords[maze.X] = t.Coords[maze.X] - 1
 	return t
 }
 
-// Right returns the Coordinates of the cell to the right of the current cell
+// right returns the Coordinates of the cell to the right of the current cell
 // The result coordinates may not be valid (out of bounds)
-func (t Travel) Right() Travel {
+func (t Travel) right() Travel {
 	t.Coords[maze.X] = t.Coords[maze.X] + 1
 	return t
 }
 
-// Up returns the Coordinates of the cell above the current cell
+// up returns the Coordinates of the cell above the current cell
 // The result coordinates may not be valid (out of bounds)
-func (t Travel) Up() Travel {
+func (t Travel) up() Travel {
 	t.Coords[maze.Y] = t.Coords[maze.Y] - 1
 	return t
 }
 
-// Down returns the Coordinates of the cell below the current cell
+// down returns the Coordinates of the cell below the current cell
 // The result coordinates may not be valid (out of bounds)
-func (t Travel) Down() Travel {
+func (t Travel) down() Travel {
 	t.Coords[maze.Y] = t.Coords[maze.Y] + 1
 	return t
 }
@@ -72,22 +72,22 @@ func (t *Travel) Move() error {
 	switch t.Dir {
 	case maze.Right:
 		if t.CanGoRight() {
-			*t = t.Right()
+			*t = t.right()
 			return nil
 		}
 	case maze.Down:
 		if t.CanGoDown() {
-			*t = t.Down()
+			*t = t.down()
 			return nil
 		}
 	case maze.Left:
-		if t.Left().CanGoRight() {
-			*t = t.Left()
+		if t.left().CanGoRight() {
+			*t = t.left()
 			return nil
 		}
 	case maze.Up:
-		if t.Up().CanGoDown() {
-			*t = t.Up()
+		if t.up().CanGoDown() {
+			*t = t.up()
 			return nil
 		}
 	}

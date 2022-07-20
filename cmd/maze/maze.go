@@ -19,7 +19,7 @@ var tmpl []byte
 
 func main() {
 	rand.Seed(time.Now().Unix())
-	m := maze.New(rand.Intn(10)+1, rand.Intn(10)+1)
+	m := maze.New(rand.Intn(20)+1, rand.Intn(20)+1)
 	//fmt.Println(fmt.Sprintf("%#v", m))
 	g := robot.New(travel.New(m))
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -46,6 +46,17 @@ type Gopher interface {
 // It takes in g Gopher that knows how to travel.
 // See the Gopher interface methods for more details
 func SolveMaze(g Gopher) {
+	for !g.Finished() {
+		g.TurnRight()
+		if err := g.Move(); err != nil {
+			g.TurnLeft()
+			if err := g.Move(); err != nil {
+				g.TurnLeft()
+			}
+
+		}
+	}
+
 }
 
 // Result represnts the Result of a Maze run

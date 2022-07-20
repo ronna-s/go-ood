@@ -1,3 +1,4 @@
+// Package robot provides a Robot that can travel through a maze and record its steps
 package robot
 
 import (

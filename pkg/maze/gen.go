@@ -1,3 +1,4 @@
+// Package maze generates a 2D maze
 package maze
 
 import (
