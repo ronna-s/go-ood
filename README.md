@@ -9,6 +9,7 @@ It is named A Path to OOD and not OOP because different language features mean d
 - 09:10-09:30: Exercise 1- understanding the benefits [link](#exercise-1---understanding-the-benefits)
 - 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go) 
   <details>
+
   - defining types
   - aliases
   - interfaces
