@@ -157,31 +157,35 @@ What happens if the Banana we imported doesn't implement an interface that we ne
 Consider the following Java code:
 
 ```java
-class Car extends Vehicle {
-  private String modelName = "Mustang";    // Car attribute
+class Vehicle extends Object{
+    boolean full;
+    public void fillUpTank(){
+        this.full = true;
+    }
+    public boolean isTankFull(){
+        return this.full;
+    }
+}
+public class Car extends Vehicle {
   public static void main(String[] args) {
 
-    // Create a myCar object
-    Car myCar = new Car();
-
-    // Call the honk() method (from the Vehicle class) on the myCar object
-    myCar.honk();
-
-    // Display the value of the brand attribute (from the Vehicle class) and the value of the modelName from the Car class
-    System.out.println(myCar.brand + " " + myCar.modelName);
+    Vehicle car = new Car();
+    car.fillUpTank();
+    System.out.println(car.isTankFull());
   }
 }
+
 ```
 
 Car has to explicitely extend Vehicle to be used as Vehicle, which is what this statement does.
 
-"But Ronna", you might be asking yourself, "Go doesn't even inheritance that allow for a Car to be Vehicle, why are you bringing Java up?"
+"But Ronna", you might be _rightly_ asking yourself, "Go doesn't even inheritance that allow for a Car to be Vehicle, why are you bringing Java up?"
 
 Because Java doesn't reall have inheritance either. You can only inherit from one Class. This means that a truck can't be both a Vehicle and a Container. How do you choose which to inherit and what to do with the other? Think about the pointless arguments in the team. You are going end up doing the exact same thing you will do in Go to solve this. 
 
 If you trully need inheritance, use C++, you can have multiple inheritance. Java doesn't really support inheritance. It's not a key feature. If that's what makes sense for your code that's the language for you.
 
-So if inheritance is in your opinion what makes a language Object Oriented, Java just isn't (Ruby too).
+So if inheritance is in your opinion what makes a language Object Oriented, Java isn't OO (and Ruby too, and plenty others).
 
 
 
