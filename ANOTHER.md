@@ -114,7 +114,7 @@ Go to: http://127.0.0.1:8080/pkg/github.com/ronnas/go-ood/pkg/maze
 
 The package defines 5 types:
 1. Cell - an alias type to int
-2. Coords - a new type defined as a pair of integers (anarray of 2 ints)
+2. Coords - a new type defined as a pair of integers (an array of 2 ints)
 3. Direction - an alias type to int
 4. Maze - a generated 2D maze that is a struct
 5. Wall - a struct that holds 2 neighboring cells
@@ -163,7 +163,7 @@ The basics concepts that we need to understand to work with OOP well are:
 (Joe Armstrong)
 
 What did he mean by that?<br>
-He likely meant that OO is overcomplicated but in reality there are actual rules that apply to common OOP languages that cause overcomplication:
+He likely just meant that OO is overcomplicated but in reality there are actual rules that apply to common OOP languages that cause this overcomplication:
 
 The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I.
 

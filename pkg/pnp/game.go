@@ -53,21 +53,21 @@ func (g Game) Run() {
 	for len(band) != 0 {
 		player := band[0]
 		band = band[1:]
-		abilities := player.Skills()
+		skills := player.Skills()
+		fmt.Printf("It's %s's turn. %s has %d Health and %d XP. Production's status is '%s'.\n", player, player, player.Health(), player.XP(), g.Prod.Status)
 		var choice Skill
 		for {
-			fmt.Printf("It's %s's turn. %s has %d Health and %d XP. Production's status is '%s'.\n", player, player, player.Health(), player.XP(), g.Prod.Status)
 			fmt.Println("Please choose the number of the skill you would like to use:")
-			for i := range abilities {
-				fmt.Printf("%d: %s\n", i+1, abilities[i])
+			for i := range skills {
+				fmt.Printf("%d: %s\n", i+1, skills[i])
 			}
 			var i int
 			if _, err := fmt.Scanln(&i); err != nil {
 				fmt.Printf("failed parsing input %s\n", err)
-			} else if i < 1 || i > len(abilities) {
+			} else if i < 1 || i > len(skills) {
 				fmt.Printf("invalid option %d\n", i)
 			} else {
-				choice = abilities[i-1]
+				choice = skills[i-1]
 				break
 			}
 		}

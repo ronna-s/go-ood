@@ -1,5 +1,7 @@
 package pnp
 
+import "sort"
+
 type (
 	// Rubyist represents the P&P role of the Rubyist
 	Rubyist struct {
@@ -22,5 +24,6 @@ func (r Rubyist) Skills() []Skill {
 	case r.X >= 10:
 		abs = append(abs, Module)
 	}
+	sort.Slice(abs, func(i, j int) bool { return abs[i] < abs[j] })
 	return abs
 }

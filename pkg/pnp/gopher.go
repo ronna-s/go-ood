@@ -1,5 +1,7 @@
 package pnp
 
+import "sort"
+
 type (
 	// Gopher represents the P&P role of the Gopher
 	Gopher struct {
@@ -22,5 +24,6 @@ func (g Gopher) Skills() []Skill {
 	case g.X >= 10:
 		abs = append(abs, Interface)
 	}
+	sort.Slice(abs, func(i, j int) bool { return abs[i] < abs[j] })
 	return abs
 }
