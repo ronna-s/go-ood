@@ -1,9 +1,9 @@
 package pnp
 
 import (
+	"bufio"
 	_ "embed"
 	"fmt"
-	"io"
 	"math/rand"
 	"os"
 	"runtime"
@@ -57,16 +57,22 @@ func (p *Production) React(a Action) (xp int, health int) {
 	xp, health, p.State = p.State.React(a)
 	return
 }
-func clearScr() {
-	fmt.Print("\033[H\033[2J")
-}
 
 // Run ...
-func (g *Game) Run() {
+func Run() {
+	fmt.Println(withColor(cyan, gamestarted))
+	fmt.Println("New game started. A band of developers will attempt to survive against Production!")
+	fmt.Println("What is the name of your band?")
+	l, _, err := bufio.NewReader(os.Stdin).ReadLine()
+	if err != nil {
+		panic("error reading band name")
+	}
+	//todo: check if not exists
+	g := NewGame(string(l), NewProduction(), NewRubyist(), NewGopher())
 	clearScr()
 	rand.Seed(time.Now().Unix())
 	var band []Player
-	// When loading a new game avoid loading band members who are dead
+	// When loading a new game avoid loading band members who are already dead
 	for _, p := range g.Players {
 		if p.Alive() {
 			band = append(band, p)
@@ -78,13 +84,12 @@ func (g *Game) Run() {
 		skills := player.Skills()
 		fmt.Printf("It's %s's turn. Production's status is '%s'.\n\n", player, g.Prod.State)
 
-		printImage := func() { fmt.Println(player.Image()) }
 		if player.Health() > 70 {
-			withColor(green, os.Stdout, printImage)
+			fmt.Println(withColor(green, player.Image()))
 		} else if player.Health() > 30 {
-			withColor(yellow, os.Stdout, printImage)
+			fmt.Println(withColor(yellow, player.Image()))
 		} else {
-			withColor(red, os.Stdout, printImage)
+			fmt.Println(withColor(red, player.Image()))
 		}
 
 		fmt.Println()
@@ -118,35 +123,42 @@ func (g *Game) Run() {
 		if player.Alive() {
 			band = append(band, player)
 		} else {
-			clearScr()
-			withColor(blue, os.Stdout, func() { fmt.Println(gravestone) })
+			fmt.Println(withColor(purple, gravestone))
 			fmt.Printf("it's so sad that %s is now dead\n", player)
 		}
-		//fmt.Println("Press enter to continue. [Q] to quit...")
-		//b, _ := bufio.NewReader(os.Stdin).ReadByte()
-		//if b == 'Q' {
-		//	return
-		//}
+		fmt.Println("Press enter to continue. [Q] to quit...")
+		b, _ := bufio.NewReader(os.Stdin).ReadByte()
+		if b == 'Q' {
+			return
+		}
 		clearScr()
 	}
+	fmt.Println(withColor(cyan, gameover))
 }
 
 //go:embed resources/gravestone.txt
 var gravestone string
 
+//go:embed resources/gameover.txt
+var gameover string
+
+//go:embed resources/gamestarted.txt
+var gamestarted string
+
 var (
 	red    = "\033[31m"
 	green  = "\033[32m"
 	yellow = "\033[33m"
-	blue   = "\033[34m"
+	purple = "\033[35m"
+	cyan   = "\033[36m"
 )
 
-func withColor(c string, w io.Writer, f func()) {
+func withColor(color, s string) string {
 	if runtime.GOOS == "windows" {
-		f()
-		return
+		return s
 	}
-	defer w.Write([]byte("\033[0m"))
-	w.Write([]byte(c))
-	f()
+	return color + s + "\033[0m"
+}
+func clearScr() {
+	fmt.Print("\033[H\033[2J")
 }

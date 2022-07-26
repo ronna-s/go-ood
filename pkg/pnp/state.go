@@ -78,7 +78,7 @@ type Enraged struct{}
 
 // String ...
 func (s Enraged) String() string {
-	return "enraged"
+	return "Enraged!"
 }
 
 // React returns XP gained, Health gained and the new Production state
@@ -108,11 +108,12 @@ type Legacy struct{}
 
 // String ...
 func (s Legacy) String() string {
-	return "legacy! - sudden death round"
+	return "LEGACY! - sudden death round"
 }
 
 // React returns XP gained, Health gained and the new Production state
 func (s Legacy) React(a Action) (int, int, State) {
+	// not a lot of chances against legacy - be very careful
 	chances := map[Action]int{
 		TypeSafety: 50,
 		DuckTyping: 50,

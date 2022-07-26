@@ -277,11 +277,15 @@ This concept is made for the internet - any piece of software can be plugged fro
 ](https://research.swtch.com/interfaces)
 
 ## Exercise 2 - Interfaces
-### Being replaced with Game
 
-Please implement the following types in `pkg/animal` and `cmd/habitat` (failing tests provided):
+We are going to add players to the game P&P - Platforms and Programmers who will attempt to take on a production environment.
+The player roles are going to be composed of the struct Character for common traits like XP and Health and will implement their own methods for their individual skills.
+We are going to implement the types `pnp.Character`, `pnp.Gopher` and `pnp.Rubyist` in `pkg/pnp`:
 
-![](docs/animal.png) ![](docs/habitat.png)
+![](docs/pnp-uml.png)
+
+
+
 
 ```bash
 make build
@@ -335,7 +339,7 @@ func main() {
 ```
 This code produces an error because we cannot convert slices even if the individual elements implement the expected type of the other slice.
 This is a property of Go's type safety.
-What we used to until recently is to generate code that converts differnt types of slices to the empty interface.
+What we used to until recently is to generate code that converts different types of slices to the empty interface.
 But recently we got generics...
 
 
