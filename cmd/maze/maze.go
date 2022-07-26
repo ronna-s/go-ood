@@ -53,10 +53,8 @@ func SolveMaze(g Gopher) {
 			if err := g.Move(); err != nil {
 				g.TurnLeft()
 			}
-
 		}
 	}
-
 }
 
 // Result represnts the Result of a Maze run

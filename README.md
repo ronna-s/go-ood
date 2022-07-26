@@ -187,6 +187,7 @@ So if inheritance is in your opinion what makes a language Object Oriented, Java
 
 
 
+------------------------
 
 
 
@@ -254,8 +255,8 @@ This concept is made for the internet - any piece of software can be plugged fro
 ](https://research.swtch.com/interfaces)
 
 ## Exercise 2 - Interfaces
+### Being replaced with Game
 
-[Bill Kennedy](https://www.ardanlabs.com/blog/), has often made comments about how the example for Animal MakeSound() is irrelevant to the industry so that's what we will do next.
 Please implement the following types in `pkg/animal` and `cmd/habitat` (failing tests provided):
 
 ![](docs/animal.png) ![](docs/habitat.png)

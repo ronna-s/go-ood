@@ -2,9 +2,9 @@ package pnp
 
 // Character represents the common fields and abilities of a P&P charachter
 type Character struct {
-	Name string // The name of the character
+	Name string // The Name of the character
 	X    int    // Experience points collected
-	H    int    // A 0-100 value of the characters health percentage
+	H    int    // Field 0-100 value of the characters health percentage
 }
 
 // Alive returns false if the Character is dead

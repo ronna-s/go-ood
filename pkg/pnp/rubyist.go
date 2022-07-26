@@ -1,6 +1,10 @@
 package pnp
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
 
 type (
 	// Rubyist represents the P&P role of the Rubyist
@@ -12,6 +16,24 @@ type (
 // NewRubyist ...
 func NewRubyist() *Rubyist {
 	return &Rubyist{Character{H: 100, Name: "Rubyist"}}
+}
+func (r Rubyist) Image() string {
+	return fmt.Sprintf(strings.Join([]string{
+		"              ~~++++:  .:+++++. ",
+		"           ~+++~.. .+=+o:    ~=~",
+		"         :++~       .o.~++~   ~o",
+		"       :+:          =:   .++~ ~o",
+		"     ~=+          .=+......:=o==                   HEALTH=%d",
+		"    ~o~          ~=+=+:::::~~~=+",
+		"   ~o.         ~++. o~        ++",
+		"   o~        ~++.   ~o        o~",
+		"   =:    .~+=+.      o~      .o~",
+		"   .o++++:~o+:++:~.. ~o      ~o.                   XP=%d",
+		"   +o+    :=   .~~:+++o:     ~o ",
+		"  ++ =+  .o.         ...     ++ ",
+		"  o~  o: =+                  ++ ",
+		"  ~=~ .=+=        ......~~~~~o: ",
+	}, "\n"), r.H, r.X)
 }
 
 // Abilities returns the list of abilities the Rubyist has

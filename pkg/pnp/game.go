@@ -1,8 +1,12 @@
 package pnp
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"math/rand"
+	"os"
+	"runtime"
 	"time"
 )
 
@@ -10,30 +14,38 @@ type (
 	// Game represents a Programmers & Platforms game
 	// The purpose of the players is to keep production calm together
 	Game struct {
+		Name    string
 		Players []Player
 		Prod    Production
 	}
 
-	// Player repsresents a P&P player
+	// Player represents a P&P player
 	Player interface {
 		Alive() bool
 		GainXP(int)
 		GainHealth(int)
 		Skills() []Skill
 		Health() int
+		Image() string
 		XP() int
 	}
 
 	// Action ...
 	Action = Skill
-	// Status represents a P&P production state
-	Status interface {
-		React(Action) (int, int, Status)
+	// State represents a P&P production state
+	State interface {
+		React(Action) (int, int, State)
 	}
+	// Production ...
 	Production struct {
-		Status Status
+		State State
 	}
 )
+
+// NewGame returns a new P&P game
+func NewGame(name string, prod Production, players ...Player) Game {
+	return Game{Name: name, Prod: prod, Players: players}
+}
 
 // NewProduction ...
 func NewProduction() Production {
@@ -42,24 +54,47 @@ func NewProduction() Production {
 
 // React returns the X and health gained by Production's reaction to the player's action
 func (p *Production) React(a Action) (xp int, health int) {
-	xp, health, p.Status = p.Status.React(a)
+	xp, health, p.State = p.State.React(a)
 	return
+}
+func clearScr() {
+	fmt.Print("\033[H\033[2J")
 }
 
 // Run ...
-func (g Game) Run() {
+func (g *Game) Run() {
+	clearScr()
 	rand.Seed(time.Now().Unix())
-	band := g.Players
+	var band []Player
+	// When loading a new game avoid loading band members who are dead
+	for _, p := range g.Players {
+		if p.Alive() {
+			band = append(band, p)
+		}
+	}
 	for len(band) != 0 {
+		//clearScr()
 		player := band[0]
 		band = band[1:]
 		skills := player.Skills()
-		fmt.Printf("It's %s's turn. %s has %d Health and %d XP. Production's status is '%s'.\n", player, player, player.Health(), player.XP(), g.Prod.Status)
+		fmt.Printf("It's %s's turn. Production's status is '%s'.\n\n", player, g.Prod.State)
+
+		printImage := func() { fmt.Println(player.Image()) }
+		if player.Health() > 70 {
+			withColor(green, os.Stdout, printImage)
+		} else if player.Health() > 30 {
+			withColor(yellow, os.Stdout, printImage)
+		} else {
+			withColor(red, os.Stdout, printImage)
+		}
+
+		fmt.Println()
+
 		var choice Skill
 		for {
 			fmt.Println("Please choose the number of the skill you would like to use:")
 			for i := range skills {
-				fmt.Printf("%d: %s\n", i+1, skills[i])
+				fmt.Printf("[%d] %s\n", i+1, skills[i])
 			}
 			var i int
 			if _, err := fmt.Scanln(&i); err != nil {
@@ -76,16 +111,64 @@ func (g Game) Run() {
 			health = 100 - player.Health()
 		}
 		if health >= 0 {
-			fmt.Printf("Production liked %s's move. Production's state is now `%s`. Gained: %d XP, %d health\n", player, g.Prod.Status, xp, health)
+			fmt.Printf("Production liked %s's move. Production's state is now `%s`. Gained: %d XP, %d health\n", player, g.Prod.State, xp, health)
 		} else {
-			fmt.Printf("Production DID NOT like %s's move. Production's state is now `%s`. Gained: %d XP, Lost: %d Health\n", player, g.Prod.Status, xp, -health)
+			fmt.Printf("Production DID NOT like %s's move. Production's state is now `%s`. Gained: %d XP, Lost: %d Health\n", player, g.Prod.State, xp, -health)
 		}
+		fmt.Println()
 		player.GainHealth(health)
 		player.GainXP(xp)
 		if player.Alive() {
 			band = append(band, player)
 		} else {
-			fmt.Println(fmt.Sprintf("it's so sad that %s is now dead", player))
+			clearScr()
+			withColor(blue, os.Stdout, func() { fmt.Println(gravestone) })
+			fmt.Printf("it's so sad that %s is now dead\n", player)
 		}
+		fmt.Println("Press enter to continue. [Q] to quit...")
+		b, _ := bufio.NewReader(os.Stdin).ReadByte()
+		if b == 'Q' {
+			return
+		}
+		clearScr()
 	}
+}
+
+var gravestone = `
+                  _  /)
+                 mo / )
+                 |/)\)
+                  /\_
+                  \__|=
+                 (    )
+                 __)(__
+           _____/      \\_____
+          |                  ||
+          |  _     ___   _   ||
+          | | \     |   | \  ||
+          | |  |    |   |  | ||
+          | |_/     |   |_/  ||
+          | | \     |   |    ||
+          | |  \    |   |    ||
+          | |   \. _|_. | .  ||
+          |                  ||
+  *       | *   **    * **   |**      **
+   \))ejm96/.,(//,,..,,\||(,,.,\\,.((//
+`
+
+var (
+	red    = "\033[31m"
+	green  = "\033[32m"
+	yellow = "\033[33m"
+	blue   = "\033[34m"
+)
+
+func withColor(c string, w io.Writer, f func()) {
+	if runtime.GOOS == "windows" {
+		f()
+		return
+	}
+	defer w.Write([]byte("\033[0m"))
+	w.Write([]byte(c))
+	f()
 }

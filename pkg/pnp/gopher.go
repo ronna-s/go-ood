@@ -1,6 +1,10 @@
 package pnp
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
 
 type (
 	// Gopher represents the P&P role of the Gopher
@@ -26,4 +30,23 @@ func (g Gopher) Skills() []Skill {
 	}
 	sort.Slice(abs, func(i, j int) bool { return abs[i] < abs[j] })
 	return abs
+}
+
+func (g Gopher) Image() string {
+	return fmt.Sprintf(strings.Join([]string{
+		"                                    ",
+		"                                    ",
+		"           ,_---~~~~~----.          ",
+		"    _,,_,*^____      _____``*g*\"*, ",
+		"   / __/ /'     ^.  /      \\ ^@q   f               HEALTH=%d",
+		"  [  @f | @))    |  | @))   l  0 _/  ",
+		"   \\`/   \\~____ / __ \\_____/    \\   ",
+		"    |           _l__l_           I  ",
+		"    }          [______]           I ",
+		"    ]            | | |            |                XP=%d",
+		"    ]             ~ ~             | ",
+		"    |                            |  ",
+		"     |                           |  ",
+		"     |                           |  ",
+	}, "\n"), g.H, g.X)
 }
