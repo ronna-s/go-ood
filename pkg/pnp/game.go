@@ -1,7 +1,7 @@
 package pnp
 
 import (
-	"bufio"
+	_ "embed"
 	"fmt"
 	"io"
 	"math/rand"
@@ -23,7 +23,7 @@ type (
 	Player interface {
 		Alive() bool
 		GainXP(int)
-		GainHealth(int)
+		GainHealth(int) int
 		Skills() []Skill
 		Health() int
 		Image() string
@@ -73,7 +73,6 @@ func (g *Game) Run() {
 		}
 	}
 	for len(band) != 0 {
-		//clearScr()
 		player := band[0]
 		band = band[1:]
 		skills := player.Skills()
@@ -107,17 +106,15 @@ func (g *Game) Run() {
 			}
 		}
 		xp, health := g.Prod.React(choice)
-		if player.Health()+health > 100 {
-			health = 100 - player.Health()
-		}
+		health = player.GainHealth(health)
+		player.GainXP(xp)
 		if health >= 0 {
 			fmt.Printf("Production liked %s's move. Production's state is now `%s`. Gained: %d XP, %d health\n", player, g.Prod.State, xp, health)
 		} else {
 			fmt.Printf("Production DID NOT like %s's move. Production's state is now `%s`. Gained: %d XP, Lost: %d Health\n", player, g.Prod.State, xp, -health)
 		}
 		fmt.Println()
-		player.GainHealth(health)
-		player.GainXP(xp)
+
 		if player.Alive() {
 			band = append(band, player)
 		} else {
@@ -125,36 +122,17 @@ func (g *Game) Run() {
 			withColor(blue, os.Stdout, func() { fmt.Println(gravestone) })
 			fmt.Printf("it's so sad that %s is now dead\n", player)
 		}
-		fmt.Println("Press enter to continue. [Q] to quit...")
-		b, _ := bufio.NewReader(os.Stdin).ReadByte()
-		if b == 'Q' {
-			return
-		}
+		//fmt.Println("Press enter to continue. [Q] to quit...")
+		//b, _ := bufio.NewReader(os.Stdin).ReadByte()
+		//if b == 'Q' {
+		//	return
+		//}
 		clearScr()
 	}
 }
 
-var gravestone = `
-                  _  /)
-                 mo / )
-                 |/)\)
-                  /\_
-                  \__|=
-                 (    )
-                 __)(__
-           _____/      \\_____
-          |                  ||
-          |  _     ___   _   ||
-          | | \     |   | \  ||
-          | |  |    |   |  | ||
-          | |_/     |   |_/  ||
-          | | \     |   |    ||
-          | |  \    |   |    ||
-          | |   \. _|_. | .  ||
-          |                  ||
-  *       | *   **    * **   |**      **
-   \))ejm96/.,(//,,..,,\||(,,.,\\,.((//
-`
+//go:embed resources/gravestone.txt
+var gravestone string
 
 var (
 	red    = "\033[31m"

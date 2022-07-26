@@ -196,11 +196,11 @@ As we explained Car has to explicitely extend Vehicle to be used as Vehicle, whi
 
 "But Ronna", you might be _rightly_ asking yourself, "Go doesn't even inheritance that allow for a Car to be Vehicle, why are you bringing Java up?"
 
-Because Java doesn't reall have inheritance either. You can only inherit from one Class. This means that a truck can't be both a Vehicle and a Container. How do you choose which to inherit and what to do with the other? Think about the pointless arguments in the team. You are going end up doing the exact same thing you will do in Go to solve this.
+Because Java doesn't really have inheritance either. You can only inherit from one Class. This means that a truck can't be both a Vehicle and a Container. How do you choose which to inherit and what to do with the other? Think about the pointless arguments in the team. You are going end up doing the exact same thing you will do in Go to solve this.
 
 If you trully need inheritance, use C++, you can have multiple inheritance. Java doesn't really support inheritance. It's not a key feature. If that's what makes sense for your code that's the language for you.
 
-So if inheritance is in your opinion what makes a language Object Oriented, Java isn't OO (and Ruby too, and plenty others).
+So if inheritance is in your opinion what makes a language Object-Oriented, Java isn't OO (and Ruby too, and plenty others).
 
 
 
@@ -208,7 +208,7 @@ So if inheritance is in your opinion what makes a language Object Oriented, Java
 
 
 Remember that cmd/maze created the `Gopher` interface that was implemented by the `travel.Robot` object? - implicit interfaces like that, where a type doesn't have to know about the interfaces it implements, are unfortunatley a very uncommon feature in most languages.
-Go was written for the 21 century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. This is done in scripting languages with ducktyping, but in Go it's just safe and you get compile time validation of your code.
+Go was written for the 21st century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. This is done in scripting languages with ducktyping, but in Go it's just safe and you get compile time validation of your code.
 
 
 It is incredibly powerful:

@@ -1,9 +1,9 @@
 package pnp
 
 import (
+	_ "embed"
 	"fmt"
 	"sort"
-	"strings"
 )
 
 type (
@@ -32,21 +32,9 @@ func (g Gopher) Skills() []Skill {
 	return abs
 }
 
+//go:embed resources/gopher.txt
+var gopher string
+
 func (g Gopher) Image() string {
-	return fmt.Sprintf(strings.Join([]string{
-		"                                    ",
-		"                                    ",
-		"           ,_---~~~~~----.          ",
-		"    _,,_,*^____      _____``*g*\"*, ",
-		"   / __/ /'     ^.  /      \\ ^@q   f               HEALTH=%d",
-		"  [  @f | @))    |  | @))   l  0 _/  ",
-		"   \\`/   \\~____ / __ \\_____/    \\   ",
-		"    |           _l__l_           I  ",
-		"    }          [______]           I ",
-		"    ]            | | |            |                XP=%d",
-		"    ]             ~ ~             | ",
-		"    |                            |  ",
-		"     |                           |  ",
-		"     |                           |  ",
-	}, "\n"), g.H, g.X)
+	return fmt.Sprintf(gopher, g.H, g.X)
 }

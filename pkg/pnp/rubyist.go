@@ -1,9 +1,9 @@
 package pnp
 
 import (
+	_ "embed"
 	"fmt"
 	"sort"
-	"strings"
 )
 
 type (
@@ -17,26 +17,15 @@ type (
 func NewRubyist() *Rubyist {
 	return &Rubyist{Character{H: 100, Name: "Rubyist"}}
 }
+
+//go:embed resources/rubyist.txt
+var rubyist string
+
 func (r Rubyist) Image() string {
-	return fmt.Sprintf(strings.Join([]string{
-		"              ~~++++:  .:+++++. ",
-		"           ~+++~.. .+=+o:    ~=~",
-		"         :++~       .o.~++~   ~o",
-		"       :+:          =:   .++~ ~o",
-		"     ~=+          .=+......:=o==                   HEALTH=%d",
-		"    ~o~          ~=+=+:::::~~~=+",
-		"   ~o.         ~++. o~        ++",
-		"   o~        ~++.   ~o        o~",
-		"   =:    .~+=+.      o~      .o~",
-		"   .o++++:~o+:++:~.. ~o      ~o.                   XP=%d",
-		"   +o+    :=   .~~:+++o:     ~o ",
-		"  ++ =+  .o.         ...     ++ ",
-		"  o~  o: =+                  ++ ",
-		"  ~=~ .=+=        ......~~~~~o: ",
-	}, "\n"), r.H, r.X)
+	return fmt.Sprintf(rubyist, r.H, r.X)
 }
 
-// Abilities returns the list of abilities the Rubyist has
+// Skills returns the list of abilities the Rubyist has
 func (r Rubyist) Skills() []Skill {
 	abs := []Skill{DuckTyping}
 	switch {

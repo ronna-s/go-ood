@@ -54,13 +54,34 @@ It is named A Path to OOD and not OOP because different language features mean d
 #### Is Go an Object-Oriented language? 
 This question is so loaded that all I had to do was to advertise this workshop to receive feedback from total strangers.
 Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc. 
-These are technical concepts that have become synonymous with Object Oriented Programming.
-The answer to this question depends on the answer to the question "is t an object" in this [sample code](https://go.dev/play/p/ZfWFad7-TyM)
-However, as we will see, Go has a variety of very strong features for Object Oriented Programming that enable Gophers to express their code in a manner that follows the OO principals. 
-I called this workshop "A path to Object-Oriented Design with Go" and not "A path to Object Oriented Programming with Go" because different language features mean different design choices. 
+These are technical concepts that have become synonymous with Object-Oriented Programming.
+Go does have a variety of very strong features for Object-Oriented Programming that enable Gophers to express their code in a manner that follows the OO principals.
+In the end, the answer to this question depends on the answer to the question "is t an object" in this [sample code](https://go.dev/play/p/ZfWFad7-TyM)
+
+
+```go
+package main
+
+import "fmt"
+
+type MyThing int //Creates a new type MyThing with an underlying type int
+
+// Foo is now a method of my MyThing, in many languages to have a method you have to have a class or a struct
+func (t MyThing) Foo() int {
+	return int(t)
+}
+func main() {
+	var t MyThing = 1
+	fmt.Println(t.Foo()) // Q: is t an object?
+}
+
+```
+
+ 
+Note: I called this workshop "A path to Object-Oriented Design with Go" and not "A path to Object Oriented Programming with Go" because different language features mean different design choices. 
 
 #### What is OOP?
-What we can all agree on: The central idea behind Object Oriented is to divide software into "things" or "objects" or "instances" that communicate via "messages" or "methods" or "member functions".
+What we can all agree on: The central idea behind Object-Oriented is to divide software into "things" or "objects" or "instances" that communicate via "messages" or "methods" or "member functions".
 This core idea has not changed in the 4-5+ decades since it was conceptualized.
 It is meant to allow the developer to build code and assign responsibilities or concerns just like in the real world (which is what we are familiar with) and how we generally think and solve problems.
 
@@ -69,14 +90,14 @@ Just like in the real world, wherever there are things, there can be a mess. *__
 Just as you can write sane procedural code, you can write sane OO code. You and your team should define design best practices that match your needs.
 This workshop is meant to give you the tools to make good engineering choices. 
 
-Important: Nobody who doesn't maintain your career/ code and business should tell how you should solve your problems. They can make suggestions. That decision is yours.
+Important: Nobody who doesn't maintain your career/ code or business should tell how you should solve your problems. Though they can make suggestions, the decision is ultimately yours.
 
 The following exercise demonstrates the benefits of OOP.
 
 ## Exercise 1 - Understanding the benefits:
 Where we will understand some OO basics using an example of a gopher and a maze.
 
-*This exercise is heavily inspired by the Intro to CS first home assignment that Prof. Jeff Rosendchein gave my CS class in 2003.
+*This exercise is heavily inspired by the Intro to CS first home assignment that [Prof. Jeff Rosenschein](https://scholar.google.com/citations?user=YO7cKNMAAAAJ&hl=en) gave my Intro to CS class in 2003.
 
 To get a sense of what strong OOP can do for us, solve a maze given a Gopher that can perform 4 actions:
 ```go
@@ -103,7 +124,6 @@ make run-maze > tmp/maze.html
 Open tmp/maze.html file in your browser to see the results of your code.
 You can run the app multiple times to see your gopher running through different mazes.
 
-
 Done? If not, don't worry. You have the entire conference ;) 
 
 Let's review the code that made this possible and examine the features that made it possible
@@ -125,13 +145,13 @@ The package defines 5 types:
 We see that:
 1. There are no constructors in Go (since there are no classes), but we can create functions that serve as constructors.
 2. The godoc tool identified our constructor function New and added it under the Maze type.
-3. We have structs, that have fields.
-4. You can define a new type out of anything.
-5. Any type can have methods (except primitives)
+3. We have structs they can  have fields.
+4. You can define a new type out of any underlying type
+5. Any type can have methods (except for primitives)
 6. You can alias to any type
-7. If you want to add methods to primitives, just define a new type.
+7. If you want to add methods to primitives, just define a new type with the desired primitive underlying type
 8. Methods are added to types using Receivers
-9. Methods that can change/mutate a type needs a pointer receiver.
+9. Methods that can change/mutate the value of the type needs a pointer receiver.
 
 Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
 That package defines the interface to abstract away our robot.Robot struct. 
@@ -175,24 +195,26 @@ public class Car extends Vehicle {
 }
 ```
 
-As we explained Car has to explicitely extend Vehicle to be used as Vehicle, which is what this statement does. Which is great.
+As we explained Car has to explicitly extend Vehicle to be used as Vehicle, which is what this statement does. Which is great.
 
-"But Ronna", you might be _rightly_ asking yourself, "Go doesn't even inheritance that allow for a Car to be Vehicle, why are you bringing Java up?"
+"But Ronna", you might be _rightly_ asking yourself, "Go doesn't even have inheritance that allow for a Car to be Vehicle, why are you bringing Java up?"
 
-Because Java doesn't reall have inheritance either. You can only inherit from one Class. This means that a truck can't be both a Vehicle and a Container. How do you choose which to inherit and what to do with the other? Think about the pointless arguments in the team. You are going end up doing the exact same thing you will do in Go to solve this. 
+Because Java doesn't really have inheritance either. You can only inherit from one Class. This means that a truck can't be both a Vehicle and a ContainerOfGoods. How do you choose which to inherit and what to do with the other? Whatever you are planning to do in this situation, that's what you will do in Go. 
 
-If you trully need inheritance, use C++, you can have multiple inheritance. Java doesn't really support inheritance. It's not a key feature. If that's what makes sense for your code that's the language for you.
+If you truly need inheritance, use C++, you can have multiple inheritance. Java doesn't really support inheritance. It's not a key feature. If that's what makes sense for your code that's the language for you.
 
-So if inheritance is in your opinion what makes a language Object Oriented, Java isn't OO (and Ruby too, and plenty others).
+So if inheritance is in your opinion what makes a language Object-Oriented, Java isn't OO (and Ruby too, and plenty others).
 
+### Composition vs. Inheritance
 
+In Go we don't have inheritance. To express that A is I we use interfaces. To express that A is made of B or composed of B we use compositions.
 
 ------------------------
 
 
 
 Remember that cmd/maze created the `Gopher` interface that was implemented by the `travel.Robot` object? - implicit interfaces like that, where a type doesn't have to know about the interfaces it implements, are unfortunatley a very uncommon feature in most languages.
-Go was written for the 21 century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. This is done in scripting languages with ducktyping, but in Go it's just safe and you get compile time validation of your code.
+Go was written for the 21st century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. This is done in scripting languages with ducktyping, but in Go it's just safe and you get compile time validation of your code.
 
 
 It is incredibly powerful:
@@ -354,8 +376,10 @@ func main() {
 }
 ```
 
+We didn't need generics at all!
+
 However, there are cases in Go where we have to use generics and until recently we used code generation for.
-Those cases are when the behavior is derived from the type.
+Those cases are when the behavior is derived from the type or leaks to the type:
 
 For example:
 The linked list
@@ -373,6 +397,26 @@ func main() {
   n1 := Node[int]{1, nil}
   n2 := Node[int]{3, &n1}
   fmt.Println(n2.Value, n2.Next.Value)
+}
+```
+Example 2 - [Addition](https://go.dev/play/p/dmeQEVxpyAq)
+```go
+package main
+
+import "fmt"
+
+type A int
+
+// Add takes any type with underlying type int
+// We can now increment all of those enums 
+func Add[T ~int](i T, j T) T { 
+  return i + j
+}
+
+func main() {
+  var i, j A
+  fmt.Println(Add(i, j))
+  fmt.Println("Hello, 世界")
 }
 ```
 
