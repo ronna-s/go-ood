@@ -14,12 +14,10 @@ test-maze:
 	docker run go-ood go test github.com/ronnas/go-ood/cmd/maze
 run-maze:
 	@docker run go-ood
-test-habitat:
-	docker run go-ood go test github.com/ronnas/go-ood/cmd/habitat
-run-habitat:
-	@docker run go-ood habitat
-test-animal:
-	docker run go-ood go test github.com/ronnas/go-ood/pkg/animal
+test-pnp:
+	docker run go-ood go test github.com/ronnas/go-ood/cmd/pnp
+run-pnp:
+	@docker run go-ood pnp
 test-heap:
 	docker run go-ood go test github.com/ronnas/go-ood/cmd/habitat
 run-heap:

@@ -52,12 +52,12 @@ It is named A Path to OOD and not OOP because different language features mean d
 ## Introduction to OOP
 
 #### Is Go an Object-Oriented language? 
-This question is so loaded that all I had to do was to advertise this workshop to receive feedback from total strangers.
-Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc. 
+This question is so loaded that all I had to do was to advertise this workshop to receive "constructive" feedback from total strangers.
+Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc.
+There is also no late or late late or late late late binding in Go - but there's something else.
 These are technical concepts that have become synonymous with Object-Oriented Programming.
 Go does have a variety of very strong features for Object-Oriented Programming that enable Gophers to express their code in a manner that follows the OO principals.
 In the end, the answer to this question depends on the answer to the question "is t an object" in this [sample code](https://go.dev/play/p/ZfWFad7-TyM)
-
 
 ```go
 package main
@@ -74,9 +74,9 @@ func main() {
 	var t MyThing = 1
 	fmt.Println(t.Foo()) // Q: is t an object?
 }
-
 ```
 
+Whether you think t is an object or not, no gopher is complete without all the tools in the gopher toolbox so let's get (re)acquainted with them.   
  
 Note: I called this workshop "A path to Object-Oriented Design with Go" and not "A path to Object Oriented Programming with Go" because different language features mean different design choices. 
 
@@ -289,9 +289,8 @@ We are going to implement the types `pnp.Character`, `pnp.Gopher` and `pnp.Rubyi
 
 ```bash
 make build
-make test-animal
-make test-habitat
-make run-habitat
+make test-pnp
+make run-pnp
 ````
 
 ## Organizing your packages
