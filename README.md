@@ -54,7 +54,7 @@ It is named A Path to OOD and not OOP because different language features mean d
 #### Is Go an Object-Oriented language? 
 This question is so loaded that all I had to do was to advertise this workshop to receive "constructive" feedback from total strangers.
 Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc.
-There is also no late or late late or late late late binding in Go - but there's something else.
+There is also no late or late late or late late late binding in Go - but there's something else (we'll get to that).
 These are technical concepts that have become synonymous with Object-Oriented Programming.
 Go does have a variety of very strong features for Object-Oriented Programming that enable Gophers to express their code in a manner that follows the OO principals.
 In the end, the answer to this question depends on the answer to the question "is t an object" in this [sample code](https://go.dev/play/p/ZfWFad7-TyM)
@@ -82,12 +82,13 @@ Note: I called this workshop "A path to Object-Oriented Design with Go" and not 
 
 #### What is OOP?
 What we can all agree on: The central idea behind Object-Oriented is to divide software into "things" or "objects" or "instances" that communicate via "messages" or "methods" or "member functions".
+Or in short, combining data and functionality.
 This core idea has not changed in the 4-5+ decades since it was conceptualized.
-It is meant to allow the developer to build code and assign responsibilities or concerns just like in the real world (which is what we are familiar with) and how we generally think and solve problems.
+It is meant to allow the developer to build code and separate responsibilities or concerns just like in the real world which is what we are familiar with and how we generally think and solve problems.
 
 #### Do you need OOP?
 Just like in the real world, wherever there are things, there can be a mess. *__That's why Marie Kondo.__*
-Just as you can write sane procedural code, you can write sane OO code. You and your team should define design best practices that match your needs.
+Just as you can write sane procedural code, you can write sane OO code. You and your team should define best practices that match your needs.
 This workshop is meant to give you the tools to make good engineering choices. 
 
 Important: Nobody who doesn't maintain your career/ code or business should tell how you should solve your problems. Though they can make suggestions, the decision is ultimately yours.
@@ -116,7 +117,7 @@ make build
 make test-maze
 ````
 
-When your test passes (it only tests very basic navigation), run:
+When your test passes (it only tests basic navigation), run:
 ```bash
 make run-maze > tmp/maze.html 
 ```
@@ -154,7 +155,7 @@ We see that:
 9. Methods that can change/mutate the value of the type needs a pointer receiver.
 
 Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
-That package defines the interface to abstract away our robot.Robot struct. 
+That package defines the interface that abstracted away our robot.Robot struct into the Gopher interface. This is not common. 
 
 ## OO fundamentals and Go
 The basics concepts that we need to understand to work with OOP well are:
@@ -165,7 +166,8 @@ The basics concepts that we need to understand to work with OOP well are:
 >_The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle._
 (Joe Armstrong)
 
-What did he mean by that?<br>
+What did he mean by that?
+
 He likely meant that OO is overcomplicated but in reality there are actual rules that apply to common OOP languages that cause overcomplication:
 
 The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I. 
@@ -175,25 +177,7 @@ What happens if the Banana we imported doesn't implement an interface that we ne
 
 Not only that. Consider the following Java code:
 
-```java
-class Vehicle extends Object{
-    boolean full;
-    public void fillUpTank(){
-        this.full = true;
-    }
-    public boolean isTankFull(){
-        return this.full;
-    }
-}
-public class Car extends Vehicle {
-  public static void main(String[] args) {
-
-    Vehicle car = new Car(); // THIS IS IT! INHERITANCE! POLYMORPHISM!
-    car.fillUpTank();
-    System.out.println(car.isTankFull());
-  }
-}
-```
+<script src="https://gist.github.com/ronna-s/ed18a75814dd2a1ef13bb11916578cfa.js"></script>
 
 As we explained Car has to explicitly extend Vehicle to be used as Vehicle, which is what this statement does. Which is great.
 
