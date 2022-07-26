@@ -177,7 +177,25 @@ What happens if the Banana we imported doesn't implement an interface that we ne
 
 Not only that. Consider the following Java code:
 
-<script src="https://gist.github.com/ronna-s/ed18a75814dd2a1ef13bb11916578cfa.js"></script>
+```java
+class Vehicle extends Object{
+    boolean full;
+    public void fillUpTank(){
+        this.full = true;
+    }
+    public boolean isTankFull(){
+        return this.full;
+    }
+}
+public class Car extends Vehicle {
+  public static void main(String[] args) {
+
+    Vehicle car = new Car(); // THIS IS IT! INHERITANCE! POLYMORPHISM!
+    car.fillUpTank();
+    System.out.println(car.isTankFull());
+  }
+}
+```
 
 As we explained Car has to explicitly extend Vehicle to be used as Vehicle, which is what this statement does. Which is great.
 
