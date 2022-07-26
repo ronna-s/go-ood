@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	fmt.Println("New game started. A band of developers will attempt to survive against Production!")
 	fmt.Println("What is the name of your band?")
 	l, _, err := bufio.NewReader(os.Stdin).ReadLine()
 	if err != nil {
@@ -16,7 +17,6 @@ func main() {
 	}
 	//todo: check if not exists
 	g := pnp.NewGame(string(l), pnp.NewProduction(), pnp.NewRubyist(), pnp.NewGopher())
-	fmt.Printf("New game started. The band of developers '%s' will attempt to survive against Production!\n", g.Name)
 	g.Run()
 
 }
