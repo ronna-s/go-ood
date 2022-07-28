@@ -50,7 +50,7 @@ func Run() {
 		panic("error reading band name")
 	}
 
-	g := NewGame(string(l), NewProduction())
+	g := NewGame(string(l), NewProduction(), NewRubyist(), NewGopher())
 	clearScr()
 	rand.Seed(time.Now().Unix())
 	band := g.Players
