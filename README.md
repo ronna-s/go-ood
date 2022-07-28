@@ -25,7 +25,6 @@ It is named A Path to OOD and not OOP because different language features mean d
 - 12:45-13:00: Conclusion [link](#conclusion)
 
 ## Introduction to Object-Oriented Programming
-<hr>
 
 #### What is OOP?
 
@@ -41,7 +40,7 @@ It is important to know that in most OOP languages:
 - In case of overriding and overloading methods, the method that will eventually run is decided at runtime. This is called late binding.
 
 #### Is Go an Object-Oriented language?
-<hr>
+
 Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc.
 There is also no late or late late or late late late binding in Go (but there's something else, we'll get to that).
 These are technical concepts that have become synonymous with Object-Oriented Programming.
@@ -73,7 +72,7 @@ Just as you can write insane procedural code, you can write sane OO code. You an
 This workshop is meant to give you the tools to make better design choices. 
 
 ## Exercise 1 - Understanding the benefits:
-<hr>
+
 Where we will understand some OO basics using an example of a gopher and a maze.
 
 *This exercise is heavily inspired by the Intro to CS first home assignment that [Prof. Jeff Rosenschein](https://scholar.google.com/citations?user=YO7cKNMAAAAJ&hl=en) gave my Intro to CS class in 2003.
@@ -199,7 +198,6 @@ func main() {
 We see that we can embed interfaces and structs.
 
 ## Exercise 2 - Interfaces and Embedding
-<hr>
 
 We are going to add 2 types of players to the game P&P - Platforms and Programmers who will attempt to take on a Production environment.
 The roles that we will implement are `pnp.Gopher`, `pnp.Rubyist`.
@@ -227,7 +225,7 @@ make run-pnp
 ```
 
 ## Organizing your packages
-<hr>
+
 Whether you choose the common structures with cmd, pkg, etc. you should follow certain guidelines:
 1. Support multiple binaries: Your packages structure should allow compiling multiple binaries (have multiple main packages that should be easy to find).
 2. Don't try to reduce the number of your imports: If you have a problem it's probably the structure and unclear responsibilities, not the amount.
@@ -257,7 +255,6 @@ Consider [Mockery](http://github.com/vektra/mockery)
 Both were used to generate code for this workshop.
 
 ## Generics
-<hr>
 It was a long time consensus that "real gophers" don't need generics so much so that around the time the generics draft of 2020 was released, many gophers expressed that they will likely never use this feature.
 Let's understand first the point that they were trying to make.
 
