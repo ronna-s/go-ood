@@ -5,7 +5,7 @@ It is named A Path to OOD and not OOP because different language features mean d
 
 ## Schedule
 
-- 09:00-09:10: Introduction to Object-Oriented Programming [link](#introduction-to-oop)
+- 09:00-09:10: Introduction to Object-Oriented Programming [link](#introduction-to-object-oriented-programming)
 - 09:10-09:30: Exercise 1- understanding the benefits [link](#exercise-1---understanding-the-benefits)
 - 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go)
   - Recap - messaging, bundling data and functions
@@ -57,9 +57,15 @@ It is named A Path to OOD and not OOP because different language features mean d
 - 12:00-12:45: Exercise 3 (generics) [link](#exercise-3---generics)
 - 12:45-13:00: Conclusion [link](#conclusion)
 
-## Introduction to OOP
+## Introduction to Object-Oriented Programming
 
-#### Is Go an Object-Oriented language? 
+#### What is OOP?<hr>
+What we can all agree on: The central idea behind Object-Oriented is to divide software into "things" or "objects" or "instances" that communicate via "messages" or "methods" or "member functions".
+Or in short, combining data and functionality.
+This core idea has not changed in the 4-5+ decades since it was conceptualized.
+It is meant to allow the developer to build code and separate responsibilities or concerns just like in the real world which is what we are familiar with and how we generally think and solve problems.
+
+#### Is Go an Object-Oriented language?<hr>
 This question is so loaded that all I had to do was to advertise this workshop to receive "constructive" feedback from total strangers.
 Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc.
 There is also no late or late late or late late late binding in Go - but there's something else (we'll get to that).
@@ -88,13 +94,8 @@ Whether you think t is an object or not, no gopher is complete without all the t
  
 Note: I called this workshop "A path to Object-Oriented Design with Go" and not "A path to Object Oriented Programming with Go" because different language features mean different design choices. 
 
-#### What is OOP?
-What we can all agree on: The central idea behind Object-Oriented is to divide software into "things" or "objects" or "instances" that communicate via "messages" or "methods" or "member functions".
-Or in short, combining data and functionality.
-This core idea has not changed in the 4-5+ decades since it was conceptualized.
-It is meant to allow the developer to build code and separate responsibilities or concerns just like in the real world which is what we are familiar with and how we generally think and solve problems.
 
-#### Do you need OOP?
+#### Do you need OOP?<hr>
 Just like in the real world, wherever there are things, there can be a mess. *__That's why Marie Kondo.__*
 Just as you can write sane procedural code, you can write sane OO code. You and your team should define best practices that match your needs.
 This workshop is meant to give you the tools to make good engineering choices. 
