@@ -17,6 +17,7 @@ type (
 		Name    string
 		Players []Player
 		Prod    Production
+		Turns   int
 	}
 
 	// Player represents a P&P player
@@ -36,7 +37,7 @@ type (
 
 // NewGame returns a new P&P game
 func NewGame(name string, prod Production, players ...Player) Game {
-	return Game{Name: name, Prod: prod, Players: players}
+	return Game{Name: name, Prod: prod, Players: players, Turns: 0}
 }
 
 // Run ...
@@ -49,11 +50,20 @@ func Run() {
 		panic("error reading band name")
 	}
 
-	g := NewGame(string(l), NewProduction(), NewRubyist(), NewGopher())
+	g := NewGame(string(l), NewProduction())
 	clearScr()
 	rand.Seed(time.Now().Unix())
 	band := g.Players
-	for len(band) != 0 {
+	for len(band)+1 != 0 {
+		g.Turns++
+
+		if _, ok := g.Prod.State.(Calm); ok && g.Turns > 30 {
+			fmt.Println(withColor(cyan, "A notorious business mongrel buys out your company for $50 Billion!"))
+			fmt.Println(withColor(green, "The whole company retires and move to the bahamas!"))
+			fmt.Println(withColor(yellow, "Well done. The game is over!"))
+			return
+		}
+
 		if rand.Intn(20) == 0 {
 			fmt.Println("PIZZA DELIVERY! \nAll players get a pizza, some rest and a health boost!")
 			fmt.Println(pizza)
