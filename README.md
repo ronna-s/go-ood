@@ -65,13 +65,18 @@ Or in short, combining data and functionality.
 This core idea has not changed in the 4-5+ decades since it was conceptualized.
 It is meant to allow the developer to build code and separate responsibilities or concerns just like in the real world which is what we are familiar with and how we generally think and solve problems.
 
+It is important to know that in most OOP languages: 
+- Objects are instances of a class because only classes can define methods (that's how we support messaging).
+- Classes have constructor methods that allow for safe instantiation of objects.
+- Classes can inherit methods and fields from other classes as well as override them and overload them.
+- In case of overriding and overloading methods, the method that will eventually run is decided at runtime. This is called late binding.
+
 #### Is Go an Object-Oriented language?<hr>
-This question is so loaded that all I had to do was to advertise this workshop to receive "constructive" feedback from total strangers.
 Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc.
-There is also no late or late late or late late late binding in Go - but there's something else (we'll get to that).
+There is also no late or late late or late late late binding in Go (but there's something else, we'll get to that).
 These are technical concepts that have become synonymous with Object-Oriented Programming.
 Go does have a variety of very strong features for Object-Oriented Programming that enable Gophers to express their code in a manner that follows the OO principals.
-In the end, the answer to this question depends on the answer to the question "is t an object" in this [sample code](https://go.dev/play/p/ZfWFad7-TyM)
+In the end, the answer to the question is Go an OOP language depends on the answer to the question "is t an object" in this [sample code](https://go.dev/play/p/ZfWFad7-TyM)
 
 ```go
 package main
@@ -92,17 +97,10 @@ func main() {
 
 Whether you think t is an object or not, no gopher is complete without all the tools in the gopher toolbox so let's get (re)acquainted with them.   
  
-Note: I called this workshop "A path to Object-Oriented Design with Go" and not "A path to Object Oriented Programming with Go" because different language features mean different design choices. 
-
-
 #### Do you need OOP?<hr>
 Just like in the real world, wherever there are things, there can be a mess. *__That's why Marie Kondo.__*
 Just as you can write sane procedural code, you can write sane OO code. You and your team should define best practices that match your needs.
-This workshop is meant to give you the tools to make good engineering choices. 
-
-Important: Nobody who doesn't maintain your career/ code or business should tell how you should solve your problems. Though they can make suggestions, the decision is ultimately yours.
-
-The following exercise demonstrates the benefits of OOP.
+This workshop is meant to give you the tools to make better design choices. 
 
 ## Exercise 1 - Understanding the benefits:
 Where we will understand some OO basics using an example of a gopher and a maze.
@@ -136,7 +134,7 @@ You can run the app multiple times to see your gopher running through different 
 
 Done? If not, don't worry. You have the entire conference ;) 
 
-Let's review the code that made this possible and examine the features that made it possible
+Let's review the code that made this possible and examine the Go features it uses.
 
 Run
 ```bash
@@ -147,7 +145,7 @@ Go to: http://127.0.0.1:8080/pkg/github.com/ronnas/go-ood/pkg/maze
 
 The package defines 5 types:
 1. Cell - an alias type to int
-2. Coords - a new type defined as a pair of integers (anarray of 2 ints)
+2. Coords - a new type defined as a pair of integers (an array of 2 ints)
 3. Direction - an alias type to int
 4. Maze - a generated 2D maze that is a struct
 5. Wall - a struct that holds 2 neighboring cells
@@ -164,49 +162,26 @@ We see that:
 9. Methods that can change/mutate the value of the type needs a pointer receiver.
 
 Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
-That package defines the interface that abstracted away our robot.Robot struct into the Gopher interface. This is not common. 
+That package defines the interface that abstracted away our `robot.Robot` struct into the `Gopher` interface. This is not common.
 
-## OO fundamentals and Go
-The basics concepts that we need to understand to work with OOP well are:
-1. Encapsulation (hiding/ black-boxing)
-2. Abstraction (separating implementation from behavior)
-3. Generalization (very similar to abstraction, we will get to it later)
+The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I,
+but our Robot type has no idea that Gopher type even exists. Gopher is defined in a completely different package that is not imported by robot.
+Implicit interfaces like that where a type doesn't have to know about the interfaces it implements, are unfortunately a very uncommon feature in most languages.
+Go was written for the 21st century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. 
+This is done in scripting languages with duck-typing, but in Go it's just safe, and you get compile time validation of your code.
+Implicit interfaces mean that packages don't have to provide interfaces to the user, the user can define their own interface with the smallest subset of functionality that they need.
+In fact our `robot.Robot` has another public method `Steps` that is not part of the `Gopher` interface because we don't need to use it.
+This makes plugging-in code and defining and mocking dependencies safely a natural thing in Go.   
 
 >_The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle._
 (Joe Armstrong)
 
 What did he mean by that?
 
-He likely meant that OO is overcomplicated but in reality there are actual rules that apply to common OOP languages that cause overcomplication:
+He likely meant that OO is overcomplicated but in reality those rules that we discussed that apply to common OOP languages cause of complication:
 
-The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I. 
-
-For instance, the class Banana will have to extend or inherit from Fruit (or a similar Object class) to be considered a fruit, implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to know where it came from. etc.
+The class Banana will have to extend or inherit from Fruit (or a similar Object class) to be considered a fruit, implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to know where it came from. etc.
 What happens if the Banana we imported doesn't implement an interface that we need it to like holdable? We have to write a new implementation of Banana that wraps the original Banana. There's only one way around this which is generics (but we will get to that).
-
-Not only that. Consider the following Java code:
-
-```java
-class Vehicle extends Object{
-    boolean full;
-    public void fillUpTank(){
-        this.full = true;
-    }
-    public boolean isTankFull(){
-        return this.full;
-    }
-}
-public class Car extends Vehicle {
-  public static void main(String[] args) {
-
-    Vehicle car = new Car(); // THIS IS IT! INHERITANCE! POLYMORPHISM!
-    car.fillUpTank();
-    System.out.println(car.isTankFull());
-  }
-}
-```
-
-As we explained Car has to explicitly extend Vehicle to be used as Vehicle, which is what this statement does. Which is great.
 
 "But Ronna", you might be _rightly_ asking yourself, "Go doesn't even have inheritance that allow for a Car to be Vehicle, why are you bringing Java up?"
 
@@ -215,6 +190,8 @@ Because Java doesn't really have inheritance either. You can only inherit from o
 If you truly need inheritance, use C++, you can have multiple inheritance. Java doesn't really support inheritance. It's not a key feature. If that's what makes sense for your code that's the language for you.
 
 So if inheritance is in your opinion what makes a language Object-Oriented, Java isn't OO (and Ruby too, and plenty others).
+
+## OO fundamentals and Go
 
 ### Composition vs. Inheritance
 
