@@ -158,7 +158,7 @@ What happens if the Banana we imported doesn't implement an interface that we ne
 In Go we don't have inheritance. To express that A is I we use interfaces. To express that A is made of B or composed of B we use embedding like so:
 
 ```go
-
+// https://go.dev/play/p/BcNhFRjQ988
 type A int //Creates a new type A with an underlying type int
 
 // Foo is now a method of my A
@@ -186,9 +186,9 @@ type J interface {
 }
 
 func main() {
-	var b J = B{1}
-	fmt.Println(b.Foo()) // 1 
-	// fmt.Println(b.Bar()) // 1
+	var j J = B{1}
+	fmt.Println(j.Foo()) // 1 
+	fmt.Println(j.Bar()) // 1
 }
 ```
 
