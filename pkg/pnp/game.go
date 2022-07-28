@@ -1,3 +1,4 @@
+// Package pnp provides a Platforms and Programmers™ game implementation
 package pnp
 
 import (
@@ -32,30 +33,11 @@ type (
 
 	// Action ...
 	Action = Skill
-	// State represents a P&P production state
-	State interface {
-		React(Action) (int, int, State)
-	}
-	// Production ...
-	Production struct {
-		State State
-	}
 )
 
 // NewGame returns a new P&P game
 func NewGame(name string, prod Production, players ...Player) Game {
 	return Game{Name: name, Prod: prod, Players: players}
-}
-
-// NewProduction ...
-func NewProduction() Production {
-	return Production{Calm{}}
-}
-
-// React returns the X and health gained by Production's reaction to the player's action
-func (p *Production) React(a Action) (xp int, health int) {
-	xp, health, p.State = p.State.React(a)
-	return
 }
 
 // Run ...
@@ -126,7 +108,7 @@ func Run() {
 			fmt.Println(withColor(purple, gravestone))
 			fmt.Printf("it's so sad that %s is now dead\n", player)
 		}
-		fmt.Println("Press enter to continue. [Q] to quit...")
+		fmt.Println("Press enter to continue...")
 		b, _ := bufio.NewReader(os.Stdin).ReadByte()
 		if b == 'Q' {
 			return

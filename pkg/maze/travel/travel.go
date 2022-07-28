@@ -1,3 +1,4 @@
+// Package travel provides travel for package maze
 package travel
 
 import (
