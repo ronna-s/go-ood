@@ -17,23 +17,7 @@ It is named A Path to OOD and not OOP because different language features mean d
 - 11:50-12:00: Break
 - 12:00-12:50: Exercise 3 Generics [link](#exercise-3---generics)
 - 12:50-13:00: Conclusion
-  <details>
-
-  - Emerging patterns
-    - functional options
-    - Default variables
-  - Short-lived objects, contexts
-  - Code generation, why? When?
-    - The `[]T{}` to `interface{}...` conversion problem
-  </details>
 - 11:30-11:50: Generics [link](#generics)
-  <details>
-
-  - Constraints
-    - any 
-    - comparable
-    - the [constraints package](https://pkg.go.dev/golang.org/x/exp/constraints)
-  </details>
 - 11:50-12:00: Break
 - 12:00-12:45: Exercise 3 (generics) [link](#exercise-3---generics)
 - 12:45-13:00: Conclusion [link](#conclusion)
@@ -141,10 +125,11 @@ We see that:
 3. We have structs they can  have fields.
 4. You can define a new type out of any underlying type
 5. Any type can have methods (except for primitives)
-6. You can alias to any type
-7. If you want to add methods to primitives, just define a new type with the desired primitive underlying type
-8. Methods are added to types using Receivers
-9. Methods that can change/mutate the value of the type needs a pointer receiver.
+6. That means that any type satisfies the interface{} - an interface with no methods
+7. You can alias to any type
+8. If you want to add methods to primitives, just define a new type with the desired primitive underlying type
+9. Methods are added to types using Receivers
+10. Methods that can change/mutate the value of the type needs a pointer receiver.
 
 Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
 
@@ -218,6 +203,19 @@ We are going to add 2 types of players to the game P&P - Platforms and Programme
 The roles that we will implement are `pnp.Gopher`, `pnp.Rubyist`.
 The player roles are going to be composed of the struct `pnp.Character` for common traits like XP and Health.
 Gopher and Rubyist will also need to implement their own methods for their individual Skills.
+We will implement the methods:
+```go
+// Player represents a P&P player
+type Player interface {
+    Alive() bool
+    GainXP(int)
+    GainHealth(int) int
+    Skills() []Skill
+    Health() int
+    Art() string 
+    XP() int
+}
+```
 
 As usual:
 ```bash
@@ -242,7 +240,6 @@ Whether you choose the common structures with cmd, pkg, etc. you should follow c
 8. Your packages should be things that exist and have clear boundaries - domain and app aren't.
 9. The internal package is for code that you don't want to allow to import, not for your entire application. 
 
-
 ## Code generation, why? When?
 I like this simple explanation by (Gabriele Tomassetti)[https://tomassetti.me/code-generation/]
 > The reasons to use code generation are fundamentally four: 
@@ -255,8 +252,10 @@ It's about automating a process of writing repetitive error-prone code.
 Consider the simple [stringer](https://pkg.go.dev/golang.org/x/tools/cmd/stringer)
 Consider [Mockery](http://github.com/vektra/mockery)
 
-## Generics
+Both were used to generate code for this workshop.
 
+## Generics
+<hr>
 It was a long time consensus that "real gophers" don't need generics so much so that around the time the generics draft of 2020 was released, many gophers expressed that they will likely never use this feature.
 Let's understand first the point that they were trying to make.
 
@@ -304,7 +303,7 @@ package main
 
 import "fmt"
 
-type Node[T interface{}] struct {
+type Node[T any] struct { // any is builtin for interface{}
   Value T
   Next  *Node[T]
 }
@@ -323,8 +322,7 @@ import "fmt"
 
 type A int
 
-// Add takes any type with underlying type int
-// We can now increment all of those enums 
+// Add takes any type with underlying type int 
 func Add[T ~int](i T, j T) T { 
   return i + j
 }
@@ -332,18 +330,16 @@ func Add[T ~int](i T, j T) T {
 func main() {
   var i, j A
   fmt.Println(Add(i, j))
-  fmt.Println("Hello, 世界")
 }
 ```
-
 Of course, you are not likely to use linked lists in your day to day, but you are likely to use:
-1. Repositories per type
-2. Event handlers processors per type
+1. Repositories, databases, data structures that are type specific
+2. Event handlers and processors that are type specific
 3. The [concurrent map in the sync package](https://pkg.go.dev/sync#Map) which uses the empty interface.
 4. [The heap](https://pkg.go.dev/container/heap#example-package-IntHeap) 
 
 ## Exercise 3 - Generics
-Implement a new Heap OOP style in `pkg/heap` (failing tests provided).
+Implement a new Heap OOP style in `pkg/heap` (as usual failing tests provided).
 
 ```bash
 make build
