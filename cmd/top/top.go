@@ -30,28 +30,28 @@ func (p1 Song) Less(p2 Song) bool {
 
 func main() {
 	var (
-		bloggers []Artist
-		posts    []Song
+		artists []Artist
+		songs   []Song
 	)
 	for i := 0; i < rand.Intn(1000)+1000; i++ {
-		bloggers = append(bloggers, Artist{Name: namegen.Generate(), Listens: rand.Intn(851202)})
+		artists = append(artists, Artist{Name: namegen.Generate(), Listens: rand.Intn(851202)})
 	}
 
 	for i := 0; i < rand.Intn(1000)+1000; i++ {
-		posts = append(posts, Song{Name: namegen.Generate(), Listens: rand.Intn(800917)})
+		songs = append(songs, Song{Name: namegen.Generate(), Listens: rand.Intn(800917)})
 	}
 
-	hblogger := heap.New(bloggers)
-	hposts := heap.New(posts)
+	hartists := heap.New(artists)
+	hsongs := heap.New(songs)
 	fmt.Println(withColor(cyan, "Our top 10 artists are:"))
 	fmt.Println(withColor(cyan, "========================"))
 	for i := 0; i < 10; i++ {
-		fmt.Printf("%d: %s with %d reads\n", i+1, hblogger.Pop().Name, hposts.Pop().Listens)
+		fmt.Printf("%d: %s with %d reads\n", i+1, hartists.Pop().Name, hsongs.Pop().Listens)
 	}
 	fmt.Println(withColor(purple, "Our top of the pop songs are:"))
 	fmt.Println(withColor(purple, "============================="))
 	for i := 0; i < 10; i++ {
-		fmt.Printf("%d: %s with %d reads\n", i+1, hposts.Pop().Name, hposts.Pop().Listens)
+		fmt.Printf("%d: %s with %d reads\n", i+1, hsongs.Pop().Name, hsongs.Pop().Listens)
 	}
 }
 
