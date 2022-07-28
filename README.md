@@ -68,7 +68,7 @@ It is meant to allow the developer to build code and separate responsibilities o
 It is important to know that in most OOP languages: 
 - Objects are instances of a class because only classes can define methods (that's how we support messaging).
 - Classes have constructor methods that allow for safe instantiation of objects.
-- Classes can inherit methods and fields from other classes as well as override them and overload them.
+- Classes can inherit methods and fields from other classes as well as override them and sometimes overload them.
 - In case of overriding and overloading methods, the method that will eventually run is decided at runtime. This is called late binding.
 
 #### Is Go an Object-Oriented language?<hr>
@@ -99,7 +99,7 @@ Whether you think t is an object or not, no gopher is complete without all the t
  
 #### Do you need OOP?<hr>
 Just like in the real world, wherever there are things, there can be a mess. *__That's why Marie Kondo.__*
-Just as you can write sane procedural code, you can write sane OO code. You and your team should define best practices that match your needs.
+Just as you can write insane procedural code, you can write sane OO code. You and your team should define best practices that match your needs.
 This workshop is meant to give you the tools to make better design choices. 
 
 ## Exercise 1 - Understanding the benefits:
@@ -162,60 +162,84 @@ We see that:
 9. Methods that can change/mutate the value of the type needs a pointer receiver.
 
 Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
+
 That package defines the interface that abstracted away our `robot.Robot` struct into the `Gopher` interface. This is not common.
 
 The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I,
 but our Robot type has no idea that Gopher type even exists. Gopher is defined in a completely different package that is not imported by robot.
-Implicit interfaces like that where a type doesn't have to know about the interfaces it implements, are unfortunately a very uncommon feature in most languages.
 Go was written for the 21st century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. 
-This is done in scripting languages with duck-typing, but in Go it's just safe, and you get compile time validation of your code.
+This is done in scripting languages with duck-typing, but in Go it's just type-safe, and you get compile time validation of your code.
 Implicit interfaces mean that packages don't have to provide interfaces to the user, the user can define their own interface with the smallest subset of functionality that they need.
 In fact our `robot.Robot` has another public method `Steps` that is not part of the `Gopher` interface because we don't need to use it.
-This makes plugging-in code and defining and mocking dependencies safely a natural thing in Go.   
+This makes plugging-in code and defining and mocking dependencies safely a natural thing in Go and makes the code minimal to its usage.  
 
 >_The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle._
 (Joe Armstrong)
 
 What did he mean by that?
 
-He likely meant that OO is overcomplicated but in reality those rules that we discussed that apply to common OOP languages cause of complication:
+He likely meant that OO is overcomplicated but in reality those rules that we discussed that apply to common OOP languages cause this complication:
 
 The class Banana will have to extend or inherit from Fruit (or a similar Object class) to be considered a fruit, implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to know where it came from. etc.
-What happens if the Banana we imported doesn't implement an interface that we need it to like holdable? We have to write a new implementation of Banana that wraps the original Banana. There's only one way around this which is generics (but we will get to that).
-
-"But Ronna", you might be _rightly_ asking yourself, "Go doesn't even have inheritance that allow for a Car to be Vehicle, why are you bringing Java up?"
-
-Because Java doesn't really have inheritance either. You can only inherit from one Class. This means that a truck can't be both a Vehicle and a ContainerOfGoods. How do you choose which to inherit and what to do with the other? Whatever you are planning to do in this situation, that's what you will do in Go. 
-
-If you truly need inheritance, use C++, you can have multiple inheritance. Java doesn't really support inheritance. It's not a key feature. If that's what makes sense for your code that's the language for you.
-
-So if inheritance is in your opinion `what makes a language Object-Oriented, Java isn't OO (and Ruby too, and plenty others).
+What happens if the Banana we imported doesn't implement an interface that we need it to like holdable? We have to write a new implementation of Banana that wraps the original Banana. 
 
 ## OO fundamentals and Go
 
 ### Composition vs. Inheritance
 
-In Go we don't have inheritance. To express that A is I we use interfaces. To express that A is made of B or composed of B we use compositions like so:
+In Go we don't have inheritance. To express that A is I we use interfaces. To express that A is made of B or composed of B we use embedding like so:
 
 ```go
 
-type MyThing int //Creates a new type MyThing with an underlying type int
+type A int //Creates a new type A with an underlying type int
 
-// Foo is now a method of my MyThing, in many languages to have a method you have to have a class or a struct
-func (t MyThing) Foo() int {
-return int(t)
+// Foo is now a method of my A
+func (a A) Foo() int {
+	return int(a)
 }
-type A struct{
-	B
+
+type B struct {
+	// B embeds A so B now has method Foo()
+	A
+}
+
+func (b B) Bar() int {
+	return int(b.A)
+}
+
+type I interface {
+	Foo() int
+}
+
+// to implement J we have to provide implementation for Foo() and Bar()
+type J interface {
+	I
+	Bar() int
+}
+
+func main() {
+	var b J = B{1}
+	fmt.Println(b.Foo()) // 1 
+	// fmt.Println(b.Bar()) // 1
 }
 ```
 
+We see that we can embed interfaces and structs.
+
+## Exercise 2 - Interfaces and Embedding<hr>
+
+We are going to add 2 types of players to the game P&P - Platforms and Programmers who will attempt to take on a Production environment.
+The roles that we will implement are `pnp.Gopher`, `pnp.Rubyist`.
+The player roles are going to be composed of the struct `pnp.Character` for common traits like XP and Health.
+Gopher and Rubyist will also need to implement their own methods for their individual Skills.
+
+```bash
+make test-pnp
+make run-pnp
+```
 
 
 ------------------------
-
-
-
 Remember that cmd/maze created the `Gopher` interface that was implemented by the `travel.Robot` object? - implicit interfaces like that, where a type doesn't have to know about the interfaces it implements, are unfortunatley a very uncommon feature in most languages.
 Go was written for the 21st century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. This is done in scripting languages with ducktyping, but in Go it's just safe and you get compile time validation of your code.
 
