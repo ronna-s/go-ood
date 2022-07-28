@@ -13,16 +13,13 @@ It is named A Path to OOD and not OOP because different language features mean d
 - 10:00-10:10: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go)
 - 10:20-10:50: Exercise 2 - Interfaces and Embedding [link](#exercise-2---interfaces-and-embedding)
 - 10:50-11:00: Break
-- 11:00-11:10: Organizing your packages [link](#organizing-your-packages)
+- 11:00-11:10: Organizing your Packages [link](#organizing-your-packages)
 - 11:10-11:20: Code Generation [link](#code-generation-why-when)
-- 11:10-11:20: Generics [link](#generics)
-- 11:50-12:00: Break
-- 12:00-12:50: Exercise 3 Generics [link](#exercise-3---generics)
-- 12:50-13:00: Conclusion
+- 11:20-11:30: More Theory [link](#generics)
 - 11:30-11:50: Generics [link](#generics)
 - 11:50-12:00: Break
-- 12:00-12:45: Exercise 3 (generics) [link](#exercise-3---generics)
-- 12:45-13:00: Conclusion [link](#conclusion)
+- 12:00-12:50: Exercise 3 - Generics [link](#exercise-3---generics)
+- 12:50-13:00: Conclusion
 
 ## Introduction to Object-Oriented Programming
 
@@ -253,6 +250,32 @@ Consider the simple [stringer](https://pkg.go.dev/golang.org/x/tools/cmd/stringe
 Consider [Mockery](http://github.com/vektra/mockery)
 
 Both were used to generate code for this workshop.
+
+## More Theory
+
+#### Emerging patterns:
+1. Constructing complex objects where there are not constructors [Functional options](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
+2. Default variables, exported variables, overrideable and otherwise [net/http](https://pkg.go.dev/net/http) also in this repo - the `pnp.Rand` function
+
+```go
+// https://go.dev/play/p/8hiAeuJ90uz
+package main
+
+import (
+	"errors"
+	"fmt"
+	"net/http"
+)
+
+func main() {
+	http.ErrBodyNotAllowed = errors.New("my error")
+	fmt.Println(http.ErrBodyNotAllowed)
+}
+
+```
+
+#### Short Lived Objects
+[Consider this conversation](https://twitter.com/matryer/status/1293504405896073218)
 
 ## Generics
 It was a long time consensus that "real gophers" don't need generics so much so that around the time the generics draft of 2020 was released, many gophers expressed that they will likely never use this feature.
