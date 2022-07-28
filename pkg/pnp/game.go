@@ -3,7 +3,6 @@ package pnp
 
 import (
 	"bufio"
-	_ "embed"
 	"fmt"
 	"math/rand"
 	"os"
@@ -55,6 +54,15 @@ func Run() {
 	rand.Seed(time.Now().Unix())
 	band := g.Players
 	for len(band) != 0 {
+		if rand.Intn(20) == 0 {
+			fmt.Println("PIZZA DELIVERY! \nAll players get a pizza, some rest and a health boost!")
+			fmt.Println(pizza)
+			for i := range band {
+				band[i].GainHealth(100)
+			}
+			pressEnter()
+			continue
+		}
 		player := band[0]
 		band = band[1:]
 		skills := player.Skills()
@@ -102,24 +110,10 @@ func Run() {
 			fmt.Println(withColor(purple, gravestone))
 			fmt.Printf("it's so sad that %s is now dead\n", player)
 		}
-		fmt.Println("Press enter to continue...")
-		b, _ := bufio.NewReader(os.Stdin).ReadByte()
-		if b == 'Q' {
-			return
-		}
-		clearScr()
+		pressEnter()
 	}
 	fmt.Println(withColor(cyan, gameover))
 }
-
-//go:embed resources/gravestone.txt
-var gravestone string
-
-//go:embed resources/gameover.txt
-var gameover string
-
-//go:embed resources/gamestarted.txt
-var gamestarted string
 
 var (
 	red    = "\033[31m"
@@ -129,6 +123,12 @@ var (
 	cyan   = "\033[36m"
 )
 
+func pressEnter() {
+	fmt.Println("Press enter to continue...")
+	_, _ = bufio.NewReader(os.Stdin).ReadByte()
+	clearScr()
+
+}
 func withColor(color, s string) string {
 	if runtime.GOOS == "windows" {
 		return s

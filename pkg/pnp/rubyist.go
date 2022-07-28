@@ -1,7 +1,6 @@
 package pnp
 
 import (
-	_ "embed"
 	"fmt"
 	"sort"
 )
@@ -18,10 +17,7 @@ func NewRubyist() *Rubyist {
 	return &Rubyist{Character{H: 100, Name: "Rubyist"}}
 }
 
-//go:embed resources/rubyist.txt
-var rubyistArt string
-
-// Art ...
+// Art renders the player's ascii art with the player state
 func (r Rubyist) Art() string {
 	return fmt.Sprintf(rubyistArt, r.H, r.X)
 }

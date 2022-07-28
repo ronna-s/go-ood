@@ -95,6 +95,7 @@ func (t *Travel) Move() error {
 	return errors.New("invalid move")
 }
 
+// TurnRight turns clock-wise
 func (t *Travel) TurnRight() {
 	switch t.Dir {
 	case maze.Right:

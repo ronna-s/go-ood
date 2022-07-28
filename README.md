@@ -213,6 +213,10 @@ type Player interface {
     XP() int
 }
 ```
+Uncomment the following line in the Dockerfile:
+```dockerfile
+#RUN go install /root/cmd/pnp
+```
 
 As usual:
 ```bash
@@ -361,12 +365,18 @@ Of course, you are not likely to use linked lists in your day to day, but you ar
 4. [The heap](https://pkg.go.dev/container/heap#example-package-IntHeap) 
 
 ## Exercise 3 - Generics
-Implement a new Heap OOP style in `pkg/heap` (as usual failing tests provided).
+Implement a new generic slice Heap OOP style in `pkg/heap` (as usual failing tests provided).
+The heap is used by TOP OF THE POP!`cmd/top` to print the top 10 Artists and Songs 
 
+Uncomment the following line in the Dockerfile:
+```dockerfile
+#RUN go install /root/cmd/top
+```
+As usual:
 ```bash
 make build
 make test-heap
-make run-heap
+make run-top
 ````
 
 ## Conclusion

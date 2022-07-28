@@ -1,7 +1,6 @@
 package pnp
 
 import (
-	_ "embed"
 	"fmt"
 	"sort"
 )
@@ -32,10 +31,7 @@ func (g Gopher) Skills() []Skill {
 	return abs
 }
 
-//go:embed resources/gopher.txt
-var gopherArt string
-
-// Art ...
+// Art renders the player's ascii art with the player state
 func (g Gopher) Art() string {
 	return fmt.Sprintf(gopherArt, g.H, g.X)
 }

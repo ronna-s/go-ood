@@ -2,6 +2,7 @@ package pnp
 
 import "math/rand"
 
+// Rand - random function
 var Rand = rand.Intn
 
 // Calm ...
@@ -9,7 +10,7 @@ type Calm struct{}
 
 // String ...
 func (s Calm) String() string {
-	return "calm"
+	return withColor(green, "calm")
 }
 
 // React returns XP gained, Health gained and the new Production state
@@ -44,7 +45,7 @@ func (s Annoyed) String() string {
 	if s.Very {
 		return "very annoyed"
 	}
-	return "slightly annoyed"
+	return withColor(yellow, "slightly annoyed")
 }
 
 // React returns XP gained, Health gained and the new Production state
@@ -80,7 +81,7 @@ type Enraged struct{}
 
 // String ...
 func (s Enraged) String() string {
-	return "Enraged!"
+	return withColor(red, "Enraged!")
 }
 
 // React returns XP gained, Health gained and the new Production state
@@ -110,7 +111,7 @@ type Legacy struct{}
 
 // String ...
 func (s Legacy) String() string {
-	return "LEGACY! - sudden death round"
+	return withColor(purple, "LEGACY! - sudden death round")
 }
 
 // React returns XP gained, Health gained and the new Production state

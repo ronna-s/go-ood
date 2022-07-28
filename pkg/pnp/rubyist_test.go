@@ -7,6 +7,11 @@ import (
 )
 
 func TestRubyist(t *testing.T) {
+	t.Run("NewRubyist", func(t *testing.T) {
+		r := NewRubyist()
+		assert.Equal(t, 0, r.XP())
+		assert.Equal(t, 100, r.Health())
+	})
 	t.Run("Skills", func(t *testing.T) {
 		r := Rubyist{Character: Character{X: 1}}
 		cases := []Skill{DuckTyping, Module, DarkMagic}

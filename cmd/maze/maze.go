@@ -63,7 +63,7 @@ type Result struct {
 	Steps []robot.Step
 }
 
-//drawHTML draws
+//drawHTML writes the movement of the gopher through the maze to HTML
 func drawHTML(g robot.Robot, w io.Writer) {
 	res := Result{
 		Maze:  g.Maze,

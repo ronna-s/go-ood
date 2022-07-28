@@ -10,20 +10,24 @@ import (
 )
 
 type (
+	// Artist ...
 	Artist struct {
 		Name    string
 		Listens int
 	}
+	// Song ...
 	Song struct {
 		Name    string
 		Listens int
 	}
 )
 
+// Less ...
 func (b1 Artist) Less(b2 Artist) bool {
 	return b1.Listens > b2.Listens
 }
 
+// Less ...
 func (p1 Song) Less(p2 Song) bool {
 	return p1.Listens > p2.Listens
 }

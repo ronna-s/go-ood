@@ -890,6 +890,7 @@ var names = []string{
 	"zebra",
 }
 
+// Generate ...
 func Generate() string {
 	lenNames := len(names)
 	lenAdj := len(adjectives)

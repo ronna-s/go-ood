@@ -7,6 +7,11 @@ import (
 )
 
 func TestGopher(t *testing.T) {
+	t.Run("NewGopher", func(t *testing.T) {
+		g := NewGopher()
+		assert.Equal(t, 0, g.XP())
+		assert.Equal(t, 100, g.Health())
+	})
 	t.Run("Skills", func(t *testing.T) {
 		g := Gopher{Character: Character{X: 1}}
 		cases := []Skill{TypeSafety, Interface, Generics}
