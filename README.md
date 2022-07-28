@@ -5,37 +5,18 @@ It is named A Path to OOD and not OOP because different language features mean d
 
 ## Schedule
 
-- 09:00-09:10: Introduction to Object-Oriented Programming [link](#introduction-to-object-oriented-programming)
-- 09:10-09:30: Exercise 1- understanding the benefits [link](#exercise-1---understanding-the-benefits)
-- 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go)
-  - Recap - messaging, bundling data and functions
-  - Is inheritance fundamental to OOP?
-    - What is it?
-    - Is it fundamental?
-  - Is late binding fundamental to OOP?
-    - What is it?
-    - Is it fundamental?
-  - Are interfaces fundamental to  
-    <details>
-
-    - Defining types
-    - Aliases
-    - Methods - receivers, pointer receivers
-    - Interfaces
-    - Embedding
-    - Composition
-    - Type assertions 
-    </details>
+- 09:00-09:20: Introduction to Object-Oriented Programming [link](#introduction-to-object-oriented-programming)
+- 09:20-09:50: Exercise 1 - understanding the benefits [link](#exercise-1---understanding-the-benefits)
 - 09:50-10:00: Break
-- 10:00-10:30: Exercise 2 (interfaces) [link](#exercise-2---interfaces)
-- 10:30-10:50: Organizing your packages [link](#organizing-your-packages) 
-  <details>
-
-  - Inner packages
-  - Package `internal`
-  </details>
+- 10:00-10:10: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go)
+- 10:20-10:50: Exercise 2 - Interfaces and Embedding [link](#exercise-2---interfaces-and-embedding)
 - 10:50-11:00: Break
-- 11:00-11:20: More theory [link](#more-theorye)
+- 11:00-11:10: Organizing your packages [link](#organizing-your-packages)
+- 11:10-11:20: Code Generation [link](#code-generation-why-when)
+- 11:10-11:20: Generics [link](#generics)
+- 11:50-12:00: Break
+- 12:00-12:50: Exercise 3 Generics [link](#exercise-3---generics)
+- 12:50-13:00: Conclusion
   <details>
 
   - Emerging patterns
@@ -58,8 +39,10 @@ It is named A Path to OOD and not OOP because different language features mean d
 - 12:45-13:00: Conclusion [link](#conclusion)
 
 ## Introduction to Object-Oriented Programming
+<hr>
 
-#### What is OOP?<hr>
+#### What is OOP?
+
 What we can all agree on: The central idea behind Object-Oriented is to divide software into "things" or "objects" or "instances" that communicate via "messages" or "methods" or "member functions".
 Or in short, combining data and functionality.
 This core idea has not changed in the 4-5+ decades since it was conceptualized.
@@ -71,7 +54,8 @@ It is important to know that in most OOP languages:
 - Classes can inherit methods and fields from other classes as well as override them and sometimes overload them.
 - In case of overriding and overloading methods, the method that will eventually run is decided at runtime. This is called late binding.
 
-#### Is Go an Object-Oriented language?<hr>
+#### Is Go an Object-Oriented language?
+<hr>
 Go doesn't offer classes, which means there are no constructors (or destructors) and no inheritance, etc.
 There is also no late or late late or late late late binding in Go (but there's something else, we'll get to that).
 These are technical concepts that have become synonymous with Object-Oriented Programming.
@@ -97,12 +81,13 @@ func main() {
 
 Whether you think t is an object or not, no gopher is complete without all the tools in the gopher toolbox so let's get (re)acquainted with them.   
  
-#### Do you need OOP?<hr>
+#### Do you need OOP?
 Just like in the real world, wherever there are things, there can be a mess. *__That's why Marie Kondo.__*
 Just as you can write insane procedural code, you can write sane OO code. You and your team should define best practices that match your needs.
 This workshop is meant to give you the tools to make better design choices. 
 
 ## Exercise 1 - Understanding the benefits:
+<hr>
 Where we will understand some OO basics using an example of a gopher and a maze.
 
 *This exercise is heavily inspired by the Intro to CS first home assignment that [Prof. Jeff Rosenschein](https://scholar.google.com/citations?user=YO7cKNMAAAAJ&hl=en) gave my Intro to CS class in 2003.
@@ -226,102 +211,23 @@ func main() {
 
 We see that we can embed interfaces and structs.
 
-## Exercise 2 - Interfaces and Embedding<hr>
+## Exercise 2 - Interfaces and Embedding
+<hr>
 
 We are going to add 2 types of players to the game P&P - Platforms and Programmers who will attempt to take on a Production environment.
 The roles that we will implement are `pnp.Gopher`, `pnp.Rubyist`.
 The player roles are going to be composed of the struct `pnp.Character` for common traits like XP and Health.
 Gopher and Rubyist will also need to implement their own methods for their individual Skills.
 
-```bash
-make test-pnp
-make run-pnp
-```
-
-
-------------------------
-Remember that cmd/maze created the `Gopher` interface that was implemented by the `travel.Robot` object? - implicit interfaces like that, where a type doesn't have to know about the interfaces it implements, are unfortunatley a very uncommon feature in most languages.
-Go was written for the 21st century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. This is done in scripting languages with ducktyping, but in Go it's just safe and you get compile time validation of your code.
-
-
-It is incredibly powerful:
-- No need to define interfaces in advance that you won't use.
-- You can define interfaces on the go only for the subset of methods that you really need. `Gopher` interfaces doesn't have all the methods that `travel.Robot` has because it doesn't need them.
-- 
-
-
-
-
-
-
-
-
-To understands the features that Go provides over the above described for OOP we are going to compare it with two other languages: C++ and Java that are very well known for their object-oriented features.
-
-__In C++:__<br>
-✓ Classes, structs and pure virtual functions<br>
-✓ Inheritance (vtable)<br>
-⍻ Only classes and structs can have methods<br>
-⍻ Multiple inheritance, we can express the idea that A is B and A is also C.<br>
-⍻ Class A must inherit explicitly from class B to be used as an object of type B.<br>
-
-__In Java:__<br>
-✓ Classes and interfaces.<br>
-✓ Inheritance (vtable)<br>
-⍻ Only classes can have methods.<br>
-⍻ A class can only inherit from one other class, so we cannot express the idea that A is B and A is also C.<br>
-⍻ Class A must inherit explicitly from class B to be used as an object of type B.<br>
-⍻ Class A must implement explicitly from interface I in order to be used as an object of type I.<br>
-
-__In Go:__<br>
-✓ Structs<br>
-✓ Any new type can have methods. You can create a type out of anything - primitives, functions, structs, etc. <br>
-✓ You can compose structs and interfaces using embedding and derive methods.<br>
-✓ Any type can implement any interface implicitly so long as it implements its methods (primitives only implenent the empty interface which has no methods)<br>
-✗ No inheritance (vtable)<br>
-
-
-|                      | Java                               | C++                           | Go                      |
-|----------------------|------------------------------------|-------------------------------|-------------------------|
-| Classes              | yes                                | yes                           | structs                 |
-| Inheritance          | yes                                | yes                           | no                      |
-| Embedding            | no                                 | no                            | yes                     |
-| Methods for any type | no                                 | no                            | yes                     |
-| Interfaces           | explicit, only for class instances | yes, only for class instances | implicit, anything goes |
-
-**Note:** A struct is not a class. A struct in Go is a type that has fields and like any other type can have methods.
-
-In conclusion:<br>
-In Go, we don't need to think about how a type will be used when we create it. We don't have to provide an interface for it. 
-This is a limitation doesn't exist in Go. In C++ and Java you must create extra code for potential future use even if it will never happen.
-What's the most common usage for those interfaces? Mocks. To allow code that imports your code to test their code while abstracting away its dependencies you must provide interfaces. Not in Go.
-When we provide a package, whoever is importing it can write their own interfaces that interact with our types.
-They can reduce the interface that they will create only to the functionality they use.
-This concept is made for the internet - any piece of software can be plugged from anywhere.
-
-
-[It's duck typing, but safe.
-](https://research.swtch.com/interfaces)
-
-## Exercise 2 - Interfaces
-
-We are going to add players to the game P&P - Platforms and Programmers who will attempt to take on a production environment.
-The player roles are going to be composed of the struct Character for common traits like XP and Health and will implement their own methods for their individual skills.
-We are going to implement the types `pnp.Character`, `pnp.Gopher` and `pnp.Rubyist` in `pkg/pnp`:
-
-![](docs/pnp-uml.png)
-
-
-
-
+As usual:
 ```bash
 make build
 make test-pnp
 make run-pnp
-````
+```
 
 ## Organizing your packages
-
+<hr>
 Whether you choose the common structures with cmd, pkg, etc. you should follow certain guidelines:
 1. Support multiple binaries: Your packages structure should allow compiling multiple binaries (have multiple main packages that should be easy to find).
 2. Don't try to reduce the number of your imports: If you have a problem it's probably the structure and unclear responsibilities, not the amount.
@@ -336,43 +242,23 @@ Whether you choose the common structures with cmd, pkg, etc. you should follow c
 8. Your packages should be things that exist and have clear boundaries - domain and app aren't.
 9. The internal package is for code that you don't want to allow to import, not for your entire application. 
 
-## More theory
 
-#### Emerging patterns:
-1. [Functional options](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
-2. Default variables [net/http](https://pkg.go.dev/net/http) also in this repo - the `animal.Time` function 
-
-#### Short Lived Objects
-[Consider this conversation](https://twitter.com/matryer/status/1293504405896073218)
-
-#### Code generation, why? When?
+## Code generation, why? When?
 I like this simple explanation by (Gabriele Tomassetti)[https://tomassetti.me/code-generation/]
-> _The reasons to use code generation are fundamentally four: productivity, simplification, portability, and consistency._
+> The reasons to use code generation are fundamentally four: 
+> - productivity;
+> - simplification;
+> - portability;
+> - consistency
 
 It's about automating a process of writing repetitive error-prone code.
 Consider the simple [stringer](https://pkg.go.dev/golang.org/x/tools/cmd/stringer)
-Consider [Mockery](github.com/vektra/mockery) 
-
-Now consider [this snippet](https://go.dev/play/p/fMsIH2NHHX_X):
-```go
-func Yalla(i ...interface{}) {
-    fmt.Println(i...)
-}
-
-func main() {
-    Yalla([]int{1,2,3}...)
-}
-```
-This code produces an error because we cannot convert slices even if the individual elements implement the expected type of the other slice.
-This is a property of Go's type safety.
-What we used to until recently is to generate code that converts different types of slices to the empty interface.
-But recently we got generics...
-
+Consider [Mockery](http://github.com/vektra/mockery)
 
 ## Generics
 
 It was a long time consensus that "real gophers" don't need generics so much so that around the time the generics draft of 2020 was released, many gophers expressed that they will likely never use this feature.
-Let's understand firs the point that they were trying to make.
+Let's understand first the point that they were trying to make.
 
 Let's look at [this code](https://gist.github.com/Xaymar/7c82ed127c8f1def53075f414a7df153), made using C++.
 We see here generic code (templates) that allows an event to add functions (listeners) to its subscribers.
@@ -399,7 +285,7 @@ func (e *Event) Add(l Listener) {
 }
 
 func main() {
-	var l Listener //nil
+	var l Listener
 	var e Event
 	e.Add(l)
 	fmt.Println(e)
@@ -467,8 +353,10 @@ make run-heap
 
 ## Conclusion
 What we've learned today:
-1. The value of OOP 
-2. How to use methods for encapsulation
-3. How to use interfaces for abstractions
-4. How to use generics for generalization (and not abstraction)
-5. To generate code otherwise
+1. The value of OOP
+2. Defining types that fit our needs
+3. Writing methods
+4. Interfaces
+5. Composition
+6. Generics
+7. To generate code otherwise
