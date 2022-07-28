@@ -69,6 +69,3 @@ func withColor(color, s string) string {
 	}
 	return color + s + "\033[0m"
 }
-func clearScr() {
-	fmt.Print("\033[H\033[2J")
-}

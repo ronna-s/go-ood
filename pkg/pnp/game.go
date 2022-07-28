@@ -53,13 +53,7 @@ func Run() {
 	g := NewGame(string(l), NewProduction(), NewRubyist(), NewGopher())
 	clearScr()
 	rand.Seed(time.Now().Unix())
-	var band []Player
-	// When loading a new game avoid loading band members who are already dead
-	for _, p := range g.Players {
-		if p.Alive() {
-			band = append(band, p)
-		}
-	}
+	band := g.Players
 	for len(band) != 0 {
 		player := band[0]
 		band = band[1:]

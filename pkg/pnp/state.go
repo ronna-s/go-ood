@@ -2,6 +2,8 @@ package pnp
 
 import "math/rand"
 
+var Rand = rand.Intn
+
 // Calm ...
 type Calm struct{}
 
@@ -20,16 +22,16 @@ func (s Calm) React(a Action) (int, int, State) {
 		Generics:   90,
 		DarkMagic:  10,
 	}
-	xp := rand.Intn(10*int(a)/2+1) + 1
+	xp := Rand(10*int(a)/2+1) + 1
 	chanceOfSuccess, ok := chances[a]
 	if !ok {
 		panic("unexpected action")
 	}
 
-	if rand.Intn(100) > chanceOfSuccess {
-		return xp, -rand.Intn(10) - 1, Annoyed{}
+	if Rand(100) > chanceOfSuccess {
+		return xp, -Rand(10) - 1, Annoyed{}
 	}
-	return xp, rand.Intn(10) + 1, s
+	return xp, Rand(10) + 1, s
 }
 
 // Annoyed ...
@@ -55,22 +57,22 @@ func (s Annoyed) React(a Action) (int, int, State) {
 		Generics:   80,
 		DarkMagic:  10,
 	}
-	xp := rand.Intn(10*int(a)/2+1) + 11
+	xp := Rand(10*int(a)/2+1) + 11
 	chanceOfSuccess, ok := chances[a]
 	if !ok {
 		panic("unexpected action")
 	}
 
-	if rand.Intn(100) > chanceOfSuccess {
+	if Rand(100) > chanceOfSuccess {
 		if s.Very {
-			return xp, -rand.Intn(20) - 1, Enraged{}
+			return xp, -Rand(20) - 1, Enraged{}
 		}
-		return xp, -rand.Intn(20) - 1, Annoyed{Very: true}
+		return xp, -Rand(20) - 1, Annoyed{Very: true}
 	}
 	if s.Very {
-		return xp, rand.Intn(10) + 1, Annoyed{Very: false}
+		return xp, Rand(10) + 1, Annoyed{Very: false}
 	}
-	return xp, rand.Intn(10) + 1, Calm{}
+	return xp, Rand(10) + 1, Calm{}
 }
 
 // Enraged is a product state is very eager to take a player's health in retaliation for unsuccessful actions
@@ -91,16 +93,16 @@ func (s Enraged) React(a Action) (int, int, State) {
 		Generics:   70,
 		DarkMagic:  10,
 	}
-	xp := rand.Intn(10*int(a)/2+1) + 21
+	xp := Rand(10*int(a)/2+1) + 21
 	chanceOfSuccess, ok := chances[a]
 	if !ok {
 		panic("unexpected action")
 	}
-	if rand.Intn(100) > chanceOfSuccess {
-		return xp, -rand.Intn(50) - 1, Legacy{}
+	if Rand(100) > chanceOfSuccess {
+		return xp, -Rand(50) - 1, Legacy{}
 	}
 
-	return xp, rand.Intn(10) + 1, Annoyed{Very: true}
+	return xp, Rand(10) + 1, Annoyed{Very: true}
 }
 
 // Legacy is a product state is very eager to take a player's health in retaliation for unsuccessful actions
@@ -122,14 +124,14 @@ func (s Legacy) React(a Action) (int, int, State) {
 		Generics:   50,
 		DarkMagic:  70, //dark magic is surprisingly effective in legacy mode
 	}
-	xp := rand.Intn(10*int(a)/2+1) + 21
+	xp := Rand(10*int(a)/2+1) + 31
 	chanceOfSuccess, ok := chances[a]
 	if !ok {
 		panic("unexpected action")
 	}
-	if rand.Intn(100) > chanceOfSuccess {
+	if Rand(100) > chanceOfSuccess {
 		return xp, -100, Legacy{}
 	}
 
-	return xp, rand.Intn(10) + 1, Enraged{}
+	return xp, Rand(10) + 1, Enraged{}
 }
