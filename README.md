@@ -189,13 +189,28 @@ Because Java doesn't really have inheritance either. You can only inherit from o
 
 If you truly need inheritance, use C++, you can have multiple inheritance. Java doesn't really support inheritance. It's not a key feature. If that's what makes sense for your code that's the language for you.
 
-So if inheritance is in your opinion what makes a language Object-Oriented, Java isn't OO (and Ruby too, and plenty others).
+So if inheritance is in your opinion `what makes a language Object-Oriented, Java isn't OO (and Ruby too, and plenty others).
 
 ## OO fundamentals and Go
 
 ### Composition vs. Inheritance
 
-In Go we don't have inheritance. To express that A is I we use interfaces. To express that A is made of B or composed of B we use compositions.
+In Go we don't have inheritance. To express that A is I we use interfaces. To express that A is made of B or composed of B we use compositions like so:
+
+```go
+
+type MyThing int //Creates a new type MyThing with an underlying type int
+
+// Foo is now a method of my MyThing, in many languages to have a method you have to have a class or a struct
+func (t MyThing) Foo() int {
+return int(t)
+}
+type A struct{
+	B
+}
+```
+
+
 
 ------------------------
 
