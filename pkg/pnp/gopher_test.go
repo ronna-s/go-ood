@@ -14,12 +14,12 @@ func TestGopher(t *testing.T) {
 			assert.ElementsMatch(t, cases[:i+1], g.Skills())
 		}
 	})
-	t.Run("Image renders the player's ascii art with the player state", func(t *testing.T) {
-		oldGopher := gopher
+	t.Run("Art renders the player's ascii art with the player state", func(t *testing.T) {
+		oldGopherArt := gopherArt
+		defer func() { gopherArt = oldGopherArt }()
+		gopherArt = "Nice Art [Health=%d,XP=%d]"
 		g := Gopher{Character: Character{X: 10, H: 20}}
-		gopher = "Nice Image [Health=%d,XP=%d]"
-		defer func() { gopher = oldGopher }()
-		assert.Equal(t, "Nice Image [Health=20,XP=10]", g.Image())
+		assert.Equal(t, "Nice Art [Health=20,XP=10]", g.Art())
 
 	})
 }

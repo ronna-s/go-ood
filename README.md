@@ -5,19 +5,27 @@ It is named A Path to OOD and not OOP because different language features mean d
 
 ## Schedule
 
-- 09:00-09:10: Introduction to Object Oriented Programming [link](#introduction-to-oop)
+- 09:00-09:10: Introduction to Object-Oriented Programming [link](#introduction-to-oop)
 - 09:10-09:30: Exercise 1- understanding the benefits [link](#exercise-1---understanding-the-benefits)
-- 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go) 
-  <details>
+- 09:30-09:50: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go)
+  - Recap - messaging, bundling data and functions
+  - Is inheritance fundamental to OOP?
+    - What is it?
+    - Is it fundamental?
+  - Is late binding fundamental to OOP?
+    - What is it?
+    - Is it fundamental?
+  - Are interfaces fundamental to  
+    <details>
 
-  - Defining types
-  - Aliases
-  - Methods - receivers, pointer receivers
-  - Interfaces
-  - Embedding
-  - Composition
-  - Type assertions 
-  </details>
+    - Defining types
+    - Aliases
+    - Methods - receivers, pointer receivers
+    - Interfaces
+    - Embedding
+    - Composition
+    - Type assertions 
+    </details>
 - 09:50-10:00: Break
 - 10:00-10:30: Exercise 2 (interfaces) [link](#exercise-2---interfaces)
 - 10:30-10:50: Organizing your packages [link](#organizing-your-packages) 

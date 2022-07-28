@@ -26,7 +26,7 @@ type (
 		GainHealth(int) int
 		Skills() []Skill
 		Health() int
-		Image() string
+		Art() string
 		XP() int
 	}
 
@@ -67,7 +67,7 @@ func Run() {
 	if err != nil {
 		panic("error reading band name")
 	}
-	//todo: check if not exists
+
 	g := NewGame(string(l), NewProduction(), NewRubyist(), NewGopher())
 	clearScr()
 	rand.Seed(time.Now().Unix())
@@ -85,11 +85,11 @@ func Run() {
 		fmt.Printf("It's %s's turn. Production's status is '%s'.\n\n", player, g.Prod.State)
 
 		if player.Health() > 70 {
-			fmt.Println(withColor(green, player.Image()))
+			fmt.Println(withColor(green, player.Art()))
 		} else if player.Health() > 30 {
-			fmt.Println(withColor(yellow, player.Image()))
+			fmt.Println(withColor(yellow, player.Art()))
 		} else {
-			fmt.Println(withColor(red, player.Image()))
+			fmt.Println(withColor(red, player.Art()))
 		}
 
 		fmt.Println()

@@ -33,8 +33,9 @@ func (g Gopher) Skills() []Skill {
 }
 
 //go:embed resources/gopher.txt
-var gopher string
+var gopherArt string
 
-func (g Gopher) Image() string {
-	return fmt.Sprintf(gopher, g.H, g.X)
+// Art ...
+func (g Gopher) Art() string {
+	return fmt.Sprintf(gopherArt, g.H, g.X)
 }

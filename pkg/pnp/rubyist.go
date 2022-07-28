@@ -19,10 +19,11 @@ func NewRubyist() *Rubyist {
 }
 
 //go:embed resources/rubyist.txt
-var rubyist string
+var rubyistArt string
 
-func (r Rubyist) Image() string {
-	return fmt.Sprintf(rubyist, r.H, r.X)
+// Art ...
+func (r Rubyist) Art() string {
+	return fmt.Sprintf(rubyistArt, r.H, r.X)
 }
 
 // Skills returns the list of abilities the Rubyist has
