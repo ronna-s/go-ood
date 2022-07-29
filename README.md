@@ -1,6 +1,6 @@
 # A path to OOD with Go - Workshop
 
-https://github.com/ronna-s/go-ood/
+https://github.com/ronna-s/go-ood/ [Clone me!]
 
 This workshop is aimed to clarify the OOP features that Go provides.
 It is named A Path to OOD and not OOP because different language features mean different design concepts.  
