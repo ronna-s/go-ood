@@ -2,6 +2,10 @@
 
 https://github.com/ronna-s/go-ood/ [Clone me!]
 
+WIFI: Festsaal-Kreuzberg
+User: produktion
+Password: showtime
+
 This workshop is aimed to clarify the OOP features that Go provides.
 It is named A Path to OOD and not OOP because different language features mean different design concepts.  
 
