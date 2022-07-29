@@ -19,7 +19,7 @@ var tmpl []byte
 
 func main() {
 	rand.Seed(time.Now().Unix())
-	m := maze.New(rand.Intn(20)+1, rand.Intn(20)+1)
+	m := maze.New(rand.Intn(10)+1, rand.Intn(10)+1)
 	//fmt.Println(fmt.Sprintf("%#v", m))
 	g := robot.New(travel.New(m))
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
