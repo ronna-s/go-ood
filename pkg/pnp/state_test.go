@@ -8,7 +8,6 @@ import (
 )
 
 func TestReactSuccessful(t *testing.T) {
-	t.Parallel()
 	tt := []struct {
 		State      State
 		Health, XP int
@@ -47,7 +46,6 @@ func TestReactSuccessful(t *testing.T) {
 
 }
 func TestReactUnsuccessful(t *testing.T) {
-	t.Parallel()
 	tt := []struct {
 		State      State
 		Health, XP int
