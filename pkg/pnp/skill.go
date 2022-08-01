@@ -2,7 +2,7 @@ package pnp
 
 //go:generate stringer -type=Skill
 
-// Skill represents a Player's skill in a Prorgammers & Platforms game
+// Skill represents a Player's skill in a Programmers & Platforms game
 type Skill int
 
 // Skills
