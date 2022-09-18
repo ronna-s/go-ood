@@ -3,7 +3,7 @@ package travel
 import (
 	"testing"
 
-	"github.com/ronnas/go-ood/pkg/maze"
+	"github.com/ronna-s/go-ood/pkg/maze"
 	"github.com/stretchr/testify/assert"
 )
 

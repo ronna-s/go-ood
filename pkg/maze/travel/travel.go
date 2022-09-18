@@ -4,7 +4,7 @@ package travel
 import (
 	"errors"
 
-	"github.com/ronnas/go-ood/pkg/maze"
+	"github.com/ronna-s/go-ood/pkg/maze"
 )
 
 // Travel represents a being that can travel through a maze

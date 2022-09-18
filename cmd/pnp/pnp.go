@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ronnas/go-ood/pkg/pnp"
+	"github.com/ronna-s/go-ood/pkg/pnp"
 )
 
 func main() {

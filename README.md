@@ -108,7 +108,7 @@ Run
 make godoc
 ```
 The repo started with one package in the pkg directory called maze which offers a basic maze generator and nothing else.
-Go to: http://127.0.0.1:8080/pkg/github.com/ronnas/go-ood/pkg/maze
+Go to: http://127.0.0.1:8080/pkg/github.com/ronna-s/go-ood/pkg/maze
 
 The package defines 5 types:
 1. Cell - an alias type to int

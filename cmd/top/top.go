@@ -5,8 +5,8 @@ import (
 	"math/rand"
 	"runtime"
 
-	"github.com/ronnas/go-ood/pkg/heap"
-	"github.com/ronnas/go-ood/pkg/namegen"
+	"github.com/ronna-s/go-ood/pkg/heap"
+	"github.com/ronna-s/go-ood/pkg/namegen"
 )
 
 type (

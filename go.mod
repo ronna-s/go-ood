@@ -1,4 +1,4 @@
-module github.com/ronnas/go-ood
+module github.com/ronna-s/go-ood
 
 go 1.18
 

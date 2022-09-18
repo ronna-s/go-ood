@@ -4,8 +4,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ronnas/go-ood/cmd/maze/mocks"
 	"github.com/stretchr/testify/mock"
+
+	"github.com/ronna-s/go-ood/cmd/maze/mocks"
 )
 
 func TestSolveMaze(t *testing.T) {

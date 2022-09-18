@@ -9,9 +9,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/ronnas/go-ood/pkg/maze"
-	"github.com/ronnas/go-ood/pkg/maze/travel"
-	"github.com/ronnas/go-ood/pkg/robot"
+	"github.com/ronna-s/go-ood/pkg/maze"
+	"github.com/ronna-s/go-ood/pkg/maze/travel"
+	"github.com/ronna-s/go-ood/pkg/robot"
 )
 
 //go:embed resources/maze.tmpl

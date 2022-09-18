@@ -2,8 +2,8 @@
 package robot
 
 import (
-	"github.com/ronnas/go-ood/pkg/maze"
-	"github.com/ronnas/go-ood/pkg/maze/travel"
+	"github.com/ronna-s/go-ood/pkg/maze"
+	"github.com/ronna-s/go-ood/pkg/maze/travel"
 )
 
 // Step represents a movement in a maze, it has a target cell and direction
