@@ -131,9 +131,11 @@ We see that:
 
 Speaking of "Receivers", Remember that we said that OO is about objects communicated via messages?
 The idea for the receiver was borrowed from Oberon-2 which is an OO version of Oberon.
-But the receiver is also just a function parameter, so there is no receiving object?
+But the receiver is also just a special function parameter, so there is no receiving object?
 
-![There is no sppon](https://giphy.com/gifs/the-matrix-there-is-no-spoon-3o6Zt0hNCfak3QCqsw)
+
+![https://giphy.com/gifs/the-matrix-there-is-no-
+-3o6Zt0hNCfak3QCqsw](https://gifimage.net/wp-content/uploads/2018/06/there-is-no-spoon-gif-10.gif)
 
 Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
 
