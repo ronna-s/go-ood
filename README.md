@@ -126,8 +126,14 @@ We see that:
 6. That means that any type satisfies the interface{} - an interface with no methods
 7. You can alias to any type
 8. If you want to add methods to primitives, just define a new type with the desired primitive underlying type
-9. Methods are added to types using Receivers
-10. Methods that can change/mutate the value of the type needs a pointer receiver.
+9. Methods are added to types using Receivers (value or pointer receivers).
+10. Methods that can change/mutate the value of the type need a pointer receiver (the common practice says not to mix receiver types) 
+
+Speaking of "Receivers", Remember that we said that OO is about objects communicated via messages?
+The idea for the receiver was borrowed from Oberon-2 which is an OO version of Oberon.
+But the receiver is also just a function parameter, so there is no receiving object?
+
+![There is no sppon](https://giphy.com/gifs/the-matrix-there-is-no-spoon-3o6Zt0hNCfak3QCqsw)
 
 Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
 

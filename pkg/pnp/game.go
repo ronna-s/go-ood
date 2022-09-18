@@ -64,8 +64,8 @@ func Run() {
 			return
 		}
 
-		if rand.Intn(20) == 0 {
-			fmt.Println("PIZZA DELIVERY! \nAll players get a pizza, some rest and a health boost!")
+		if rand.Intn(30) == 0 {
+			fmt.Println(withColor(cyan, "PIZZA DELIVERY! \nAll players get a pizza, some rest and a health boost!"))
 			fmt.Println(pizza)
 			for i := range band {
 				band[i].GainHealth(100)

@@ -37,15 +37,22 @@ func main() {
 // Gopher is an interface to a thing that can move around a maze
 type Gopher interface {
 	Finished() bool // Has the Gopher reached the target cell?
-	Move() error    // The Gopher moves one step in its current direction
+	Move() error    // The Gopher moves one step in its current direction if the gopher can't move it returns an error
 	TurnLeft()      // The Gopher will turn left
 	TurnRight()     // The Gopher will turn right
 }
 
 // SolveMaze is where your code goes to solve our maze
-// It takes in g Gopher that knows how to travel.
+// It takes in g Gopher that knows how to travel a maze
 // See the Gopher interface methods for more details
 func SolveMaze(g Gopher) {
+	for !g.Finished() {
+		if g.Move() != nil {
+			g.TurnRight()
+		} else {
+			g.TurnLeft()
+		}
+	}
 }
 
 // Result represnts the Result of a Maze run
@@ -54,7 +61,7 @@ type Result struct {
 	Steps []robot.Step
 }
 
-//drawHTML writes the movement of the gopher through the maze to HTML
+// drawHTML writes the movement of the gopher through the maze to HTML
 func drawHTML(g robot.Robot, w io.Writer) {
 	res := Result{
 		Maze:  g.Maze,
