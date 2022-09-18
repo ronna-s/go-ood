@@ -24,10 +24,10 @@ func (r Rubyist) Art() string {
 // If XP is larger than 10 [DuckTyping, Module, ]
 // Anything else [DuckTyping]
 func (r Rubyist) Skills() []Skill {
-	if r.XP() >= 100 {
+	if r.XP() > 100 {
 		return []Skill{DuckTyping, Module, DarkMagic}
 	}
-	if r.XP() >= 10 {
+	if r.XP() > 10 {
 		return []Skill{DuckTyping, Module}
 	}
 	return []Skill{DuckTyping}

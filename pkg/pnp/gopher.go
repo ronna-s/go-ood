@@ -19,10 +19,10 @@ func NewGopher() *Gopher {
 // If XP is larger than 10 [TypeSafety, Interface]
 // Anything else [TypeSafety]
 func (g Gopher) Skills() []Skill {
-	if g.XP() >= 100 {
+	if g.XP() > 100 {
 		return []Skill{TypeSafety, Interface, Generics}
 	}
-	if g.XP() >= 10 {
+	if g.XP() > 10 {
 		return []Skill{TypeSafety, Interface}
 	}
 	return []Skill{TypeSafety}
