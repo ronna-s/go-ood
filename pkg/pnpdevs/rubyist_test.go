@@ -1,9 +1,11 @@
-package pnp
+package pnpdevs
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/ronna-s/go-ood/pkg/pnp"
 )
 
 func TestRubyist(t *testing.T) {
@@ -14,7 +16,7 @@ func TestRubyist(t *testing.T) {
 	})
 	t.Run("Skills", func(t *testing.T) {
 		r := Rubyist{Character: Character{X: 1}}
-		cases := []Skill{DuckTyping, Module, DarkMagic}
+		cases := []pnp.Skill{pnp.DuckTyping, pnp.Module, pnp.DarkMagic}
 		for i := 0; i < len(cases); i, r.X = i+1, r.X*10+1 {
 			assert.ElementsMatch(t, cases[:i+1], r.Skills())
 		}

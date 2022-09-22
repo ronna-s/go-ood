@@ -1,4 +1,4 @@
-package pnp
+package pnpdevs
 
 import (
 	"testing"

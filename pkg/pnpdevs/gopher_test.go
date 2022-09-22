@@ -1,9 +1,11 @@
-package pnp
+package pnpdevs
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/ronna-s/go-ood/pkg/pnp"
 )
 
 func TestGopher(t *testing.T) {
@@ -14,7 +16,7 @@ func TestGopher(t *testing.T) {
 	})
 	t.Run("Skills", func(t *testing.T) {
 		g := Gopher{Character: Character{X: 1}}
-		cases := []Skill{TypeSafety, Interface, Generics}
+		cases := []pnp.Skill{pnp.TypeSafety, pnp.Interface, pnp.Generics}
 		for i := 0; i < len(cases); i, g.X = i+1, g.X*10+1 {
 			assert.ElementsMatch(t, cases[:i+1], g.Skills())
 		}

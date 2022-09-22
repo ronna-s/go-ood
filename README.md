@@ -33,7 +33,7 @@ It is meant to allow the developer to build code and separate responsibilities o
 It is important to know that in most OOP languages: 
 - Objects are instances of a class because only classes can define methods (that's how we support messaging).
 - Classes have constructor methods that allow for safe instantiation of objects.
-- Classes can inherit methods and fields from other classes as well as override them and sometimes overload them.
+- Classes can inherit methods and fields from other classes as well as override them and sometimes overload them (we will get to that later).
 - In case of overriding and overloading methods, the method that will eventually run is decided at runtime. This is called late binding.
 
 #### Is Go an Object-Oriented language?
@@ -133,7 +133,6 @@ Speaking of "Receivers", Remember that we said that OO is about objects communic
 The idea for the receiver was borrowed from Oberon-2 which is an OO version of Oberon.
 But the receiver is also just a special function parameter, so there is no receiving object?
 
-
 ![https://giphy.com/gifs/the-matrix-there-is-no-
 -3o6Zt0hNCfak3QCqsw](https://gifimage.net/wp-content/uploads/2018/06/there-is-no-spoon-gif-10.gif)
 
@@ -148,6 +147,12 @@ This is done in scripting languages with duck-typing, but in Go it's just type-s
 Implicit interfaces mean that packages don't have to provide interfaces to the user, the user can define their own interface with the smallest subset of functionality that they need.
 In fact our `robot.Robot` has another public method `Steps` that is not part of the `Gopher` interface because we don't need to use it.
 This makes plugging-in code and defining and mocking dependencies safely a natural thing in Go and makes the code minimal to its usage.  
+
+Now would be a good time to discuss inheritance and flavours of inheritance and Go:
+Most OO languages limit inheritance to allow every class to inherit functionality from exactly one other class.
+That means that you can't express that an instance of class A is an instance of class B and class C, for example: a truck can't be both a vehicle and also a container of goods.
+In the case where you need to express this you will end up doing the same as you would do in Go with interfaces, except as we saw the Go implicit interface implementation is far more powerful.
+In addition, common language that offer inheritance often force you to inherit from a common Object class which is why objects can only be class instances (and can't be values with methods, like in Go).
 
 >_The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle._
 (Joe Armstrong)
@@ -286,8 +291,8 @@ func main() {
 
 ```
 
-#### Short Lived Objects
-[Consider this conversation](https://twitter.com/matryer/status/1293504405896073218)
+#### Short Lived Objects vs. Long Lived Objects
+[Consider this conversation](https://twitter.com/francesc/status/1293556263196844032)
 
 ## Generics
 It was a long time consensus that "real gophers" don't need generics so much so that around the time the generics draft of 2020 was released, many gophers expressed that they will likely never use this feature.

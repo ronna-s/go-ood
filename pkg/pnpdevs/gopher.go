@@ -1,6 +1,10 @@
-package pnp
+package pnpdevs
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/ronna-s/go-ood/pkg/pnp"
+)
 
 type (
 	// Gopher represents the P&P role of the Gopher
@@ -18,14 +22,14 @@ func NewGopher() *Gopher {
 // If XP is larger than 100 [TypeSafety, Interface, Generics]
 // If XP is larger than 10 [TypeSafety, Interface]
 // Anything else [TypeSafety]
-func (g Gopher) Skills() []Skill {
+func (g Gopher) Skills() []pnp.Skill {
 	if g.XP() > 100 {
-		return []Skill{TypeSafety, Interface, Generics}
+		return []pnp.Skill{pnp.TypeSafety, pnp.Interface, pnp.Generics}
 	}
 	if g.XP() > 10 {
-		return []Skill{TypeSafety, Interface}
+		return []pnp.Skill{pnp.TypeSafety, pnp.Interface}
 	}
-	return []Skill{TypeSafety}
+	return []pnp.Skill{pnp.TypeSafety}
 }
 
 // Art renders the player's ascii art with the player state

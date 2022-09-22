@@ -1,6 +1,10 @@
-package pnp
+package pnpdevs
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/ronna-s/go-ood/pkg/pnp"
+)
 
 type (
 	// Rubyist represents the P&P role of the Rubyist
@@ -23,14 +27,14 @@ func (r Rubyist) Art() string {
 // If XP is larger than 100 [DuckTyping, Module, DarkMagic]
 // If XP is larger than 10 [DuckTyping, Module, ]
 // Anything else [DuckTyping]
-func (r Rubyist) Skills() []Skill {
+func (r Rubyist) Skills() []pnp.Skill {
 	if r.XP() > 100 {
-		return []Skill{DuckTyping, Module, DarkMagic}
+		return []pnp.Skill{pnp.DuckTyping, pnp.Module, pnp.DarkMagic}
 	}
 	if r.XP() > 10 {
-		return []Skill{DuckTyping, Module}
+		return []pnp.Skill{pnp.DuckTyping, pnp.Module}
 	}
-	return []Skill{DuckTyping}
+	return []pnp.Skill{pnp.DuckTyping}
 }
 
 func (r Rubyist) String() string {

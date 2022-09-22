@@ -3,11 +3,16 @@ package pnp
 
 import (
 	"bufio"
+	_ "embed"
 	"fmt"
 	"math/rand"
 	"os"
 	"runtime"
+	"strconv"
 	"time"
+
+	"github.com/gdamore/tcell/v2"
+	"github.com/rivo/tview"
 )
 
 type (
@@ -35,13 +40,184 @@ type (
 	Action = Skill
 )
 
+var (
+	app          = tview.NewApplication()
+	pages        = tview.NewPages()
+	menuPane     = tview.NewFlex()
+	playersPane  = tview.NewFlex()
+	welcomeModal = tview.NewModal()
+	flex         = tview.NewFlex()
+	modal        = tview.NewModal()
+	choice       int
+
+	fn func(event *tcell.EventKey) *tcell.EventKey = nil
+)
+
 // NewGame returns a new P&P game
 func NewGame(name string, prod Production, players ...Player) Game {
 	return Game{Name: name, Prod: prod, Players: players, Turns: 0}
 }
 
+func renderMenu(players []Player, i int, prod Production, numTurns int) *tview.Flex {
+	var options = tview.NewList().ShowSecondaryText(false)
+
+	for i, s := range players[i].Skills() {
+		options.AddItem(s.String(), "", rune(49+i), nil)
+	}
+	choice = 0
+	options.SetSelectedFunc(func(choice int, s string, s2 string, r rune) {
+		skill := players[i].Skills()[choice]
+		xp, health := prod.React(skill)
+		health = players[i].GainHealth(health)
+		players[i].GainXP(xp)
+		m := tview.NewModal()
+		if health >= 0 {
+			m.SetText(fmt.Sprintf("Production liked %s's move `%s`. Production's state is now `%s`. Gained: %d XP, %d health", players[i], skill, prod.State, xp, health))
+		} else {
+			m.SetText(fmt.Sprintf("Production DID NOT like %s's move `%s`. Production's state is now `%s`. Gained: %d XP, Lost: %d Health", players[i], skill, prod.State, xp, health)).SetBackgroundColor(tcell.ColorRed)
+		}
+		m.AddButtons([]string{"ok"}).SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+			if buttonLabel == "ok" {
+				i = (i + 1) % len(players)
+				numTurns++
+				menuPane = renderMenu(players, i, prod, numTurns)
+				playersPane = renderPlayers(players, i)
+				flex = renderGame()
+				pages.RemovePage("page")
+				//flex.SetInputCapture(fn)
+				pages.AddPage("page", flex, true, true)
+				pages.SwitchToPage("page")
+			}
+		})
+		pages = pages.AddPage("modal", m, true, true)
+		//pages.SwitchToPage("modal")
+
+	})
+
+	menu := tview.NewFlex().AddItem(options, 0, 1, true)
+
+	menu.SetBorder(true).SetTitle("Select Skill")
+	return menu
+}
+
+func renderPlayers(players []Player, i int) *tview.Flex {
+	playersFlex := tview.NewFlex().SetDirection(tview.FlexRow)
+	for j, p := range players {
+		var color tcell.Color
+		if p.Health() > 70 {
+			color = tcell.ColorGreen
+		} else if p.Health() > 50 {
+			color = tcell.ColorYellow
+		} else if p.Health() > 30 {
+			color = tcell.ColorOrange
+		} else {
+			color = tcell.ColorRed
+		}
+		art := tview.NewTextView().SetText(p.Art())
+		art.SetTextColor(color).SetBorder(true)
+		if i == j {
+			art.SetTitle(fmt.Sprintf("It's %s's turn", p))
+			art.SetBorderColor(tcell.ColorPink)
+		}
+
+		playersFlex.AddItem(art, 0, 1, false)
+	}
+	return playersFlex
+}
+
+func renderGame() *tview.Flex {
+	flex := tview.NewFlex().
+		AddItem(playersPane, 0, 2, false).
+		AddItem(menuPane, 0, 1, true)
+
+	return flex
+}
+
+func loadWelcomeForm(fn func(event *tcell.EventKey) *tcell.EventKey) *tview.Form {
+	label1 := &Label{tview.NewTextView()}
+	label1.SetText("A band of developers will attempt to survive against PRODUCTION!")
+	nameInput := tview.NewInputField().SetLabel("What is the name of your band?").SetText("Cool Band")
+	var bandName string
+
+	form := tview.NewForm().
+		AddFormItem(label1).
+		AddFormItem(nameInput).
+		SetButtonsAlign(tview.AlignCenter).
+		SetFocus(1).
+		AddButton("Continue", func() {
+			bandName = nameInput.GetText()
+			welcomeModal.SetText("Hello, " + bandName + "!")
+			welcomeModal.SetTitle("New game").SetTitleColor(tcell.ColorOrangeRed)
+			welcomeModal.AddButtons([]string{"ok"}).SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+				pages.RemovePage("welcome modal")
+				pages.RemovePage("load")
+				pages.SwitchToPage("game")
+				//flex.SetInputCapture(fn)
+			})
+			pages.AddPage("welcome modal", welcomeModal, true, true)
+			pages.SwitchToPage("welcome modal")
+		}).
+		AddButton("Quit", func() {
+			app.Stop()
+		})
+
+	form.SetBorder(true).SetTitle("New game started!").SetTitleAlign(tview.AlignCenter).SetTitleColor(tcell.ColorLime)
+	return form
+}
+
+func GameView(i int, players []Player, prod Production, numTurns int) []Player {
+	menuPane = renderMenu(players, 0, prod, numTurns)
+	playersPane = renderPlayers(players, i)
+	flex = renderGame()
+	fn = func(event *tcell.EventKey) *tcell.EventKey {
+		if event.Key() == tcell.KeyEnter {
+			skill := players[i].Skills()[choice]
+			xp, health := prod.React(skill)
+			health = players[i].GainHealth(health)
+			players[i].GainXP(xp)
+			m := tview.NewModal()
+			if health >= 0 {
+				m.SetText(fmt.Sprintf("Production liked %s's move `%s`. Production's state is now `%s`. Gained: %d XP, %d health", players[i], skill.String()+strconv.Itoa(choice), prod.State, xp, health))
+			} else {
+				m.SetText(fmt.Sprintf("Production DID NOT like %s's move `%s`. Production's state is now `%s`. Gained: %d XP, Lost: %d Health", players[i], skill, prod.State, xp, health)).SetBackgroundColor(tcell.ColorRed)
+			}
+			m.AddButtons([]string{"ok"}).SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+				if buttonLabel == "ok" {
+					i = (i + 1) % len(players)
+					numTurns++
+					menuPane = renderMenu(players, i, prod, numTurns)
+					playersPane = renderPlayers(players, i)
+					flex = renderGame()
+					//flex.SetInputCapture(fn)
+					pages.AddPage("page", flex, true, true)
+					pages.SwitchToPage("page")
+				}
+			})
+			pages = pages.AddPage("modal", m, true, true)
+			pages.SwitchToPage("modal")
+		}
+		return event
+	}
+
+	pages.AddPage("load", tview.NewFlex().AddItem(loadWelcomeForm(fn), 0, 1, true), true, true)
+
+	pages.AddPage("game", flex, true, false)
+	if err := app.SetRoot(pages, true).SetFocus(pages).EnableMouse(true).Run(); err != nil {
+		panic(err)
+	}
+	return nil
+}
+
+func Run2(players ...Player) {
+	withColor = func(color, s string) string {
+		return s
+	}
+	GameView(0, players, NewProduction(), 0)
+
+}
+
 // Run ...
-func Run() {
+func Run(players ...Player) {
 	fmt.Println(withColor(cyan, gamestarted))
 	fmt.Println("New game started. A band of developers will attempt to survive against Production!")
 	fmt.Println("What is the name of your band?")
@@ -50,7 +226,7 @@ func Run() {
 		panic("error reading band name")
 	}
 
-	g := NewGame(string(l), NewProduction(), NewRubyist(), NewGopher())
+	g := NewGame(string(l), NewProduction(), players...)
 	clearScr()
 	rand.Seed(time.Now().Unix())
 	band := g.Players
@@ -139,12 +315,46 @@ func pressEnter() {
 	clearScr()
 
 }
-func withColor(color, s string) string {
+
+var withColor = func(color, s string) string {
 	if runtime.GOOS == "windows" {
 		return s
 	}
 	return color + s + "\033[0m"
 }
+
 func clearScr() {
 	fmt.Print("\033[H\033[2J")
+}
+
+//go:embed resources/gravestone.txt
+var gravestone string
+
+//go:embed resources/gameover.txt
+var gameover string
+
+//go:embed resources/gamestarted.txt
+var gamestarted string
+
+//go:embed resources/pizza.txt
+var pizza string
+
+type Label struct {
+	*tview.TextView
+}
+
+func (l Label) GetLabel() string {
+	return l.GetText(false)
+}
+
+func (l Label) SetFormAttributes(labelWidth int, labelColor, bgColor, fieldTextColor, fieldBgColor tcell.Color) tview.FormItem {
+	return l
+}
+
+func (l Label) GetFieldWidth() int {
+	return 100
+}
+
+func (l Label) SetFinishedFunc(handler func(key tcell.Key)) tview.FormItem {
+	return l
 }

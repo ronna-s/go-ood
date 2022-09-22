@@ -1,6 +1,8 @@
 package pnp
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 // Rand - random function
 var Rand = rand.Intn
@@ -43,7 +45,7 @@ type Annoyed struct {
 // String ...
 func (s Annoyed) String() string {
 	if s.Very {
-		return "very annoyed"
+		return withColor(yellow, "very annoyed")
 	}
 	return withColor(yellow, "slightly annoyed")
 }
