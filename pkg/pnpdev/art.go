@@ -1,4 +1,4 @@
-package pnpdevs
+package pnpdev
 
 import _ "embed" //package provides its on ascii art
 

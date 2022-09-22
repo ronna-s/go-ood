@@ -1,4 +1,4 @@
-package pnpdevs
+package pnpdev
 
 // Character represents the common fields and abilities of a P&P character
 type Character struct {

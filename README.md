@@ -210,8 +210,8 @@ We see that we can embed interfaces and structs.
 ## Exercise 2 - Interfaces and Embedding
 
 We are going to add 2 types of players to the game P&P - Platforms and Programmers who will attempt to take on a Production environment.
-The roles that we will implement are `pnp.Gopher`, `pnp.Rubyist`.
-The player roles are going to be composed of the struct `pnp.Character` for common traits like XP and Health.
+The roles that we will implement are `pnpdev.Gopher`, `pnpdev.Rubyist`.
+The player roles are going to be composed of the struct `pnpdev.Character` for common traits like XP and Health.
 Gopher and Rubyist will also need to implement their own methods for their individual Skills.
 We will implement the methods:
 ```go
