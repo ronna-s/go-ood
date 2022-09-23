@@ -230,7 +230,7 @@ func Run(players ...Player) {
 	clearScr()
 	rand.Seed(time.Now().Unix())
 	band := g.Players
-	for len(band)+1 != 0 {
+	for len(band) != 0 {
 		g.Turns++
 
 		if _, ok := g.Prod.State.(Calm); ok && g.Turns > 30 {
