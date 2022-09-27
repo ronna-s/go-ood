@@ -149,10 +149,8 @@ func renderMenu(players []Player, current int, prod *Production) {
 			m.SetText(fmt.Sprintf("%s died in the battle against Production. RIP %s. We will always treasure your typos and stuff!!", players[current], players[current])).SetBackgroundColor(tcell.ColorPurple)
 		}
 		m.AddButtons([]string{"ok"}).SetDoneFunc(func(buttonIndex int, buttonLabel string) {
-
 			if buttonLabel == "ok" {
 				playersViews[current].Render()
-
 				current = NextLivingPlayer(playersViews, current)
 				if current == -1 {
 					pages.AddAndSwitchToPage("", tview.NewTextView().SetText(gameover), true)
@@ -216,6 +214,7 @@ func renderMainView(players []Player) {
 		AddItem(prodView, 0, 1, true)
 	renderMenu(players, 0, &prod)
 	renderPlayers(players)
+	playersViews[0].onTurn()
 	renderProdView(&prod)
 	prodView.SetChangedFunc(func() {
 		app.Draw()
@@ -230,6 +229,7 @@ func renderMainView(players []Player) {
 	mainView = tview.NewFlex().
 		AddItem(playersView, 0, 2, false).
 		AddItem(rightPane, 0, 1, true) // menuItem
+	mainView.SetTitle(bandName)
 }
 
 func Run(name string, players ...Player) {
