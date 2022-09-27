@@ -10,15 +10,19 @@ func _() {
 	var x [1]struct{}
 	_ = x[DuckTyping-0]
 	_ = x[TypeSafety-1]
-	_ = x[Module-2]
-	_ = x[Interface-3]
-	_ = x[DarkMagic-4]
-	_ = x[Generics-5]
+	_ = x[Inheritance-2]
+	_ = x[Interfaces-3]
+	_ = x[Modules-4]
+	_ = x[Generators-5]
+	_ = x[MetaProgramming-6]
+	_ = x[Generics-7]
+	_ = x[DarkMagic-8]
+	_ = x[Boredom-9]
 }
 
-const _Skill_name = "DuckTypingTypeSafetyModuleInterfaceDarkMagicGenerics"
+const _Skill_name = "DuckTypingTypeSafetyInheritanceInterfacesModulesGeneratorsMetaProgrammingGenericsDarkMagicBoredom"
 
-var _Skill_index = [...]uint8{0, 10, 20, 26, 35, 44, 52}
+var _Skill_index = [...]uint8{0, 10, 20, 31, 41, 48, 58, 73, 81, 90, 97}
 
 func (i Skill) String() string {
 	if i < 0 || i >= Skill(len(_Skill_index)-1) {

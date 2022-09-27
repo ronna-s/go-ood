@@ -9,8 +9,13 @@ import (
 type Ordered[T constraints.Ordered] struct {
 	T T
 }
+type Int int
 
-type intHeap = Heap[Ordered[int]]
+func (i Int) Less(j Int) bool {
+	return i < j
+}
+
+type intHeap = Heap[Int]
 
 func (o1 Ordered[T]) Less(o2 Ordered[T]) bool {
 	return o1.T < o2.T
@@ -23,14 +28,14 @@ func verify(t *testing.T, h intHeap, i int) {
 	j2 := 2*i + 2
 	if j1 < n {
 		if h[j1].Less(h[i]) {
-			t.Errorf("heap invariant invalidated [%d] = %d > [%d] = %d", i, h[i].T, j1, h[j1].T)
+			t.Errorf("error")
 			return
 		}
 		verify(t, h, j1)
 	}
 	if j2 < n {
 		if h[j2].Less(h[i]) {
-			t.Errorf("heap invariant invalidated [%d] = %d > [%d] = %d", i, h[i].T, j1, h[j2].T)
+			t.Errorf("error")
 			return
 		}
 		verify(t, h, j2)
@@ -42,22 +47,22 @@ func TestHeap(t *testing.T) {
 
 	verify(t, h, 0)
 	for i := 20; i > 10; i-- {
-		h.Push(Ordered[int]{i})
+		h.Push(Int(i))
 	}
 
 	verify(t, h, 0)
 	for i := 10; i > 0; i-- {
-		h.Push(Ordered[int]{i})
+		h.Push(Int(i))
 		verify(t, h, 0)
 	}
 
 	for i := 1; len(h) > 0; i++ {
-		x := h.Pop().T
+		x := h.Pop()
 		if i < 20 {
-			h.Push(Ordered[int]{20 + i})
+			h.Push(Int(20 + i))
 		}
 		verify(t, h, 0)
-		if x != i {
+		if x != Int(i) {
 			t.Errorf("%d.th pop got %d; want %d", i, x, i)
 		}
 	}

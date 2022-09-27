@@ -17,9 +17,9 @@ test-maze:
 run-maze:
 	@docker run go-ood
 test-pnp:
-	docker run go-ood go test github.com/ronna-s/go-ood/pkg/pnp
+	@docker run -v $(shell pwd):/root --rm go-ood go test github.com/ronna-s/go-ood/pkg/pnpdev
 run-pnp:
-	@docker run -it go-ood pnp
+	@docker run -v $(shell pwd):/root --rm -it go-ood go run cmd/pnp/pnp.go
 test-heap:
 	docker run go-ood go test github.com/ronna-s/go-ood/pkg/heap
 run-top:

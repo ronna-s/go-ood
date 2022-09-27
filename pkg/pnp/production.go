@@ -6,14 +6,12 @@ type (
 		State State
 	}
 	// State represents a P&P Production state
-	State interface {
-		React(Action) (int, int, State)
-	}
+	State int
 )
 
 // NewProduction ...
 func NewProduction() Production {
-	return Production{Calm{}}
+	return Production{}
 }
 
 // React returns the X and health gained by Production's reaction to the player's action

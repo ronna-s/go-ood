@@ -45,6 +45,11 @@ type Gopher interface {
 // It takes in g Gopher that knows how to travel a maze
 // See the Gopher interface methods for more details
 func SolveMaze(g Gopher) {
+	for !g.Finished() {
+		g.Move()
+		g.TurnRight()
+		g.Move()
+	}
 }
 
 // Result represnts the Result of a Maze run
@@ -95,7 +100,6 @@ func drawHTML(g robot.Robot, w io.Writer) {
 	if err != nil {
 		panic(err)
 	}
-
 	if err := t.ExecuteTemplate(w, "T", res); err != nil {
 		panic(err)
 	}

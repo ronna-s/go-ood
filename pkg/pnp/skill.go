@@ -9,8 +9,12 @@ type Skill int
 const (
 	DuckTyping Skill = iota
 	TypeSafety
-	Module
-	Interface
-	DarkMagic
+	Inheritance
+	Interfaces
+	Modules
+	Generators
+	MetaProgramming
 	Generics
+	DarkMagic
+	Boredom
 )

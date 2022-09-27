@@ -16,7 +16,7 @@ func TestGopher(t *testing.T) {
 	})
 	t.Run("Skills", func(t *testing.T) {
 		g := Gopher{Character: Character{X: 1}}
-		cases := []pnp.Skill{pnp.TypeSafety, pnp.Interface, pnp.Generics}
+		cases := []pnp.Skill{pnp.TypeSafety, pnp.Interfaces, pnp.Generics}
 		for i := 0; i < len(cases); i, g.X = i+1, g.X*10+1 {
 			assert.ElementsMatch(t, cases[:i+1], g.Skills())
 		}

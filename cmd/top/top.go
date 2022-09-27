@@ -45,12 +45,12 @@ func main() {
 		songs = append(songs, Song{Name: namegen.Generate(), Listens: rand.Intn(800917)})
 	}
 
-	hartists := heap.New(artists)
-	hsongs := heap.New(songs)
+	hartists := heap.New[Artist]()
+	hsongs := heap.New[Song]()
 	fmt.Println(withColor(cyan, "Our top 10 artists are:"))
 	fmt.Println(withColor(cyan, "========================"))
 	for i := 0; i < 10; i++ {
-		fmt.Printf("%d: %s with %d reads\n", i+1, hartists.Pop().Name, hsongs.Pop().Listens)
+		fmt.Printf("%d: %s with %d reads\n", i+1, hartists.Pop(), hsongs.Pop().Listens)
 	}
 	fmt.Println(withColor(purple, "Our top of the pop songs are:"))
 	fmt.Println(withColor(purple, "============================="))

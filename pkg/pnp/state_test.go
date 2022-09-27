@@ -12,11 +12,11 @@ func TestReactSuccessful(t *testing.T) {
 		State      State
 		Health, XP int
 	}{
-		{State: Calm{}, Health: 1, XP: 1},
-		{State: Annoyed{}, Health: 1, XP: 11},
-		{State: Annoyed{true}, Health: 1, XP: 11},
-		{State: Enraged{}, Health: 1, XP: 21},
-		{State: Legacy{}, Health: 1, XP: 31},
+		{State: Calm, Health: 1, XP: 1},
+		{State: SlightlyAnnoyed, Health: 1, XP: 11},
+		{State: VeryAnnoyed, Health: 1, XP: 11},
+		{State: Enraged, Health: 1, XP: 21},
+		{State: Legacy, Health: 1, XP: 31},
 	}
 	for i, tc := range tt {
 		t.Run(fmt.Sprintf("%s", tc.State), func(t *testing.T) {
@@ -31,7 +31,7 @@ func TestReactSuccessful(t *testing.T) {
 				Rand = oldRand
 			}()
 			Rand = func(n int) int { return 0 }
-			actions := []Action{DuckTyping, TypeSafety, Module, Interface, DarkMagic, Generics}
+			actions := []Action{DuckTyping, TypeSafety, Modules, Interfaces, DarkMagic, Generics}
 			for _, action := range actions {
 				t.Run(action.String(), func(t *testing.T) {
 					xp, h, state := tc.State.React(action)
@@ -41,20 +41,18 @@ func TestReactSuccessful(t *testing.T) {
 				})
 			}
 		})
-
 	}
-
 }
 func TestReactUnsuccessful(t *testing.T) {
 	tt := []struct {
 		State      State
 		Health, XP int
 	}{
-		{State: Calm{}, Health: -101, XP: 101},
-		{State: Annoyed{}, Health: -101, XP: 111},
-		{State: Annoyed{true}, Health: -101, XP: 111},
-		{State: Enraged{}, Health: -101, XP: 121},
-		{State: Legacy{}, Health: -100, XP: 131},
+		{State: Calm, Health: -101, XP: 101},
+		{State: SlightlyAnnoyed, Health: -101, XP: 111},
+		{State: VeryAnnoyed, Health: -101, XP: 111},
+		{State: Enraged, Health: -101, XP: 121},
+		{State: Legacy, Health: -100, XP: 131},
 	}
 	for i, tc := range tt {
 		t.Run(fmt.Sprintf("%s", tc.State), func(t *testing.T) {
@@ -69,7 +67,7 @@ func TestReactUnsuccessful(t *testing.T) {
 				Rand = oldRand
 			}()
 			Rand = func(n int) int { return 100 }
-			actions := []Action{DuckTyping, TypeSafety, Module, Interface, DarkMagic, Generics}
+			actions := []Action{DuckTyping, TypeSafety, Modules, Interfaces, DarkMagic, Generics}
 			for _, action := range actions {
 				t.Run(action.String(), func(t *testing.T) {
 					xp, h, state := tc.State.React(action)
