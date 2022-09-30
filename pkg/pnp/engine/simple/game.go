@@ -1,5 +1,5 @@
 // // Package pnp provides a Platforms and Programmers™ game implementation
-package pnp
+package simple
 
 //
 //import (
@@ -32,7 +32,7 @@ package pnp
 //	choice = 0
 //	options.SetSelectedFunc(func(choice int, s string, s2 string, r rune) {
 //		skill := players[i].Skills()[choice]
-//		xp, health := prod.React(skill)
+//		xp, health := prod.Do(skill)
 //		health = players[i].GainHealth(health)
 //		players[i].GainXP(xp)
 //		m := tview.NewModal()
@@ -169,8 +169,8 @@ package pnp
 //)
 //
 //// NewGame returns a new P&P game
-//func NewGame(engine Engine, name string, prod Production, players ...Player) Game {
-//	return Game{Engine: engine, Name: name, Prod: prod, Players: players, Rounds: 0}
+//func NewGame(tview Engine, name string, prod Production, players ...Player) Game {
+//	return Game{Engine: tview, Name: name, Prod: prod, Players: players, Rounds: 0}
 //}
 //
 //func renderMenu(players []Player, i int, prod Production, numTurns int) *tview.Flex {
@@ -182,7 +182,7 @@ package pnp
 //	choice = 0
 //	options.SetSelectedFunc(func(choice int, s string, s2 string, r rune) {
 //		skill := players[i].Skills()[choice]
-//		xp, health := prod.React(skill)
+//		xp, health := prod.Do(skill)
 //		health = players[i].GainHealth(health)
 //		players[i].GainXP(xp)
 //		m := tview.NewModal()
@@ -367,7 +367,7 @@ package pnp
 //				break
 //			}
 //		}
-//		xp, health := g.Prod.React(choice)
+//		xp, health := g.Prod.Do(choice)
 //		health = player.GainHealth(health)
 //		player.GainXP(xp)
 //		if health >= 0 {

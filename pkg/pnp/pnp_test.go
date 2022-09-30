@@ -7,8 +7,8 @@ import (
 )
 
 func TestStrToSentence(t *testing.T) {
-	assert.Equal(t, "Hi There!", StrToSentence("HiThere!"))
-	assert.Equal(t, "A A A", StrToSentence("AAA"))
+	assert.Equal(t, "Hi There!", spaceCamelcase("HiThere!"))
+	assert.Equal(t, "A A A", spaceCamelcase("AAA"))
 }
 
 type player struct {
