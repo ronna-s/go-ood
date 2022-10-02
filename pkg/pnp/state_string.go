@@ -9,15 +9,14 @@ func _() {
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
 	_ = x[Calm-0]
-	_ = x[SlightlyAnnoyed-1]
-	_ = x[VeryAnnoyed-2]
-	_ = x[Enraged-3]
-	_ = x[Legacy-4]
+	_ = x[Annoyed-1]
+	_ = x[Enraged-2]
+	_ = x[Legacy-3]
 }
 
-const _State_name = "CalmSlightlyAnnoyedVeryAnnoyedEnragedLegacy"
+const _State_name = "CalmAnnoyedEnragedLegacy"
 
-var _State_index = [...]uint8{0, 4, 19, 30, 37, 43}
+var _State_index = [...]uint8{0, 4, 11, 18, 24}
 
 func (i State) String() string {
 	if i < 0 || i >= State(len(_State_index)-1) {

@@ -7,12 +7,13 @@ type Skill int
 
 // Skills
 const (
-	DuckTyping Skill = iota
+	Banana Skill = iota
+	DuckTyping
 	TypeSafety
 	Inheritance
 	Interfaces
 	Modules
-	Generators
+	Reflect
 	MetaProgramming
 	Generics
 	DarkMagic

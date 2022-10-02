@@ -62,20 +62,20 @@ func (e Engine) RenderGame(players []pnp.Player, p pnp.Player) {
 	e.Pages.AddAndSwitchToPage("game", view, true)
 }
 
-func (e Engine) SelectAction(p pnp.Player, onSelect func(action pnp.Action)) {
+func (e Engine) SelectAction(player pnp.Player, state pnp.State, onSelect func(action pnp.Action)) {
 	e.Menu.Clear()
-	for i, s := range p.Skills() {
-		e.Menu.AddItem(s.String(), "", rune(49+i), nil)
+	for i, s := range player.Skills() {
+		e.Menu.AddItem(fmt.Sprintf("%s (%d%%)", s.String(), state.Chances(s)), "", rune(49+i), nil)
 	}
-	e.Menu.SetCurrentItem(len(p.Skills()) - 1)
+	e.Menu.SetCurrentItem(len(player.Skills()) - 1)
 	e.Menu.SetBorder(true).SetTitle("Select skill")
 	e.Menu.SetSelectedFunc(func(choice int, s string, s2 string, r rune) {
-		skill := p.Skills()[choice]
+		skill := player.Skills()[choice]
 		onSelect(skill)
 	})
 }
 
-func (e Engine) Reaction(xp int, health int, player pnp.Player, state pnp.State, action pnp.Action, fn func()) {
+func (e *Engine) Reaction(xp int, health int, player pnp.Player, state pnp.State, action pnp.Action, fn func()) {
 	e.ProdState = state
 	m := tview.NewModal()
 	stateStr := spaceCamelcase(state.String())
@@ -85,7 +85,7 @@ func (e Engine) Reaction(xp int, health int, player pnp.Player, state pnp.State,
 	} else if player.Alive() {
 		m.SetText(fmt.Sprintf("Production DID NOT like %s's move `%s`. Production's state is now `%s`. Gained: %d XP, Lost: %d Health", player, skillStr, stateStr, xp, health)).SetBackgroundColor(tcell.ColorDarkRed)
 	} else {
-		m.SetText(fmt.Sprintf("%s died in the battle against Production. RIP %s. We will always treasure your typos and stuff!!", player, player)).SetBackgroundColor(tcell.ColorPurple)
+		m.SetText(fmt.Sprintf("%s died (was fired) in the battle against Production. RIP %s. We will always treasure your typos and stuff!!", player, player)).SetBackgroundColor(tcell.ColorPurple)
 	}
 	m.AddButtons([]string{"ok"}).SetDoneFunc(func(buttonIndex int, buttonLabel string) {
 		if buttonLabel == "ok" {
@@ -150,10 +150,8 @@ func (e *Engine) RenderProd() {
 	switch e.ProdState {
 	case pnp.Calm:
 		color = tcell.ColorGreen
-	case pnp.SlightlyAnnoyed:
+	case pnp.Annoyed:
 		color = tcell.ColorYellow
-	case pnp.VeryAnnoyed:
-		color = tcell.ColorOrange
 	case pnp.Enraged:
 		color = tcell.ColorRed
 	case pnp.Legacy:
@@ -185,5 +183,104 @@ func (e *Engine) GameWon() {
 }
 
 func (e Engine) GameOver() {
-	e.Pages.AddAndSwitchToPage("", tview.NewTextView().SetText(engine.GameOver).SetTextColor(tcell.ColorLime), true)
+	m := NewModal().AddButtons("Oh well...").
+		SetButtonsAlign(tview.AlignCenter).
+		SetText(engine.GameOver).
+		SetTextColor(tcell.ColorLime).
+		SetBorder(true).
+		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+			e.App.Stop()
+		})
+	m.ResizeItem(m.innerFlex, 0, 3)
+	m.innerFlex.ResizeItem(m.modalFlex, 0, 3)
+
+	e.Pages.AddPage("game over", m, true, true)
+
+}
+
+func (e Engine) PizzaDelivery(fn func()) {
+	const pageName = "pizza"
+	m := NewModal().
+		SetText(engine.Pizza).
+		SetTextAlign(tview.AlignLeft).
+		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+			e.Pages.RemovePage(pageName)
+		}).
+		AddButtons("Thanks, Boss!").
+		SetButtonsAlign(tview.AlignCenter)
+	m.SetBorder(true)
+	m.SetBackgroundColor(tcell.ColorBlue)
+
+	e.Pages.AddPage(pageName, m, true, true)
+}
+
+type Modal struct {
+	*tview.Flex
+	text      *tview.TextView
+	form      *tview.Form
+	innerFlex *tview.Flex
+	modalFlex *tview.Flex
+	done      func(idx int, label string)
+}
+
+func NewModal() *Modal {
+	m := &Modal{form: tview.NewForm(), text: tview.NewTextView()}
+	m.modalFlex = tview.NewFlex().SetDirection(tview.FlexRow).
+		AddItem(m.text, 0, 4, false).
+		AddItem(m.form, 0, 1, true)
+	m.innerFlex = tview.NewFlex().SetDirection(tview.FlexRow).
+		AddItem(nil, 0, 1, false).
+		AddItem(m.modalFlex, 0, 2, true).
+		AddItem(nil, 0, 1, false)
+	m.Flex = tview.NewFlex().
+		AddItem(nil, 0, 1, false).
+		AddItem(m.innerFlex, 0, 2, true).
+		AddItem(nil, 0, 1, false)
+	return m
+}
+
+func (m *Modal) AddButtons(labels ...string) *Modal {
+	for i, label := range labels {
+		m.form.AddButton(label, func() {
+			m.done(i, label)
+		})
+	}
+	return m
+}
+
+func (m *Modal) SetText(text string) *Modal {
+	m.text.SetText(text)
+	return m
+}
+
+func (m *Modal) SetTextAlign(align int) *Modal {
+	m.text.SetTextAlign(align)
+	return m
+
+}
+func (m *Modal) SetButtonsAlign(align int) *Modal {
+	m.form.SetButtonsAlign(align)
+	return m
+}
+
+func (m *Modal) SetBackgroundColor(color tcell.Color) *Modal {
+	m.modalFlex.SetBackgroundColor(color)
+	m.form.SetBackgroundColor(color)
+	m.text.SetBackgroundColor(color)
+	return m
+}
+
+func (m *Modal) SetBorder(show bool) *Modal {
+	m.modalFlex.SetBorder(show)
+	return m
+}
+
+func (m *Modal) SetDoneFunc(done func(buttonIndex int, buttonLabel string)) *Modal {
+	m.done = done
+	return m
+}
+
+func (m *Modal) SetTextColor(color tcell.Color) *Modal {
+	m.text.SetTextColor(color)
+	return m
 }

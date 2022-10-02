@@ -30,16 +30,16 @@ func (r Rubyist) Art() string {
 // If XP is larger than 10 [DuckTyping, Module, ]
 // Anything else [DuckTyping]
 func (r Rubyist) Skills() []pnp.Skill {
-	s := make([]pnp.Skill, pnp.Boredom/2)
-	for i := range s {
-		s[i] = pnp.Skill(i * 2)
-		i++
-	}
+	skills := []pnp.Skill{pnp.DuckTyping, pnp.Inheritance, pnp.Modules, pnp.MetaProgramming, pnp.DarkMagic}
 	if r.XP() > 100 {
-		return s
+		return skills
 	}
 	if r.XP() > 10 {
-		return s[:4]
+		return skills[:len(skills)-1]
 	}
-	return s[:3]
+	return skills[:len(skills)-2]
+}
+
+func (g Rubyist) String() string {
+	return "Rubyist"
 }

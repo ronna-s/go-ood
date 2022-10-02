@@ -14,14 +14,9 @@ type Gopher struct {
 	Character
 }
 
-func (g Rubyist) String() string {
-	return "Rubyist"
-}
 func (g Gopher) String() string {
 	return "Gopher"
 }
-
-var _ pnp.Player = &Gopher{}
 
 // NewGopher ...
 func NewGopher() *Gopher {
@@ -33,13 +28,14 @@ func NewGopher() *Gopher {
 // If XP is larger than 10 [TypeSafety, Interfaces]
 // Anything else [TypeSafety]
 func (g Gopher) Skills() []pnp.Skill {
+	skills := []pnp.Skill{pnp.TypeSafety, pnp.Interfaces, pnp.Reflect, pnp.Generics, pnp.Boredom}
 	if g.XP() > 100 {
-		return []pnp.Skill{pnp.TypeSafety, pnp.Interfaces, pnp.Generics}
+		return skills
 	}
 	if g.XP() > 10 {
-		return []pnp.Skill{pnp.TypeSafety, pnp.Interfaces}
+		return skills[:len(skills)-1]
 	}
-	return []pnp.Skill{pnp.TypeSafety}
+	return skills[:len(skills)-2]
 }
 
 // Art renders the player's ascii art with the player state

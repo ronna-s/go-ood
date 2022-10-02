@@ -13,8 +13,7 @@ func TestReactSuccessful(t *testing.T) {
 		Health, XP int
 	}{
 		{State: Calm, Health: 1, XP: 1},
-		{State: SlightlyAnnoyed, Health: 1, XP: 11},
-		{State: VeryAnnoyed, Health: 1, XP: 11},
+		{State: Annoyed, Health: 1, XP: 11},
 		{State: Enraged, Health: 1, XP: 21},
 		{State: Legacy, Health: 1, XP: 31},
 	}
@@ -31,7 +30,19 @@ func TestReactSuccessful(t *testing.T) {
 				Rand = oldRand
 			}()
 			Rand = func(n int) int { return 0 }
-			actions := []Action{DuckTyping, TypeSafety, Modules, Interfaces, DarkMagic, Generics}
+			actions := []Action{
+				Banana,
+				DuckTyping,
+				TypeSafety,
+				Inheritance,
+				Interfaces,
+				Modules,
+				Reflect,
+				MetaProgramming,
+				Generics,
+				DarkMagic,
+				Boredom,
+			}
 			for _, action := range actions {
 				t.Run(action.String(), func(t *testing.T) {
 					xp, h, state := tc.State.React(action)
@@ -49,8 +60,7 @@ func TestReactUnsuccessful(t *testing.T) {
 		Health, XP int
 	}{
 		{State: Calm, Health: -101, XP: 101},
-		{State: SlightlyAnnoyed, Health: -101, XP: 111},
-		{State: VeryAnnoyed, Health: -101, XP: 111},
+		{State: Annoyed, Health: -101, XP: 111},
 		{State: Enraged, Health: -101, XP: 121},
 		{State: Legacy, Health: -100, XP: 131},
 	}

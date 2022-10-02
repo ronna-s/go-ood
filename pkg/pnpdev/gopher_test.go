@@ -15,11 +15,14 @@ func TestGopher(t *testing.T) {
 		assert.Equal(t, 100, g.Health())
 	})
 	t.Run("Skills", func(t *testing.T) {
-		g := Gopher{Character: Character{X: 1}}
-		cases := []pnp.Skill{pnp.TypeSafety, pnp.Interfaces, pnp.Generics}
-		for i := 0; i < len(cases); i, g.X = i+1, g.X*10+1 {
-			assert.ElementsMatch(t, cases[:i+1], g.Skills())
-		}
+		g := NewGopher()
+		skills := []pnp.Skill{pnp.TypeSafety, pnp.Interfaces, pnp.Reflect, pnp.Generics, pnp.Boredom}
+		g.X = 1
+		assert.ElementsMatch(t, skills[:3], g.Skills())
+		g.X = 11
+		assert.ElementsMatch(t, skills[:4], g.Skills())
+		g.X = 101
+		assert.ElementsMatch(t, skills[:5], g.Skills())
 	})
 	t.Run("Art renders the player's ascii art with the player state", func(t *testing.T) {
 		oldGopherArt := gopherArt
@@ -27,6 +30,5 @@ func TestGopher(t *testing.T) {
 		gopherArt = "Nice Art [Health=%d,XP=%d]"
 		g := Gopher{Character: Character{X: 10, H: 20}}
 		assert.Equal(t, "Nice Art [Health=20,XP=10]", g.Art())
-
 	})
 }

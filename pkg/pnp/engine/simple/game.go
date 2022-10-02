@@ -33,8 +33,8 @@ package simple
 //	options.SetSelectedFunc(func(choice int, s string, s2 string, r rune) {
 //		skill := players[i].Skills()[choice]
 //		xp, health := prod.Do(skill)
-//		health = players[i].GainHealth(health)
-//		players[i].GainXP(xp)
+//		health = players[i].ApplyHealthDiff(health)
+//		players[i].ApplyXPDiff(xp)
 //		m := tview.NewModal()
 //		if health >= 0 {
 //			m.SetText(fmt.Sprintf("Production liked %s's move `%s`. Production's state is now `%s`. Gained: %d XP, %d health", players[i], skill, prod.State, xp, health))
@@ -94,8 +94,8 @@ package simple
 //	// Player represents a P&P player
 //	Player interface {
 //		Alive() bool
-//		GainXP(int)
-//		GainHealth(int) int
+//		ApplyXPDiff(int)
+//		ApplyHealthDiff(int) int
 //		Skills() []Skill
 //		Health() int
 //		Art() string
@@ -183,8 +183,8 @@ package simple
 //	options.SetSelectedFunc(func(choice int, s string, s2 string, r rune) {
 //		skill := players[i].Skills()[choice]
 //		xp, health := prod.Do(skill)
-//		health = players[i].GainHealth(health)
-//		players[i].GainXP(xp)
+//		health = players[i].ApplyHealthDiff(health)
+//		players[i].ApplyXPDiff(xp)
 //		m := tview.NewModal()
 //		if health >= 0 {
 //			m.SetText(fmt.Sprintf("Production liked %s's move `%s`. Production's state is now `%s`. Gained: %d XP, %d health", players[i], skill, prod.State, xp, health))
@@ -331,7 +331,7 @@ package simple
 //			fmt.Println(withColor(cyan, "PIZZA DELIVERY! \nAll players get a pizza, some rest and a health boost!"))
 //			fmt.Println(pizza)
 //			for i := range band {
-//				band[i].GainHealth(100)
+//				band[i].ApplyHealthDiff(100)
 //			}
 //			pressEnter()
 //			continue
@@ -368,8 +368,8 @@ package simple
 //			}
 //		}
 //		xp, health := g.Prod.Do(choice)
-//		health = player.GainHealth(health)
-//		player.GainXP(xp)
+//		health = player.ApplyHealthDiff(health)
+//		player.ApplyXPDiff(xp)
 //		if health >= 0 {
 //			fmt.Printf("Production liked %s's move. Production's state is now `%s`. Gained: %d XP, %d health\n", player, g.Prod.State, xp, health)
 //		} else {

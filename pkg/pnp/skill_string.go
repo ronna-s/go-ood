@@ -8,21 +8,22 @@ func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
-	_ = x[DuckTyping-0]
-	_ = x[TypeSafety-1]
-	_ = x[Inheritance-2]
-	_ = x[Interfaces-3]
-	_ = x[Modules-4]
-	_ = x[Generators-5]
-	_ = x[MetaProgramming-6]
-	_ = x[Generics-7]
-	_ = x[DarkMagic-8]
-	_ = x[Boredom-9]
+	_ = x[Banana-0]
+	_ = x[DuckTyping-1]
+	_ = x[TypeSafety-2]
+	_ = x[Inheritance-3]
+	_ = x[Interfaces-4]
+	_ = x[Modules-5]
+	_ = x[Reflect-6]
+	_ = x[MetaProgramming-7]
+	_ = x[Generics-8]
+	_ = x[DarkMagic-9]
+	_ = x[Boredom-10]
 }
 
-const _Skill_name = "DuckTypingTypeSafetyInheritanceInterfacesModulesGeneratorsMetaProgrammingGenericsDarkMagicBoredom"
+const _Skill_name = "BananaDuckTypingTypeSafetyInheritanceInterfacesModulesReflectMetaProgrammingGenericsDarkMagicBoredom"
 
-var _Skill_index = [...]uint8{0, 10, 20, 31, 41, 48, 58, 73, 81, 90, 97}
+var _Skill_index = [...]uint8{0, 6, 16, 26, 37, 47, 54, 61, 76, 84, 93, 100}
 
 func (i Skill) String() string {
 	if i < 0 || i >= Skill(len(_Skill_index)-1) {

@@ -16,18 +16,20 @@ func TestRubyist(t *testing.T) {
 	})
 	t.Run("Skills", func(t *testing.T) {
 		r := Rubyist{Character: Character{X: 1}}
-		cases := []pnp.Skill{pnp.DuckTyping, pnp.Module, pnp.DarkMagic}
-		for i := 0; i < len(cases); i, r.X = i+1, r.X*10+1 {
-			assert.ElementsMatch(t, cases[:i+1], r.Skills())
-		}
+		skills := []pnp.Skill{pnp.DuckTyping, pnp.Inheritance, pnp.Modules, pnp.MetaProgramming, pnp.DarkMagic}
+		r.X = 1
+		assert.ElementsMatch(t, skills[:3], r.Skills())
+		r.X = 11
+		assert.ElementsMatch(t, skills[:4], r.Skills())
+		r.X = 101
+		assert.ElementsMatch(t, skills[:5], r.Skills())
 	})
+
 	t.Run("Art renders the player's ascii art with the player's state", func(t *testing.T) {
 		oldRubyistArt := rubyistArt
 		defer func() { rubyistArt = oldRubyistArt }()
 		rubyistArt = "Nice Art [Health=%d,XP=%d]"
 		r := Rubyist{Character: Character{X: 10, H: 20}}
 		assert.Equal(t, "Nice Art [Health=20,XP=10]", r.Art())
-
 	})
-
 }
