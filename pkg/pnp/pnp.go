@@ -6,10 +6,11 @@ type (
 	// Game represents a Platforms and Programmers Game
 	// where a band of player will attempt to take on production
 	Game struct {
-		Players []Player
-		Round   int
-		Prod    Production
-		Alive   []Player
+		Players  []Player
+		Round    int
+		Prod     Production
+		Alive    []Player
+		BandName string
 	}
 
 	// Player represents a P&P player
@@ -40,6 +41,7 @@ type (
 		GameOver()
 		GameWon()
 		PizzaDelivery(fn func())
+		Welcome(fn func(string))
 	}
 	// Action ...
 	Action = Skill
@@ -55,8 +57,16 @@ func New(players ...Player) *Game {
 
 // Run starts a new game
 func (g *Game) Run(e Engine) {
-	g.MainLoop(e)
+	g.Welcome(e, func() {
+		g.MainLoop(e)
+	})
 	e.Start()
+}
+func (g *Game) Welcome(e Engine, fn func()) {
+	e.Welcome(func(bandName string) {
+		g.BandName = bandName
+		g.MainLoop(e)
+	})
 }
 
 // MainLoop kicks off the next players round

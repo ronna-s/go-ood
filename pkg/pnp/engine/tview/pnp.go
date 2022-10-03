@@ -2,13 +2,12 @@ package engine
 
 import (
 	"fmt"
+	"github.com/gdamore/tcell/v2"
 	"strings"
 	"time"
 	"unicode"
 
-	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
-
 	"github.com/ronna-s/go-ood/pkg/pnp"
 	"github.com/ronna-s/go-ood/pkg/pnp/engine"
 )
@@ -53,13 +52,14 @@ func (e *Engine) Stop() {
 }
 
 func (e Engine) RenderGame(players []pnp.Player, p pnp.Player) {
-	e.Pages.RemovePage("game")
+	const pageName = "main"
+	e.Pages.RemovePage(pageName)
 	view := tview.NewFlex().SetDirection(tview.FlexColumn).
 		AddItem(e.RenderPlayers(players, p), 0, 2, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 			AddItem(e.Menu, 0, 1, true).
 			AddItem(e.Prod, 0, 1, false), 0, 1, true)
-	e.Pages.AddAndSwitchToPage("game", view, true)
+	e.Pages.AddAndSwitchToPage(pageName, view, true)
 }
 
 func (e Engine) SelectAction(player pnp.Player, state pnp.State, onSelect func(action pnp.Action)) {
@@ -179,7 +179,19 @@ func NewGame() {
 }
 
 func (e *Engine) GameWon() {
-	e.Pages.AddAndSwitchToPage("", tview.NewTextView().SetText(engine.GameWon).SetTextColor(tcell.ColorLime), true)
+	m := NewModal().AddButtons("Yay!").
+		SetButtonsAlign(tview.AlignCenter).
+		SetText(engine.GameWon).
+		SetTextColor(tcell.ColorLime).
+		SetBorder(true).
+		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+			e.App.Stop()
+		})
+	m.ResizeItem(m.innerFlex, 0, 5)
+	m.innerFlex.ResizeItem(m.modalFlex, 0, 5)
+
+	e.Pages.AddPage("game won", m, true, true)
+	//e.Pages.AddAndSwitchToPage("", tview.NewTextView().SetText(engine.GameWon).SetTextColor(tcell.ColorLime), true)
 }
 
 func (e Engine) GameOver() {
@@ -204,14 +216,51 @@ func (e Engine) PizzaDelivery(fn func()) {
 		SetText(engine.Pizza).
 		SetTextAlign(tview.AlignLeft).
 		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+			fn()
 			e.Pages.RemovePage(pageName)
 		}).
 		AddButtons("Thanks, Boss!").
 		SetButtonsAlign(tview.AlignCenter)
 	m.SetBorder(true)
-	m.SetBackgroundColor(tcell.ColorBlue)
-
+	m.SetBackgroundColor(tcell.ColorBlack).
+		SetTextColor(tcell.ColorGreen)
+	m.ResizeItem(m.innerFlex, 0, 3)
+	m.innerFlex.ResizeItem(m.modalFlex, 0, 3)
 	e.Pages.AddPage(pageName, m, true, true)
+}
+
+func (e *Engine) Welcome(fn func(bandName string)) {
+	const modalName = "welcome modal"
+	newGameText := tview.NewTextView()
+	newGameText.SetText("A band of developers will attempt to survive against PRODUCTION!")
+	gameArt := tview.NewTextView()
+	gameArt.SetText(engine.Gamestarted).SetTextColor(tcell.ColorAqua)
+	nameInput := tview.NewInputField().SetLabel("What is the name of your band?  ").SetText("Cool Band").SetFieldTextColor(tcell.ColorBlack).SetFieldBackgroundColor(tcell.ColorDarkCyan).SetFieldWidth(32)
+	nameInput.SetDoneFunc(func(key tcell.Key) {
+		if key != tcell.KeyEnter {
+			return
+		}
+		bandName := nameInput.GetText()
+		welcomeModal := tview.NewModal()
+		welcomeModal.SetText("Hello, " + bandName + "! Are you ready?").SetBackgroundColor(tcell.ColorBlack)
+		welcomeModal.SetTextColor(tcell.ColorDarkCyan)
+		welcomeModal.AddButtons([]string{"Let's do this!"}).SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+			e.Pages.RemovePage(modalName)
+			e.Pages.RemovePage("load")
+			fn(bandName)
+		})
+		e.Pages.AddAndSwitchToPage(modalName, welcomeModal, true)
+	})
+
+	form := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(gameArt, 20, 20, false).
+		AddItem(newGameText, 1, 1, false).
+		AddItem(nameInput, 1, 1, true)
+
+	form.SetBorderPadding(0, 0, 20, 0)
+	form.SetBorder(true).SetTitle("New game started!").SetTitleAlign(tview.AlignLeft)
+	e.Pages.AddAndSwitchToPage("load", tview.NewFlex().AddItem(form, 0, 1, true), true)
 }
 
 type Modal struct {

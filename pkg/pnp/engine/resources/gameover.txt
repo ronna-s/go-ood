@@ -13,4 +13,4 @@
                     @@@@@@@@@@@@@|  | | | | | | | |
                                   \_|_|_|_|_|_|_|_|
 
-                    Well that's unfortunate... Game OVER!
+                    Well, that's unfortunate... Game OVER!
