@@ -21,6 +21,6 @@ test-pnp:
 run-pnp:
 	@docker run -v $(shell pwd):/root --rm -it go-ood go run cmd/pnp/pnp.go
 test-heap:
-	docker run go-ood go test github.com/ronna-s/go-ood/pkg/heap
+	@docker run go-ood go test github.com/ronna-s/go-ood/pkg/heap
 run-top:
-	@docker run go-ood top
+	@docker run -v $(shell pwd):/root --rm -it go-ood go run cmd/top/top.go
