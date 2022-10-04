@@ -90,17 +90,20 @@ Find the function `SolveMaze(g Gopher)` in cmd/maze/maze.go and implement it.
 
 All exercises can be completed using the go tool, docker or a combination docker and the make tool:
 
+#### Logistics:
+If you are planning to use the go tool directly you can skip this step and move directly to [run the test](#run-the-tests)
+
 If planning to use docker and you don't have the make tool, run:
 ```bash
 docker build . -t go-ood
 ```
 
-If you have the make tool and docker run:
+If you have the make tool and docker, run:
 ```bash
 make build
 ```
 
-Run the tests:
+#### Run the tests:
 ```bash
 # go tool
 go test github.com/ronna-s/go-ood/cmd/maze 
@@ -175,6 +178,8 @@ This is done in scripting languages with duck-typing, but in Go it's just type-s
 Implicit interfaces mean that packages don't have to provide interfaces to the user, the user can define their own interface with the smallest subset of functionality that they need.
 In fact our `robot.Robot` has another public method `Steps` that is not part of the `Gopher` interface because we don't need to use it.
 This makes plugging-in code and defining and mocking dependencies safely a natural thing in Go and makes the code minimal to its usage.  
+
+**In conclusion:** before you write code make sure it's necessary. Be lazy. Be minimal. Be Marie Kondo.
 
 >_The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle._
 (Joe Armstrong)
