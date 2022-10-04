@@ -10,6 +10,5 @@ import (
 
 func main() {
 	game := pnp.New(pnpdev.NewMinion())
-	//game := pnp.New()
 	game.Run(engine.New())
 }
