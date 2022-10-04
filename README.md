@@ -6,21 +6,36 @@ https://github.com/ronna-s/go-ood/ [Clone me!]
 This workshop is aimed to clarify the OOP features that Go provides.
 It is named A Path to OOD and not OOP because different language features mean different design concepts.  
 
+## Logistics:
+All exercises can be completed using the go tool, docker or a combination docker and the make tool.
+If you are planning to use the go tool directly you can skip this step.
+
+If planning to use docker and you don't have the make tool, run:
+```bash
+docker build . -t go-ood
+```
+
+If you have the make tool and docker, run:
+```bash
+make build
+```
+
 ## Schedule
 
-- 09:00-09:20: Introduction to Object-Oriented Programming [link](#introduction-to-object-oriented-programming)
-- 09:20-09:50: Exercise 1 - understanding the benefits [link](#exercise-1---understanding-the-benefits)
-- 09:50-10:00: Break
-- 10:00-10:10: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go)
-- 10:20-10:50: Exercise 2 - Interfaces and Embedding [link](#exercise-2---interfaces-and-embedding)
-- 10:50-11:00: Break
-- 11:00-11:10: Organizing your Packages [link](#organizing-your-packages)
-- 11:10-11:20: Code Generation [link](#code-generation-why-when)
-- 11:20-11:30: More Theory [link](#generics)
-- 11:30-11:50: Generics [link](#generics)
-- 11:50-12:00: Break
-- 12:00-12:50: Exercise 3 - Generics [link](#exercise-3---generics)
-- 12:50-13:00: Conclusion
+- 13:00-13:10: Introduction to Object-Oriented Programming [link](#introduction-to-object-oriented-programming)
+- 13:10-13:40: Exercise 1 - understanding the benefits [link](#exercise-1---understanding-the-benefits)
+- 13:40-13:50: Exercise 1 - How does it all work? [link](#exercise-1---how-does-it-all-work)
+- 13:50-14:00: Break
+- 14:00-14:10: Object Oriented Fundamentals and Go [link](#oo-fundamentals-and-go)
+- 14:10-14:50: Exercise 2 - Interfaces and Embedding [link](#exercise-2---interfaces-and-embedding)
+- 14:50-15:00: Break
+- 15:00-15:10: Organizing your Packages [link](#organizing-your-packages)
+- 15:10-15:20: Code Generation [link](#code-generation-why-when)
+- 15:20-15:30: More Theory [link](#generics)
+- 15:30-15:50: Generics [link](#generics)
+- 15:50-16:00: Break
+- 16:00-16:50: Exercise 3 - Generics [link](#exercise-3---generics)
+- 16:50-17:00: Conclusion
 
 ## Introduction to Object-Oriented Programming
 
@@ -88,21 +103,6 @@ type Gopher interface {
 
 Find the function `SolveMaze(g Gopher)` in cmd/maze/maze.go and implement it.
 
-All exercises can be completed using the go tool, docker or a combination docker and the make tool:
-
-#### Logistics:
-If you are planning to use the go tool directly you can skip this step and move directly to [run the test](#run-the-tests)
-
-If planning to use docker and you don't have the make tool, run:
-```bash
-docker build . -t go-ood
-```
-
-If you have the make tool and docker, run:
-```bash
-make build
-```
-
 #### Run the tests:
 ```bash
 # go tool
@@ -132,6 +132,7 @@ You can run the app multiple times to see your gopher running through different 
 
 Done? If not, don't worry. You have the entire conference ;) 
 
+### Exercise 1 - how does it all work?
 Let's review the code that made this possible and examine the Go features it uses.
 
 Run:
@@ -162,20 +163,42 @@ We see that:
 
 Speaking of "Receivers", Remember that we said that OO is about objects communicated via messages?
 The idea for the receiver was borrowed from Oberon-2 which is an OO version of Oberon.
-But the receiver is also just a special function parameter, so there is no receiver.
+But the receiver is also just a special function parameter, so **"there is no spoon"** (receiver) but from a design perspective there is.
 
 ![https://giphy.com/gifs/the-matrix-there-is-no-
 -3o6Zt0hNCfak3QCqsw](https://gifimage.net/wp-content/uploads/2018/06/there-is-no-spoon-gif-10.gif)
 
-Navigate around to see the travel package, then the robot package and finally the main package in `cmd/maze`
 
-That package defines the interface that abstracted away our `robot.Robot` struct into the `Gopher` interface. This is not common.
+How do we know that there's no actual receiver? [Run this code](https://go.dev/play/p/iOx0L_p65jz)
+
+```go
+https://go.dev/play/p/iOx0L_p65jz
+package main
+
+import "fmt"
+
+type A struct{}
+
+func (a *A) Foo() string {
+	return "Hi from foo"
+}
+func main() {
+	var a *A //a is nil
+	fmt.Println(a.Foo())
+}
+```
+
+Let's proceed to examine the maze code, navigate around to see the `travel` package, then the `robot` package and finally the `main` package in `cmd/maze`
+
+That package defines the interface that abstracted away our `robot.Robot` struct into the `Gopher` interface. This ability that Go provides is not common.
 
 The common OOP languages approach is that class A must inherit from class B or implement interface I in order to be used as an instance of B or I,
 but our Robot type has no idea that Gopher type even exists. Gopher is defined in a completely different package that is not imported by robot.
 Go was written for the 21st century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. 
-This is done in scripting languages with duck-typing, but in Go it's just type-safe, and you get compile time validation of your code.
+
+This is done in scripting languages with duck-typing, but in Go it's type-safe and you get compile time validation of your code.
 Implicit interfaces mean that packages don't have to provide interfaces to the user, the user can define their own interface with the smallest subset of functionality that they need.
+
 In fact our `robot.Robot` has another public method `Steps` that is not part of the `Gopher` interface because we don't need to use it.
 This makes plugging-in code and defining and mocking dependencies safely a natural thing in Go and makes the code minimal to its usage.  
 
@@ -191,13 +214,13 @@ He likely meant that OO is overcomplicated but in reality those rules that we di
 The class Banana will have to extend or inherit from Fruit (or a similar Object class) to be considered a fruit, implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to know where it came from. etc.
 What happens if the Banana we imported doesn't implement an interface that we need it to like holdable? We have to write a new implementation of Banana that wraps the original Banana.
 
-Now would be a good time to discuss inheritance:
+### Let's discuss inheritance for a moment and if we are really gonna miss it.
 Most OO languages limit inheritance to allow every class to inherit functionality from exactly one other class.
 That means that you can't express that an instance of class A is an instance of class B and class C, for example: a truck can't be both a vehicle and also a container of goods.
 In the case where you need to express this you will end up doing the same as you would do in Go with interfaces, except as we saw the Go implicit interface implementation is far more powerful.
 In addition, common language that offer inheritance often force you to inherit from a common Object class which is why objects can only be class instances (and can't be just values with methods, like in Go).
 
-From the Go FAQ - is Go an object-oriented language?
+### Finally, from the Go FAQ - is Go an object-oriented language?
 >_Yes and no. Although Go has types and methods and allows an object-oriented style of programming, there is no type hierarchy. The concept of “interface” in Go provides a different approach that we believe is easy to use and in some ways more general. There are also ways to embed types in other types to provide something analogous—but not identical—to subclassing. Moreover, methods in Go are more general than in C++ or Java: they can be defined for any sort of data, even built-in types such as plain, “unboxed” integers. They are not restricted to structs (classes). <br>Also, the lack of a type hierarchy makes “objects” in Go feel much more lightweight than in languages such as C++ or Java._
 
 ## OO fundamentals and Go
@@ -327,10 +350,12 @@ I like this simple explanation by (Gabriele Tomassetti)[https://tomassetti.me/co
 > - consistency
 
 It's about automating a process of writing repetitive error-prone code.
+Code generation is similar to meta-programming but we compile it and that makes it safer to run.
 Consider the simple [stringer](https://pkg.go.dev/golang.org/x/tools/cmd/stringer)
 Consider [Mockery](http://github.com/vektra/mockery)
-
 Both were used to generate code for this workshop.
+
+Also, I beg you to please commit your generated code. A codebase is expected to be complete and runnable.
 
 ## More Theory
 
@@ -358,13 +383,14 @@ func main() {
 [Consider this conversation](https://twitter.com/francesc/status/1293556263196844032)
 
 ## Generics
-It was a long time consensus that "real gophers" don't need generics so much so that around the time the generics draft of 2020 was released, many gophers expressed that they will likely never use this feature.
-Let's understand first the point that they were trying to make.
+It was a long time consensus that "real gophers" don't need generics, so much so that around the time the generics draft of 2020 was released, many gophers still expressed that they are not likely to use them.
 
-Let's look at [this code](https://gist.github.com/Xaymar/7c82ed127c8f1def53075f414a7df153), made using C++.
+Before we get into this topic, let's understand first the point that they were trying to make.
+
+Let's examine [this code](https://gist.github.com/Xaymar/7c82ed127c8f1def53075f414a7df153), made using C++.
 We see here generic code (templates) that allows an event to add functions (listeners) to its subscribers.
 Let's ignore for a second that this code adds functions, not objects and let's assume it did take in objects with the function `Handle(e Event)`. 
-We don't need generics in Go to make this work because interfaces are implicit. As we saw already in C++ and object has to be aware of it's implementations, this is why to allow plugging-in of functionality we have to use generics in C++ (and in Java).
+We don't need generics in Go to make this work because interfaces are implicit. As we saw already in C++ an object has to be aware of it's implementations, this is why to allow plugging-in of functionality we have to use generics in C++ (and in Java).
 
 In Go this code would look something like [this](https://go.dev/play/p/Tqm_Hb0vcZb):
 
@@ -396,7 +422,7 @@ func main() {
 **We didn't need generics at all!**
 
 However, there are cases in Go where we have to use generics and until recently we used code generation for.
-Those cases are when the behavior is derived from the type or leaks to the type:
+Those cases are when the behavior is derived from the type or leaks to the type's behavior:
 
 For example:
 The linked list
@@ -435,20 +461,18 @@ func main() {
 }
 ```
 Of course, you are not likely to use linked lists in your day to day, but you are likely to use:
-1. Repositories, databases, data structures that are type specific
-2. Event handlers and processors that are type specific
+1. Repositories, databases, data structures that are type specific, etc.
+2. Event handlers and processors that are specific to the type.
 3. The [concurrent map in the sync package](https://pkg.go.dev/sync#Map) which uses the empty interface.
 4. [The heap](https://pkg.go.dev/container/heap#example-package-IntHeap) 
 
-The common thread to these examples is that before generics we had to trade certain functionality for type safety.
+The common thread to these examples is that before generics we had to trade generalizing certain behavior for type safety (or generate code to do so), now we can have both.
 
 ## Exercise 3 - Generics
-Implement a new generic slice Heap OOP style in `pkg/heap` (as usual failing tests provided).
-The heap is used by TOP OF THE POP! `cmd/top` to print the top 10 Artists and Songs 
+Implement a new generic Heap OOP style in `pkg/heap` (as usual failing tests provided).
+The heap is used by TOP OF THE POP! `cmd/top` to print the top 10 Artists and Songs. 
 
-Uncomment the following line in the Dockerfile:
-
-As usual:
+Test:
 ```bash
 # go tool
 go test github.com/ronna-s/go-oog/pkg/heap
@@ -456,6 +480,16 @@ go test github.com/ronna-s/go-oog/pkg/heap
 make test-heap
 # any other setup with docker 
 [docker command from before] test github.com/ronna-s/go-ood/pkg/heap
+````
+
+Run our TOP OF THE POP app:
+```bash
+# go tool
+go run cmd/top/top.go
+# make + docker
+make run-heap
+# any other setup with docker 
+[docker command from before] go run cmd/top/top.go
 ````
 
 ## Conclusion
