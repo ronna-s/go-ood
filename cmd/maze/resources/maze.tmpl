@@ -23,10 +23,13 @@
 		  transform: scaleX(-1);
 		}
 		.down-facing{
-			transform: rotate(270deg);
+			transform: rotate(270deg) scaleY(-1);
 		}
 		.up-facing{
-			transform: rotate(90deg);
+			transform: rotate(90deg) scaleY(-1);
+		}
+		.left-facing {
+		    transform: scaleY(-1)
 		}
         .exit {
             background-color: #add8e6;
@@ -35,7 +38,7 @@
         /* The slider itself */
         .slider {
             appearance: none;
-            width: 500px; /* Full-width */
+            width: 300px; /* Full-width */
             height: 5px; /* Specified height */
             background: #d3d3d3; /* Grey background */
             outline: none; /* Remove outline */
@@ -68,7 +71,7 @@
 <div id="slider-container" class="slidecontainer" style="clear: left;height:30px;">
     Faster
 	<input id="slider" type="range" min="10" max="2000" value="200" class="slider">
-	Slower
+	Faster
 </div>
 
 	<table CELLSPACING=0 id="board" style="float: left">

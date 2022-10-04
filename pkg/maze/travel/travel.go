@@ -92,7 +92,7 @@ func (t *Travel) Move() error {
 			return nil
 		}
 	}
-	return errors.New("invalid move")
+	return errors.New("there's a wall here")
 }
 
 // TurnRight turns clock-wise
