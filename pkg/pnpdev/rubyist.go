@@ -20,7 +20,7 @@ func NewRubyist() *Rubyist {
 	return &Rubyist{Character{H: 100}}
 }
 
-// Art renders the player's ascii art with the player state
+// AsciiArt renders the player's ascii art with the player state
 func (r Rubyist) AsciiArt() string {
 	return fmt.Sprintf(rubyistArt, r.H, r.X)
 }
