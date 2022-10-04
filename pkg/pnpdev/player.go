@@ -16,22 +16,22 @@ func NewMinion() *Minion {
 	return &Minion{H: 100}
 }
 
-// Alive checks if the minion is (still) alive
+// Alive checks if the player is (still) alive
 func (m Minion) Alive() bool {
 	return m.H > 0
 }
 
-// Health returns the minion's health level
+// Health returns the player's health level
 func (m Minion) Health() int {
 	return m.H
 }
 
-// XP returns the minion's xp level
+// XP returns the player's xp level
 func (m Minion) XP() int {
 	return m.X
 }
 
-// ApplyXPDiff adds the given xp to the minion's xp down to a minimum of 0
+// ApplyXPDiff adds the given xp to the player's xp down to a minimum of 0
 func (m *Minion) ApplyXPDiff(xp int) int {
 	sum := m.X + xp
 	if sum < 0 {
@@ -43,7 +43,7 @@ func (m *Minion) ApplyXPDiff(xp int) int {
 	return xp
 }
 
-// ApplyHealthDiff adds the given health to the minion's health down to a minimum of 0 and up to 100
+// ApplyHealthDiff adds the given health to the player's health down to a minimum of 0 and up to 100
 func (m *Minion) ApplyHealthDiff(health int) int {
 	sum := m.H + health
 	if sum > 100 {
