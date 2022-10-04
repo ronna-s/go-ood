@@ -290,6 +290,7 @@ Run the game with the minion player:
 go run cmd/pnp/pnp.go
 # make + docker
 make run-pnp
+# any other setup with docker 
 [docker command from before] go run github.com/ronna-s/go-ood/cmd/pnp.go
 ```
 
@@ -379,13 +380,14 @@ It's particularly interesting that this information about what types implement w
 
 This feature only makes sense when interfaces are implicit because in languages when the interface is explicit there's no way a type can suddenly implement a private interface that is used in our code.
 
-### What do you need to know when you implement something like that?
+### What do you need to know about how to work effectively with this:
 1. The user of your code might not know what interfaces they are expected to implement or might provide them but cause a panic. Use `defer` and `recover` to prevent crashing the app.
-2. If your type is expected to implement an interface, to protect against changes add a line to your code that will fail to compile if your type doesn't implement the interface like so:
+2. If your type is expected to implement an interface, to protect against changes add a line to your code that will fail to compile if your type doesn't implement the interface, like so:
 
 ```go 
 // In the global scope directly
-var _ TheInterfaceWeImplemnt = MyType{} // or &MyType{} or NewMyType(), etc.
+var _ interface{ String() string } = NewGopher()
+var _ interface{ String() string } = NewRubyist()
 ```
 
 ### The empty interface{} (any):
