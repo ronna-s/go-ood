@@ -53,6 +53,6 @@ func TestRubyist(t *testing.T) {
 		defer func() { rubyistArt = oldRubyistArt }()
 		rubyistArt = "Nice Art [Health=%d,XP=%d]"
 		r := Rubyist{Character: Character{X: 10, H: 20}}
-		assert.Equal(t, "Nice AsciiArt [Health=20,XP=10]", r.AsciiArt())
+		assert.Equal(t, "Nice Art [Health=20,XP=10]", r.AsciiArt())
 	})
 }
