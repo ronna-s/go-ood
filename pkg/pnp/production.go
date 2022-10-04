@@ -6,7 +6,6 @@ type (
 		State State
 	}
 	// State represents a P&P Production state
-	State int
 )
 
 // NewProduction ...

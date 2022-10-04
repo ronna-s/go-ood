@@ -21,7 +21,7 @@ func NewRubyist() *Rubyist {
 }
 
 // Art renders the player's ascii art with the player state
-func (r Rubyist) Art() string {
+func (r Rubyist) AsciiArt() string {
 	return fmt.Sprintf(rubyistArt, r.H, r.X)
 }
 

@@ -11,8 +11,9 @@ func (c Character) Alive() bool {
 }
 
 // ApplyXPDiff adds XP to the character
-func (c *Character) ApplyXPDiff(xp int) {
+func (c *Character) ApplyXPDiff(xp int) int {
 	c.X += xp
+	return xp
 }
 
 // ApplyHealthDiff takes in the amount of health to be gained and applies up to a maximum health of 100 and down to 0

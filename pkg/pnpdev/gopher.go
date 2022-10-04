@@ -39,6 +39,6 @@ func (g Gopher) Skills() []pnp.Skill {
 }
 
 // Art renders the player's ascii art with the player state
-func (g Gopher) Art() string {
+func (g Gopher) AsciiArt() string {
 	return fmt.Sprintf(gopherArt, g.H, g.X)
 }

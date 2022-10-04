@@ -13,9 +13,9 @@ godoc:
 test:
 	docker run go-ood go test ./...
 test-maze:
-	docker run go-ood go test github.com/ronna-s/go-ood/cmd/maze
+	docker run -v $(shell pwd):/root --rm -it go-ood go test github.com/ronna-s/go-ood/cmd/maze
 run-maze:
-	@docker run go-ood
+	@docker run -v $(shell pwd):/root --rm -it go-ood go run cmd/maze/maze.go
 test-pnp:
 	@docker run -v $(shell pwd):/root --rm go-ood go test github.com/ronna-s/go-ood/pkg/pnpdev
 run-pnp:

@@ -46,9 +46,11 @@ type Gopher interface {
 // See the Gopher interface methods for more details
 func SolveMaze(g Gopher) {
 	for !g.Finished() {
-		g.Move()
-		g.TurnRight()
-		g.Move()
+		if err := g.Move(); err != nil {
+			g.TurnRight()
+		} else {
+			g.TurnLeft()
+		}
 	}
 }
 
@@ -86,6 +88,9 @@ func drawHTML(g robot.Robot, w io.Writer) {
 			} else if c[maze.X] != res.DimX-1 {
 				s += "no-right "
 			}
+			if i == res.DimX*res.DimY-1 {
+				s += "exit "
+			}
 			if res.PathDown(i) {
 				s += "down"
 			} else if c[maze.Y] != res.DimY-1 {
@@ -95,6 +100,9 @@ func drawHTML(g robot.Robot, w io.Writer) {
 		},
 		"PathDown": func(i int) bool {
 			return res.PathDown(i)
+		},
+		"Mul": func(x, y int) int {
+			return x * y
 		},
 	}).Parse(string(tmpl))
 	if err != nil {

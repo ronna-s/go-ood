@@ -24,11 +24,11 @@ func TestGopher(t *testing.T) {
 		g.X = 101
 		assert.ElementsMatch(t, skills[:5], g.Skills())
 	})
-	t.Run("Art renders the player's ascii art with the player state", func(t *testing.T) {
+	t.Run("AsciiArt renders the player's ascii art with the player state", func(t *testing.T) {
 		oldGopherArt := gopherArt
 		defer func() { gopherArt = oldGopherArt }()
 		gopherArt = "Nice Art [Health=%d,XP=%d]"
 		g := Gopher{Character: Character{X: 10, H: 20}}
-		assert.Equal(t, "Nice Art [Health=20,XP=10]", g.Art())
+		assert.Equal(t, "Nice Art [Health=20,XP=10]", g.AsciiArt())
 	})
 }

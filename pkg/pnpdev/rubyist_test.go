@@ -25,11 +25,11 @@ func TestRubyist(t *testing.T) {
 		assert.ElementsMatch(t, skills[:5], r.Skills())
 	})
 
-	t.Run("Art renders the player's ascii art with the player's state", func(t *testing.T) {
+	t.Run("AsciiArt renders the player's ascii art with the player's state", func(t *testing.T) {
 		oldRubyistArt := rubyistArt
 		defer func() { rubyistArt = oldRubyistArt }()
 		rubyistArt = "Nice Art [Health=%d,XP=%d]"
 		r := Rubyist{Character: Character{X: 10, H: 20}}
-		assert.Equal(t, "Nice Art [Health=20,XP=10]", r.Art())
+		assert.Equal(t, "Nice AsciiArt [Health=20,XP=10]", r.AsciiArt())
 	})
 }

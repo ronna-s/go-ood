@@ -18,7 +18,7 @@ type (
 		// Alive checks if the player is alive
 		Alive() bool
 		// ApplyXPDiff applies the XP diff to the player's XP
-		ApplyXPDiff(xp int)
+		ApplyXPDiff(xp int) (actual int)
 		// ApplyHealthDiff takes in the amount of health to be gained and applies it to the player's health
 		// up to a maximum health of 100 and down to 0. It returns the actual difference that was applied
 		ApplyHealthDiff(health int) (actual int)
@@ -26,8 +26,8 @@ type (
 		Skills() []Skill
 		// Health returns the player's current health level
 		Health() int
-		// Art returns the player's ascii art
-		Art() string
+		// AsciiArt returns the player's ascii art
+		AsciiArt() string
 		// XP returns the player's XP level
 		XP() int
 	}

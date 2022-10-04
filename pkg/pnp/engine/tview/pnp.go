@@ -1,3 +1,4 @@
+// Package engine provides a simple P&P engine
 package engine
 
 import (
@@ -33,7 +34,7 @@ func (e *Engine) Start() {
 		e.Prod.SetText(strings.Repeat("A", 2000)).
 			SetTextColor(tcell.ColorGreen).
 			SetBorder(true).
-			SetTitle(fmt.Sprintf("Production is `%s`", strings.ToLower(spaceCamelcase(e.ProdState.String()))))
+			SetTitle(fmt.Sprintf("Production is `%s`", e.ProdState))
 		e.Prod.SetChangedFunc(func() {
 			e.App.Draw()
 		})
@@ -78,12 +79,11 @@ func (e Engine) SelectAction(player pnp.Player, state pnp.State, onSelect func(a
 func (e *Engine) Reaction(xp int, health int, player pnp.Player, state pnp.State, action pnp.Action, fn func()) {
 	e.ProdState = state
 	m := tview.NewModal()
-	stateStr := spaceCamelcase(state.String())
 	skillStr := spaceCamelcase(action.String())
 	if health >= 0 {
-		m.SetText(fmt.Sprintf("Production liked %s's move `%s`. Production's state is now `%s`. Gained: %d XP, %d health", player, skillStr, stateStr, xp, health)).SetBackgroundColor(tcell.ColorBlue)
+		m.SetText(fmt.Sprintf("Production liked %s's move `%s`. Production's state is now `%s`. Gained: %d XP, %d health", player, skillStr, state, xp, health)).SetBackgroundColor(tcell.ColorBlue)
 	} else if player.Alive() {
-		m.SetText(fmt.Sprintf("Production DID NOT like %s's move `%s`. Production's state is now `%s`. Gained: %d XP, Lost: %d Health", player, skillStr, stateStr, xp, health)).SetBackgroundColor(tcell.ColorDarkRed)
+		m.SetText(fmt.Sprintf("Production DID NOT like %s's move `%s`. Production's state is now `%s`. Gained: %d XP, Lost: %d Health", player, skillStr, state, xp, health)).SetBackgroundColor(tcell.ColorDarkRed)
 	} else {
 		m.SetText(fmt.Sprintf("%s died (was fired) in the battle against Production. RIP %s. We will always treasure your typos and stuff!!", player, player)).SetBackgroundColor(tcell.ColorPurple)
 	}
@@ -130,7 +130,7 @@ func (e *Engine) RenderPlayers(players []pnp.Player, current pnp.Player) *tview.
 		art.SetBorderColor(tcell.ColorWhite)
 
 		if p.Alive() {
-			art.SetText(p.Art())
+			art.SetText(p.AsciiArt())
 		} else {
 			art.SetText(engine.Gravestone).SetTextColor(tcell.ColorPurple)
 		}
@@ -165,17 +165,8 @@ func (e *Engine) RenderProd() {
 		text = text[:r] + c + text[r+1:]
 	}
 	e.Prod.SetText(text).SetTextColor(color)
-	e.Prod.SetTitle(fmt.Sprintf("Production is `%s`", strings.ToLower(spaceCamelcase(e.ProdState.String()))))
+	e.Prod.SetTitle(fmt.Sprintf("Production is `%s`", e.ProdState))
 	e.Prod.ScrollToBeginning()
-}
-
-func NewGame() {
-
-	//─=≡Σ((( つ•̀ω•́)つ LET'S GO!
-	// d(-_^)
-	// ᕦ(òᴥó)ᕥ
-	// ᕕ( ᐛ )ᕗ
-
 }
 
 func (e *Engine) GameWon() {

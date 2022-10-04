@@ -7,7 +7,9 @@ import (
 // Rand - random function
 var Rand = rand.Intn
 
-//go:generate stringer -type=State
+// State represents a production state
+// There are 4 possible states - Calm, Annoyed, Enraged and Legacy
+type State int
 
 const (
 	Calm State = iota
@@ -85,4 +87,29 @@ func (s State) nextState(success bool) State {
 		return s
 	}
 	return s + 1
+}
+
+// String ...
+func (s State) String() string {
+	switch s {
+	case Calm:
+		return "Calm"
+	case Annoyed:
+		return "Annoyed"
+	case Enraged:
+		return "Enraged"
+	case Legacy:
+		return "Legacy (sudden death)"
+	}
+	return "not supported"
+}
+
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[Calm-0]
+	_ = x[Annoyed-1]
+	_ = x[Enraged-2]
+	_ = x[Legacy-3]
 }
