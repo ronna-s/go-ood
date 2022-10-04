@@ -309,10 +309,10 @@ type Player interface {
 We already have a type Minion in package `pkg/pnpdev` with some implementations for a player.
 1. We will extract the methods `Alive`, `ApplyXPDiff`, `ApplyHealthDiff`, `Health` and `XP` to a common type `Character`. 
 2. We will embed `Character` inside `Minion`.
-3. Create new types `Gopher` and `Rubyist` that implement the `pnp.Player` interface, use the failing tests to do this purposefully, see how to run the tests below:
+3. Create new types `Gopher` and `Rubyist` that implement the `pnp.Player` interface, use the failing tests to do this purposefully, see how to run the tests below.
 4. Add `NewGopher()` and `NewRubyist()` in cmd/pnp/pnp.go to our list of players.
 5. Run the game.
-6. We will notice that the Gopher and the Rubyist's names are not properly serialized...
+6. We notice that the Gopher and the Rubyist's names are not properly serialized... We will fix that in a moment.
 
 To test our players:
 ```bash
@@ -323,6 +323,75 @@ go test github.com/ronna-s/go-ood/pkg/pnpdev
 # any other setup with docker
 [docker command from before] go test github.com/ronna-s/go-ood/pkg/pnpdev
 ```
+
+### Stringers
+
+As we saw our Rubyist and Gopher's name were not displayed properly.
+We fix this by adding the `String()` string method to them:
+
+```go
+func (r Rubyist) String() string {
+	return "Rubyist"
+}
+func (g Gopher) String() string {
+	return "Gopher"
+}
+```
+We run the game and see that it works as expected but what happened here?
+We can check if a type implements an interface at runtime:
+
+```go
+https://go.dev/play/p/6Ia8aGJS7Bc
+package main
+
+import "fmt"
+
+type fooer interface {
+	Foo() string
+}
+
+type A struct{}
+
+func (_ A) Foo() string {
+	return "Hello from A"
+}
+
+func main() {
+	var a interface{} = A{}
+	var i interface{} = 5
+	if v, ok := a.(fooer); ok {
+		fmt.Println(v.Foo())
+	} else {
+		panic("should not be called")
+	}
+	if v, ok := i.(fooer); ok {
+		panic("should not be called")
+	} else {
+		fmt.Println("v is nil:", v)
+	}
+}
+```
+Go's print function checked at runtime if our types have the method `String() string` by checking if it implements an interface with this method and then invoked it.
+
+Russ Cox compared this to duck typing and explained how exactly it works [here](https://research.swtch.com/interfaces).
+
+It's particularly interesting that this information about what types implement what interfaces is cached at runtime to maintain performance. Even though we achieved this behavior without actual receivers that take in messages and check if they can handle them, from design perspective we achieved a similar goal.
+
+This feature only makes sense when interfaces are implicit because in languages when the interface is explicit there's no way a type can suddenly implement a private interface that is used in our code.
+
+### What do you need to know when you implement something like that?
+1. The user of your code might not know what interfaces they are expected to implement or might provide them but cause a panic. Use `defer` and `recover` to prevent crashing the app.
+2. If your type is expected to implement an interface, to protect against changes add a line to your code that will fail to compile if your type doesn't implement the interface like so:
+
+```go 
+// In the global scope directly
+var _ TheInterfaceWeImplemnt = MyType{} // or &MyType{} or NewMyType(), etc.
+```
+
+### The empty interface{} (any):
+- Since all types can have methods, all types implement the empty interface (`interface {}`) which has no methods.
+- The empty interface has a built-in alias `any`. So you can now use `any` as a shorthand for `interface{}`
+
 
 ## Organizing your packages
 
