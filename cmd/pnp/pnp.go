@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	game := pnp.New(pnpdev.NewMinion(), pnpdev.NewGopher(), pnpdev.NewRubyist())
+	game := pnp.New(pnpdev.NewMinion())
 	//game := pnp.New()
 	game.Run(engine.New())
 }
