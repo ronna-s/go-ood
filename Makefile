@@ -1,15 +1,15 @@
 build:
 	@docker build . -t go-ood
 download:
-	docker run -v $(shell pwd):/root go-ood go mod download
+	docker run -v $(shell pwd):/root go-ood --rm go mod download
 tidy:
-	docker run -v $(shell pwd):/root go-ood go mod tidy
+	docker run -v $(shell pwd):/root --rm go-ood go mod tidy
 lint:
-	docker run -v $(shell pwd):/root go-ood go vet ./...
+	docker run -v $(shell pwd):/root --rm go-ood go vet ./...
 gen:
-	docker run -v $(shell pwd):/root go-ood go generate ./...
+	docker run -v $(shell pwd):/root --rm go-ood go generate ./...
 godoc:
-	docker run -p 8080:8080 go-ood godoc -http=:8080
+	docker run --rm -p 8080:8080 go-ood godoc -http=:8080
 test:
 	docker run go-ood go test ./...
 test-maze:

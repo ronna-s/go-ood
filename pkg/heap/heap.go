@@ -4,10 +4,10 @@ package heap
 
 type Heap[T interface{ Less(T) bool }] []T
 
-func New[T interface{ Less(T) bool }](in []T) Heap[T] {
+func New[T interface{ Less(T) bool }](in []T) *Heap[T] {
 	h := Heap[T](in)
 	h.Init()
-	return h
+	return &h
 }
 
 func (h Heap[T]) Init() {

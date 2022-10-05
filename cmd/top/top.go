@@ -3,8 +3,13 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"runtime"
+	"os"
+	"strconv"
+	"time"
 
+	"github.com/charmbracelet/bubbles/table"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/ronna-s/go-ood/pkg/heap"
 	"github.com/ronna-s/go-ood/pkg/namegen"
 )
@@ -33,6 +38,7 @@ func (p1 Song) Less(p2 Song) bool {
 }
 
 func main() {
+	rand.Seed(time.Now().Unix())
 	var (
 		artists []Artist
 		songs   []Song
@@ -47,29 +53,124 @@ func main() {
 
 	hartists := heap.New[Artist](artists)
 	hsongs := heap.New[Song](songs)
-	fmt.Println(withColor(cyan, "Our top 10 artists are:"))
-	fmt.Println(withColor(cyan, "========================"))
-	for i := 0; i < 10; i++ {
-		fmt.Printf("%d: %s with %d reads\n", i+1, hartists.Pop().Name, hsongs.Pop().Listens)
+
+	artistsCol := []table.Column{
+		{Title: "Rank", Width: 4},
+		{Title: "Artist", Width: 30},
+		{Title: "Listens", Width: 10},
 	}
-	fmt.Println(withColor(purple, "Our top of the pop songs are:"))
-	fmt.Println(withColor(purple, "============================="))
-	for i := 0; i < 10; i++ {
-		fmt.Printf("%d: %s with %d reads\n", i+1, hsongs.Pop().Name, hsongs.Pop().Listens)
+	songsCol := []table.Column{
+		{Title: "Rank", Width: 4},
+		{Title: "Song", Width: 30},
+		{Title: "Listens", Width: 10},
+	}
+	var rows []table.Row
+	for i := 0; i < 100; i++ {
+		artist := hartists.Pop()
+		rows = append(rows, []string{strconv.Itoa(i + 1), artist.Name, strconv.Itoa(artist.Listens)})
+	}
+
+	artistsTable := table.New(
+		table.WithColumns(artistsCol),
+		table.WithRows(rows),
+		table.WithFocused(true),
+		table.WithHeight(10),
+	)
+
+	s := table.DefaultStyles()
+	s.Header = s.Header.
+		BorderStyle(lipgloss.NormalBorder()).
+		BorderForeground(lipgloss.Color("240")).
+		BorderBottom(true).
+		Bold(false)
+	s.Selected = s.Selected.
+		Foreground(lipgloss.Color("229")).
+		Background(lipgloss.Color("57")).
+		Bold(false)
+	artistsTable.SetStyles(s)
+
+	rows = nil
+	for i := 0; i < 100; i++ {
+		song := hsongs.Pop()
+		rows = append(rows, []string{strconv.Itoa(i + 1), song.Name, strconv.Itoa(song.Listens)})
+	}
+
+	songsTable := table.New(
+		table.WithColumns(songsCol),
+		table.WithRows(rows),
+		table.WithFocused(true),
+		table.WithHeight(10),
+	)
+
+	s.Selected = s.Selected.
+		Foreground(lipgloss.Color("229")).
+		Background(lipgloss.Color("32")).
+		Bold(false)
+	songsTable.SetStyles(s)
+
+	m := model{artistsTable, songsTable}
+	if err := tea.NewProgram(m).Start(); err != nil {
+		fmt.Println("Error running program:", err)
+		os.Exit(1)
 	}
 }
 
-var (
-	red    = "\033[31m"
-	green  = "\033[32m"
-	yellow = "\033[33m"
-	purple = "\033[35m"
-	cyan   = "\033[36m"
-)
+var artistsBaseStyle = lipgloss.NewStyle().
+	BorderStyle(lipgloss.NormalBorder()).
+	BorderForeground(lipgloss.Color("132"))
+var songsBaseStyle = lipgloss.NewStyle().
+	BorderStyle(lipgloss.NormalBorder()).
+	BorderForeground(lipgloss.Color("178"))
 
-func withColor(color, s string) string {
-	if runtime.GOOS == "windows" {
-		return s
+type model struct {
+	artists table.Model
+	songs   table.Model
+}
+
+func (m model) Init() tea.Cmd { return nil }
+
+func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmd tea.Cmd
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "esc":
+			if m.artists.Focused() {
+				m.artists.Blur()
+			} else {
+				m.artists.Focus()
+			}
+			if m.songs.Focused() {
+				m.songs.Blur()
+			} else {
+				m.songs.Focus()
+			}
+		case "q", "ctrl+c":
+			return m, tea.Quit
+		case "tab":
+			if m.artists.Focused() {
+				m.artists.Blur()
+				m.songs.Focus()
+			} else {
+				m.songs.Blur()
+				m.artists.Focus()
+			}
+		case "enter":
+			return m, tea.Batch(
+				tea.Printf("Let's go to %s!", m.artists.SelectedRow()[1]),
+			)
+		}
 	}
-	return color + s + "\033[0m"
+	if m.artists.Focused() {
+		m.artists, cmd = m.artists.Update(msg)
+	} else if m.songs.Focused() {
+		m.songs, cmd = m.songs.Update(msg)
+	}
+	return m, cmd
+}
+
+func (m model) View() string {
+	return artistsBaseStyle.Render(m.artists.View()) +
+		"\n" + songsBaseStyle.Render(m.songs.View()) +
+		"\n (↑/↓) navigate, (tab) switch between lists (q) quit\n"
 }

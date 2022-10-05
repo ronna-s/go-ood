@@ -137,7 +137,13 @@ Let's review the code that made this possible and examine the Go features it use
 
 Run:
 ```bash
+# make tool + docker
 make godoc
+# using docker
+docker run --rm -p 8080:8080 go-ood godoc -http=:8080
+# or, install godoc and run
+go install golang.org/x/tools/cmd/godoc@v0.1.12
+godoc -http=:8080 #assuming $GOBIN is part of your path. For help run `go help install`
 ```
 The repo started with one package in the pkg directory called maze which offers a basic maze generator and nothing else.
 Go to: http://127.0.0.1:8080/pkg/github.com/ronna-s/go-ood/pkg/maze

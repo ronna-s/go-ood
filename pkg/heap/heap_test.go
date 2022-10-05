@@ -1,18 +1,21 @@
 package heap
 
 import (
+	"golang.org/x/exp/constraints"
 	"testing"
 )
 
-type Int int
-
-func (i Int) Less(j Int) bool {
-	return i < j
+type Ordered[T constraints.Ordered] struct {
+	T T
 }
 
-type intHeap = Heap[Int]
+func (o Ordered[T]) Less(o2 Ordered[T]) bool {
+	return o.T < o2.T
+}
 
-func verify(t *testing.T, h intHeap, i int) {
+type myHeap = Heap[Ordered[int]]
+
+func verify(t *testing.T, h myHeap, i int) {
 	t.Helper()
 	n := len(h)
 	j1 := 2*i + 1
@@ -34,27 +37,28 @@ func verify(t *testing.T, h intHeap, i int) {
 }
 
 func TestHeap(t *testing.T) {
-	var h intHeap
+	var h myHeap
 
 	verify(t, h, 0)
 	for i := 20; i > 10; i-- {
-		h.Push(Int(i))
+		h.Push(Ordered[int]{i})
 	}
 
 	verify(t, h, 0)
 	for i := 10; i > 0; i-- {
-		h.Push(Int(i))
+		h.Push(Ordered[int]{i})
 		verify(t, h, 0)
 	}
 
 	for i := 1; len(h) > 0; i++ {
 		x := h.Pop()
 		if i < 20 {
-			h.Push(Int(20 + i))
+			h.Push(Ordered[int]{20 + i})
 		}
 		verify(t, h, 0)
-		if x != Int(i) {
-			t.Errorf("%d.th pop got %d; want %d", i, x, i)
+		y := Ordered[int]{i}
+		if x != y {
+			t.Errorf("%v.th pop got %v; want %v", i, x.T, i)
 		}
 	}
 }
