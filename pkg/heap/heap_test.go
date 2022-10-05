@@ -1,21 +1,10 @@
 package heap
 
 import (
-	"golang.org/x/exp/constraints"
 	"testing"
 )
 
-type Ordered[T constraints.Ordered] struct {
-	T T
-}
-
-func (o Ordered[T]) Less(o2 Ordered[T]) bool {
-	return o.T < o2.T
-}
-
-type myHeap = Heap[Ordered[int]]
-
-func verify(t *testing.T, h myHeap, i int) {
+func verify(t *testing.T, h intHeap, i int) {
 	t.Helper()
 	n := len(h)
 	j1 := 2*i + 1
@@ -37,7 +26,7 @@ func verify(t *testing.T, h myHeap, i int) {
 }
 
 func TestHeap(t *testing.T) {
-	var h myHeap
+	var h intHeap
 
 	verify(t, h, 0)
 	for i := 20; i > 10; i-- {

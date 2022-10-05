@@ -26,7 +26,8 @@ func TestGopher(t *testing.T) {
 		oldGopherArt := gopherArt
 		defer func() { gopherArt = oldGopherArt }()
 		gopherArt = "Nice Art [Health=%d,XP=%d]"
-		g := Gopher{Character: Character{X: 10, H: 20}}
+		g := NewGopher()
+		g.X, g.H = 10, 20
 		assert.Equal(t, "Nice Art [Health=20,XP=10]", g.AsciiArt())
 	})
 }
@@ -38,7 +39,7 @@ func TestRubyist(t *testing.T) {
 		assert.Equal(t, 100, r.Health())
 	})
 	t.Run("Skills", func(t *testing.T) {
-		r := Rubyist{Character: Character{X: 1}}
+		r := NewRubyist()
 		skills := []pnp.Skill{pnp.DuckTyping, pnp.Inheritance, pnp.Modules, pnp.MetaProgramming, pnp.DarkMagic}
 		r.X = 1
 		assert.ElementsMatch(t, skills[:3], r.Skills())
@@ -52,7 +53,8 @@ func TestRubyist(t *testing.T) {
 		oldRubyistArt := rubyistArt
 		defer func() { rubyistArt = oldRubyistArt }()
 		rubyistArt = "Nice Art [Health=%d,XP=%d]"
-		r := Rubyist{Character: Character{X: 10, H: 20}}
+		r := NewRubyist()
+		r.X, r.H = 10, 20
 		assert.Equal(t, "Nice Art [Health=20,XP=10]", r.AsciiArt())
 	})
 }

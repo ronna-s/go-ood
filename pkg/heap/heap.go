@@ -2,14 +2,6 @@
 // By providing a generic heap we can avoid messy interface conversions and provide a friendly interface
 package heap
 
-type Heap[T interface{ Less(T) bool }] []T
-
-func New[T interface{ Less(T) bool }](in []T) *Heap[T] {
-	h := Heap[T](in)
-	h.Init()
-	return &h
-}
-
 func (h Heap[T]) Init() {
 	n := len(h)
 	for i := n/2 - 1; i >= 0; i-- {
