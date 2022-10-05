@@ -45,13 +45,6 @@ type Gopher interface {
 // It takes in g Gopher that knows how to travel a maze
 // See the Gopher interface methods for more details
 func SolveMaze(g Gopher) {
-	for !g.Finished() {
-		if err := g.Move(); err != nil {
-			g.TurnRight()
-		} else {
-			g.TurnLeft()
-		}
-	}
 }
 
 // Result represnts the Result of a Maze run

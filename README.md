@@ -178,7 +178,7 @@ But the receiver is also just a special function parameter, so **"there is no sp
 How do we know that there's no actual receiver? [Run this code](https://go.dev/play/p/iOx0L_p65jz)
 
 ```go
-https://go.dev/play/p/iOx0L_p65jz
+// https://go.dev/play/p/iOx0L_p65jz
 package main
 
 import "fmt"
@@ -232,7 +232,6 @@ In addition, common language that offer inheritance often force you to inherit f
 ## OO fundamentals and Go
 
 ### So no CTORs, huh?
-
 Go doesn't provide us constructors that ensure that users of our types initialize them correctly, but as we saw, we can provide our own ctor function to make our types easy to use.
 Developers coming from other language often make types and fields private to ensure that users don't make mistakes.
 If your type is not straight-forward, the Go common practices are:
