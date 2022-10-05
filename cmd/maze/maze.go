@@ -17,20 +17,6 @@ import (
 //go:embed resources/maze.tmpl
 var tmpl []byte
 
-func main() {
-	rand.Seed(time.Now().Unix())
-	m := maze.New(rand.Intn(10)+1, rand.Intn(10)+1)
-	g := robot.New(travel.New(m))
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	go func() {
-		SolveMaze(&g)
-		cancel()
-	}()
-	<-ctx.Done()
-	drawHTML(g, os.Stdout)
-}
-
 //go:generate mockery --case=underscore --name=Gopher
 
 // Gopher is an interface to a thing that can move around a maze
@@ -47,15 +33,12 @@ type Gopher interface {
 func SolveMaze(g Gopher) {
 }
 
-// Result represents the Result of a Maze run
-type Result struct {
-	maze.Maze
-	Steps []robot.Step
-}
-
 // drawHTML writes the movement of the gopher through the maze to HTML
 func drawHTML(g robot.Robot, w io.Writer) {
-	res := Result{
+	res := struct {
+		maze.Maze
+		Steps []robot.Step
+	}{
 		Maze:  g.Maze,
 		Steps: g.Steps(),
 	}
@@ -104,6 +87,20 @@ func drawHTML(g robot.Robot, w io.Writer) {
 	if err := t.ExecuteTemplate(w, "T", res); err != nil {
 		panic(err)
 	}
+}
+
+func main() {
+	rand.Seed(time.Now().Unix())
+	m := maze.New(rand.Intn(10)+1, rand.Intn(10)+1)
+	g := robot.New(travel.New(m))
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	go func() {
+		SolveMaze(&g)
+		cancel()
+	}()
+	<-ctx.Done()
+	drawHTML(g, os.Stdout)
 }
 
 // code that will fail if the constants change value since the JS code depends on it
