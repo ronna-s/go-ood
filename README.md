@@ -202,7 +202,7 @@ The common OOP languages approach is that class A must inherit from class B or i
 but our Robot type has no idea that Gopher type even exists. Gopher is defined in a completely different package that is not imported by robot.
 Go was written for the 21st century and allows you to plug-in types into your code from anywhere on the internet so long that they have the correct method signatures. 
 
-This is done in scripting languages with duck-typing, but in Go it's type-safe and you get compile time validation of your code.
+Scripting languages achieve this with duck-typing, but Go is type-safe and we get compile time validation of our code.
 Implicit interfaces mean that packages don't have to provide interfaces to the user, the user can define their own interface with the smallest subset of functionality that they need.
 
 In fact our `robot.Robot` has another public method `Steps` that is not part of the `Gopher` interface because we don't need to use it.
@@ -210,6 +210,7 @@ This makes plugging-in code and defining and mocking dependencies safely a natur
 
 **In conclusion:** before you write code make sure it's necessary. Be lazy. Be minimal. Be Marie Kondo.
 
+### Missing Inheritance?
 >_The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle._
 (Joe Armstrong)
 
@@ -220,7 +221,6 @@ He likely meant that OO is overcomplicated but in reality those rules that we di
 The class Banana will have to extend or inherit from Fruit (or a similar Object class) to be considered a fruit, implement a Holdable interface just in case we ever want it to be held, implement a GrowsOnTree just in case we need to know where it came from. etc.
 What happens if the Banana we imported doesn't implement an interface that we need it to like holdable? We have to write a new implementation of Banana that wraps the original Banana.
 
-### Let's discuss inheritance for a moment and if we are really gonna miss it.
 Most OO languages limit inheritance to allow every class to inherit functionality from exactly one other class.
 That means that you can't express that an instance of class A is an instance of class B and class C, for example: a truck can't be both a vehicle and also a container of goods.
 In the case where you need to express this you will end up doing the same as you would do in Go with interfaces, except as we saw the Go implicit interface implementation is far more powerful.
@@ -333,7 +333,7 @@ go test github.com/ronna-s/go-ood/pkg/pnpdev
 ### Stringers
 
 As we saw our Rubyist and Gopher's name were not displayed properly.
-We fix this by adding the `String()` string method to them:
+We fix this by adding the `String() string` method to them:
 
 ```go
 func (r Rubyist) String() string {
@@ -343,7 +343,7 @@ func (g Gopher) String() string {
 	return "Gopher"
 }
 ```
-We run the game and see that it works as expected but what happened here?
+We run the game and see that it works as expected but what actually happened here? - String() is not part of the `Player` interface?
 We can check if a type implements an interface at runtime:
 
 ```go
@@ -379,14 +379,14 @@ func main() {
 ```
 Go's print function checked at runtime if our types have the method `String() string` by checking if it implements an interface with this method and then invoked it.
 
-Russ Cox compared this to duck typing and explained how exactly it works [here](https://research.swtch.com/interfaces).
+Russ Cox compared this to duck typing and explained how it works [here](https://research.swtch.com/interfaces).
 
 It's particularly interesting that this information about what types implement what interfaces is cached at runtime to maintain performance. Even though we achieved this behavior without actual receivers that take in messages and check if they can handle them, from design perspective we achieved a similar goal.
 
 This feature only makes sense when interfaces are implicit because in languages when the interface is explicit there's no way a type can suddenly implement a private interface that is used in our code.
 
-### What do you need to know about how to work effectively with this:
-1. The user of your code might not know what interfaces they are expected to implement or might provide them but cause a panic. Use `defer` and `recover` to prevent crashing the app.
+### What you need to know about how to work effectively with this feature:
+1. The user of your code might not know what interfaces they are expected to implement or might provide them but cause a panic. Use `defer` and `recover` to prevent crashing the app or return errors if the interface allows it.
 2. If your type is expected to implement an interface, to protect against changes add a line to your code that will fail to compile if your type doesn't implement the interface, like so:
 
 ```go 
@@ -398,7 +398,6 @@ var _ interface{ String() string } = NewRubyist()
 ### The empty interface{} (any):
 - Since all types can have methods, all types implement the empty interface (`interface {}`) which has no methods.
 - The empty interface has a built-in alias `any`. So you can now use `any` as a shorthand for `interface{}`
-
 
 ## Organizing your packages
 
@@ -436,7 +435,7 @@ Also, I beg you to please commit your generated code. A codebase is expected to 
 ## More Theory
 
 ### Emerging patterns:
-1. Constructing complex objects with no constructors and overloading [Functional options](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
+1. Constructing complex objects with no constructors (or overloading) [Functional options](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
 2. Default variables, exported variables, overrideable and otherwise [net/http](https://pkg.go.dev/net/http) also in this repo - the `pnp.Rand` function
 
 ```go
@@ -461,9 +460,9 @@ func main() {
 ## Generics
 It was a long time consensus that "real gophers" don't need generics, so much so that around the time the generics draft of 2020 was released, many gophers still expressed that they are not likely to use them.
 
-Before we get into this topic, let's understand first the point that they were trying to make.
+Let's understand first the point that they were trying to make.
 
-Let's examine [this code](https://gist.github.com/Xaymar/7c82ed127c8f1def53075f414a7df153), made using C++.
+Consider [this code](https://gist.github.com/Xaymar/7c82ed127c8f1def53075f414a7df153), made using C++.
 We see here generic code (templates) that allows an event to add functions (listeners) to its subscribers.
 Let's ignore for a second that this code adds functions, not objects and let's assume it did take in objects with the function `Handle(e Event)`. 
 We don't need generics in Go to make this work because interfaces are implicit. As we saw already in C++ an object has to be aware of it's implementations, this is why to allow plugging-in of functionality we have to use generics in C++ (and in Java).
@@ -503,6 +502,7 @@ Those cases are when the behavior is derived from the type or leaks to the type'
 For example:
 The linked list
 ```go
+// https://go.dev/play/p/ZpAqvVFAIDZ
 package main
 
 import "fmt"
@@ -536,9 +536,9 @@ func main() {
   fmt.Println(Add(i, j))
 }
 ```
-Of course, you are not likely to use linked lists in your day to day, but you are likely to use:
+Of course, you might not be likely to use linked lists in your day to day, but you are likely to use:
 1. Repositories, databases, data structures that are type specific, etc.
-2. Event handlers and processors that are specific to the type.
+2. Event handlers and processors that are specific to a type.
 3. The [concurrent map in the sync package](https://pkg.go.dev/sync#Map) which uses the empty interface.
 4. [The heap](https://pkg.go.dev/container/heap#example-package-IntHeap) 
 
@@ -573,7 +573,9 @@ What we've learned today:
 1. The value of OOP
 2. Defining types that fit our needs
 3. Writing methods
-4. Interfaces
-5. Composition
-6. Generics
-7. To generate code otherwise
+4. Value receivers and pointer receivers
+5. Organizing packages
+6. Interfaces
+7. Composition
+8. Generics
+9. To generate code otherwise

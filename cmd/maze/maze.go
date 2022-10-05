@@ -47,7 +47,7 @@ type Gopher interface {
 func SolveMaze(g Gopher) {
 }
 
-// Result represnts the Result of a Maze run
+// Result represents the Result of a Maze run
 type Result struct {
 	maze.Maze
 	Steps []robot.Step
