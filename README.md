@@ -162,7 +162,24 @@ We see that:
 4. You can define a new type out of any underlying type
 5. Any type can have methods (except for primitives)
 6. That means that any type satisfies the interface{} - an interface with no methods
-7. You can alias to any type
+7. You can alias to any type, but what does alias mean?
+	```go
+	// https://go.dev/play/p/SsSQOAFa5Eh
+	package main
+
+	import "fmt"
+
+	type A int
+	type B = A
+
+	func (b B) Foo() int {
+		return int(b)
+	}
+	func main() {
+		var a A = 5
+		fmt.Println(a.Foo())
+	}
+	```
 8. If you want to add methods to primitives, just define a new type with the desired primitive underlying type
 9. Methods are added to types using Receivers (value or pointer receivers).
 10. Methods that can change/mutate the value of the type need a pointer receiver (the common practice says not to mix receiver types) 
