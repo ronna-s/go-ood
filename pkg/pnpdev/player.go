@@ -5,62 +5,58 @@ import (
 	"github.com/ronna-s/go-ood/pkg/pnp"
 )
 
-type Character struct {
-	X, H int //X=XP, H=Health
-}
-
 // Minion represents a minion P&P player
 // The zero value is a dead minion player.
 type Minion struct {
-	Character
+	X, H int //X=XP, H=Health
 }
 
 // NewMinion returns a minion with 100 Health and 0 XP
 func NewMinion() *Minion {
-	return &Minion{Character{H: 100}}
+	return &Minion{H: 100}
 }
 
 // Alive checks if the player is (still) alive
-func (c Character) Alive() bool {
-	return c.H > 0
+func (m Minion) Alive() bool {
+	return m.H > 0
 }
 
 // Health returns the player's health level
-func (c Character) Health() int {
-	return c.H
+func (m Minion) Health() int {
+	return m.H
 }
 
 // XP returns the player's xp level
-func (c Character) XP() int {
-	return c.X
+func (m Minion) XP() int {
+	return m.X
 }
 
 // ApplyXPDiff adds the given xp to the player's xp down to a minimum of 0
-func (c *Character) ApplyXPDiff(xp int) int {
-	sum := c.X + xp
+func (m *Minion) ApplyXPDiff(xp int) int {
+	sum := m.X + xp
 	if sum < 0 {
-		xp = -c.X
-		c.X = 0
+		xp = -m.X
+		m.X = 0
 		return xp
 	}
-	c.X = sum
+	m.X = sum
 	return xp
 }
 
 // ApplyHealthDiff adds the given health to the player's health down to a minimum of 0 and up to 100
-func (c *Character) ApplyHealthDiff(health int) int {
-	sum := c.H + health
+func (m *Minion) ApplyHealthDiff(health int) int {
+	sum := m.H + health
 	if sum > 100 {
-		health = 100 - c.H
-		c.H = 100
+		health = 100 - m.H
+		m.H = 100
 		return health
 	}
 	if sum < 0 {
-		health = -c.H
-		c.H = 0
+		health = -m.H
+		m.H = 0
 		return health
 	}
-	c.H = sum
+	m.H = sum
 	return health
 }
 

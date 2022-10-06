@@ -555,7 +555,7 @@ go test github.com/ronna-s/go-oog/pkg/heap
 # make + docker
 make test-heap
 # any other setup with docker 
-[docker command from before] test github.com/ronna-s/go-ood/pkg/heap
+[docker command from before] go test github.com/ronna-s/go-ood/pkg/heap
 ````
 
 Run our TOP OF THE POP app:
