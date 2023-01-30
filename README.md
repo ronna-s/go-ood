@@ -568,7 +568,7 @@ The heap is used by TOP OF THE POP! `cmd/top` to print the top 10 Artists and So
 Test:
 ```bash
 # go tool
-go test github.com/ronna-s/go-oog/pkg/heap
+go test github.com/ronna-s/go-ood/pkg/heap
 # make + docker
 make test-heap
 # any other setup with docker 
