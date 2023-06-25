@@ -85,7 +85,7 @@ This section is meant to highlight most of the functionality that supports OO in
 
 #### Type definition
 The following code defines a new type A with the underlying type bool.
-It then defines a new type B with the underlying type A
+It then defines a new type B with the underlying type A.
 We can instantiate the variable `a` (of type `A`) with false (a constant) but to convert `a` to type `B`, we have to be explicit because they are different types.
 
 ```go
