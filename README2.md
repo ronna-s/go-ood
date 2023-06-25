@@ -183,7 +183,7 @@ func main() {
 
 This is NOT what is referred to as pass by value and pass by reference. 
 That terminology is used to describe languages with constructors and particularly copy constructors. 
-In Go there is no copy constructor but de facto everything is passed by value and something is always copy.
+In Go there is no copy constructor but de facto everything is passed by value and something is always copied.
 The difference is, that if you use a pointer explicitly (and pointers are explicit in Go), what is copied is the address of the value, so the memory is still accessible.
 
 Teaser: what will the following code do?
