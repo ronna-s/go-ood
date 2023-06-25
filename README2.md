@@ -253,11 +253,15 @@ func main() {
 #### Interfaces
 One of Go's strongest features is the Interfaces. Go interfaces are implicit and therefore we can plug into them any code that we found on the web anywhere.
 This also means that a package does not need to provide interfaces
+
 //todo:
 
 #### Embedding & Promotion
 
-When A embeds B
+When type `B` embeds type `A` we say that type `B` is composed of type `A`.
+Upon embedding, the methods of `A` become available to `B`, we call this "promotion".
+We can embed as many types as we want.
+
 ```go
 // https://go.dev/play/p/BcNhFRjQ988
 type A int //Creates a new type A with an underlying type int
@@ -293,14 +297,40 @@ func main() {
 }
 ```
 
-We can embed as many types as we want.
-
-### The empty interface (any)
+#### The empty interface (any)
 The empty interface `interface{}` (now also comes as the built-in alias `any`), defines an interface with no methods, and therefore requires no methods. 
 This is why any type (including primitive types that have no method) can be passed around as `any` or `interface{}`.
 
 #### Interface type assertion
-//todo:
+We can check at run time if an interface implements another interface and convert it.
+
+```go
+package main
+
+import "fmt"
+
+type A struct{}
+
+func (a *A) Foo() string {
+	return "Hi from foo"
+}
+
+type I interface {
+	Foo() string
+}
+
+func main() {
+	var a *A //a is nil
+	var b interface{} = a
+
+	if val, ok := b.(I); ok {
+		fmt.Println(val.Foo())
+	} else {
+		fmt.Println("val doesn't have Foo() int and doesn't implement I")
+	}
+}
+
+```
 
 ### Exercise 1 - how it all worked
 Now that we have the basics we can go back and understand the code.
