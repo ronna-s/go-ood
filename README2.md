@@ -228,7 +228,7 @@ func main() {
 [Run me](https://go.dev/play/p/zVtRx_mX2rq)
 
 #### Aliases
-You can alias to any type, but what does alias mean?
+You can define an alias to any type, but what does alias mean?
 ```go
 package main
 
@@ -300,7 +300,7 @@ We see that:
 7. You can alias to any type.
 8. If you want to add methods to primitives, just define a new type with the desired primitive underlying type.
 9. Methods are added to types using Receivers (value or pointer receivers).
-10. Methods that can change/mutate the value of the type need a pointer receiver (the common practice says not to mix receiver types)
+10. Methods that can change/mutate the value of the type need a pointer receiver (the common practice says not to mix receiver types).
 
 Let's proceed to examine the maze code, navigate around to see the `travel` package, then the `robot` package and finally the `main` package in `cmd/maze`
 
