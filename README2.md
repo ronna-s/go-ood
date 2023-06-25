@@ -250,20 +250,57 @@ func main() {
 ```
 [Run me](https://go.dev/play/p/ZqVJbl-2E0m)
 
-#### Embedding & Promotion
-//todo
 #### Interfaces
 One of Go's strongest features is the Interfaces. Go interfaces are implicit and therefore we can plug into them any code that we found on the web anywhere.
-This also means that a package does not need to provide interfaces 
+This also means that a package does not need to provide interfaces
+//todo:
+
+#### Embedding & Promotion
+
+When A embeds B
+```go
+// https://go.dev/play/p/BcNhFRjQ988
+type A int //Creates a new type A with an underlying type int
+
+// Foo is now a method of my A
+func (a A) Foo() int {
+	return int(a)
+}
+
+type B struct {
+	// B embeds A so B now has method Foo()
+	A
+}
+
+func (b B) Bar() int {
+	return int(b.A)
+}
+
+type I interface {
+	Foo() int
+}
+
+// to implement J we have to provide implementation for Foo() and Bar()
+type J interface {
+	I
+	Bar() int
+}
+
+func main() {
+	var j J = B{1}
+	fmt.Println(j.Foo()) // 1 
+	fmt.Println(j.Bar()) // 1
+}
+```
+
+We can embed as many types as we want.
 
 ### The empty interface (any)
 The empty interface `interface{}` (now also comes as the built-in alias `any`), defines an interface with no methods, and therefore requires no methods. 
 This is why any type (including primitive types that have no method) can be passed around as `any` or `interface{}`.
 
-#### Interfaces embedding
-
 #### Interface type assertion
-
+//todo:
 
 ### Exercise 1 - how it all worked
 Now that we have the basics we can go back and understand the code.
@@ -329,7 +366,7 @@ Just as you can write insane procedural code, you can write sane OO code. You an
 This workshop is meant to give you the tools to make better design choices.
 
 #### The C++/Java School of OO
-It is important to know that in common OOP languages:
+It is important to understand that in common OOP languages:
 - Objects are instances of a class because only classes can define methods (that's how we support messaging).
 - Classes have constructor methods that allow for safe instantiation of objects.
 - Classes can inherit methods and fields from other classes as well as override them and sometimes overload them (we will get to that later).
@@ -372,47 +409,11 @@ If your type is not straight-forward, the Go common practices are:
 When you do it right, the godoc will [nest your CTOR function inside your type](https://pkg.go.dev/github.com/ronna-s/go-ood/pkg/robot#pkg-index).
 
 #### Missing Inheritance? - Composition vs. Inheritance
-In software, if A inherits from B, it's expressed in code that A is B.
-On the other hand, we use composition to express is made of b.
-In Go we don't have inheritance, but we have unlimited composition. 
+In software, if A inherits from B, it's the code equivalent to saying A is B.
+On the other hand, we use composition to express that A is made of B.
+In Go, we don't have inheritance, but we have unlimited composition. 
 Since we don't have inheritance, to express that A is I we use interfaces. To express that A is made of B or composed of B we use embedding.
 
-```go
-// https://go.dev/play/p/BcNhFRjQ988
-type A int //Creates a new type A with an underlying type int
-
-// Foo is now a method of my A
-func (a A) Foo() int {
-	return int(a)
-}
-
-type B struct {
-	// B embeds A so B now has method Foo()
-	A
-}
-
-func (b B) Bar() int {
-	return int(b.A)
-}
-
-type I interface {
-	Foo() int
-}
-
-// to implement J we have to provide implementation for Foo() and Bar()
-type J interface {
-	I
-	Bar() int
-}
-
-func main() {
-	var j J = B{1}
-	fmt.Println(j.Foo()) // 1 
-	fmt.Println(j.Bar()) // 1
-}
-```
-
-We can embed as many types as we want.
 The difference between inheritance and composition can be seen [here](https://go.dev/play/p/dkJezhyypeh).
 
 Most OO languages limit inheritance to allow every class to inherit functionality from exactly one other class.
