@@ -2,7 +2,6 @@
 // By providing a generic heap we can avoid messy interface conversions and provide a friendly interface
 package heap
 
-type Heap[T any]
 func (h Heap[T]) Init() {
 	n := len(h)
 	for i := n/2 - 1; i >= 0; i-- {
