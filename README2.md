@@ -80,7 +80,7 @@ You can run the app multiple times to see your gopher running through different 
 
 Done? If not, don't worry. You have the entire conference ;)
 
-### Basic Go for OO
+### Basic Go for Object-Oriented
 This section is meant to highlight most of the functionality that supports OO in Go. 
 
 #### Type definition
@@ -205,7 +205,7 @@ func main() {
 }
 ```
 
-This code worked because under the hood, a method is just sugar syntax.
+This code worked because under the hood, the method `a.Foo()` is just sugar syntax to the function `Foo` on the Type level that takes the receiver as a first parameter. 
 
 ```go
 //https://go.dev/play/p/zVtRx_mX2rq
@@ -252,9 +252,34 @@ func main() {
 
 #### Interfaces
 One of Go's strongest features is the Interfaces. Go interfaces are implicit and therefore we can plug into them any code that we found on the web anywhere.
-This also means that a package does not need to provide interfaces
+This also means that a package does not need to provide interfaces to its clients, only for its own dependencies when necessary.
 
-//todo:
+From ["A Tour of Go"](https://go.dev/tour/methods/10)
+```go
+package main
+
+import "fmt"
+
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+}
+
+// This method means type T implements the interface I,
+// but we don't need to explicitly declare that it does so.
+func (t T) M() {
+	fmt.Println(t.S)
+}
+
+func main() {
+	var i I = T{"hello"}
+	i.M()
+}
+
+```
 
 #### Embedding & Promotion
 
@@ -579,7 +604,6 @@ It's particularly interesting that this information about what types implement w
 
 This feature only makes sense when interfaces are implicit because in languages when the interface is explicit there's no way a type can suddenly implement a private interface that is used in our code.
 
-
 #### Effective interface type assertion
 If you are going to add your own type assertions, remember that the code execution becomes unpredictable, you therefore should comply with a couple of rules:
 1. The user of your code might not know what interfaces they are expected to implement or might provide them but cause a panic. Provide default behavior and __in addition__ use `defer` and `recover` to prevent crashing the app or return errors if the interface allows it.
@@ -769,3 +793,4 @@ What we've learned today:
 7. Composition
 8. Generics
 9. To generate code otherwise
+
