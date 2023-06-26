@@ -6,15 +6,15 @@ This workshop is aimed to clarify the OOP features that Go provides.
 It is named A Path to OOD and not OOP because different language features mean different design concepts.
 
 ## Logistics:
-All exercises can be completed using the go tool, docker or a combination docker and the make tool.
+All exercises can be completed using the go tool, podman or a combination podman and the make tool.
 If you are planning to use the go tool directly you can skip this step.
 
-If planning to use docker and you don't have the make tool, run:
+If planning to use podman and you don't have the make tool, run:
 ```bash
-docker build . -t go-ood
+podman build . -t go-ood
 ```
 
-If you have the make tool and docker, run:
+If you have the make tool and podman, run:
 ```bash
 make build
 ```
@@ -55,24 +55,24 @@ Find the function `SolveMaze(g Gopher)` in cmd/maze/maze.go and implement it.
 ```bash
 # go tool
 go test github.com/ronna-s/go-ood/cmd/maze 
-# make + docker (linux, mac)
+# make + podman (linux, mac)
 make test-maze 
-# docker directly (linux, mac)
-docker run -v $(pwd):/root --rm -it go-ood go test github.com/ronna-s/go-ood/cmd/maze
-# docker on windows + powershell
-docker run -v $(PWD):/root --rm -it go-ood go test github.com/ronna-s/go-ood/cmd/maze
-# docker on windows without powershell
-docker run -v %cd%:/root --rm -it go-ood go test github.com/ronna-s/go-ood/cmd/maze
+# podman directly (linux, mac)
+podman run -v $(pwd):/root --rm -it go-ood go test github.com/ronna-s/go-ood/cmd/maze
+# podman on windows + powershell
+podman run -v $(PWD):/root --rm -it go-ood go test github.com/ronna-s/go-ood/cmd/maze
+# podman on windows without powershell
+podman run -v %cd%:/root --rm -it go-ood go test github.com/ronna-s/go-ood/cmd/maze
 ```
 
 The test checks for very basic navigation. You can also check what your code is doing by running:
 ```bash
 # go tool
 go run cmd/maze/maze.go > tmp/maze.html
-# make + docker
+# make + podman
 make run-maze > tmp/maze.html
-# any other setup with docker 
-[docker command from before] go run cmd/maze/maze.go > tmp/maze.html 
+# any other setup with podman 
+[podman command from before up to go-ood] go run cmd/maze/maze.go > tmp/maze.html 
 ```
 
 Open tmp/maze.html file in your browser to see the results of your code.
@@ -288,39 +288,43 @@ When type `B` embeds type `A` we say that type `B` is composed of type `A`.
 Upon embedding, the methods of `A` become available to `B`, we call this "promotion".
 
 ```go
-// https://go.dev/play/p/BcNhFRjQ988
+package main
+
+import "fmt"
+
 type A int //Creates a new type A with an underlying type int
 
 // Foo is now a method of my A
 func (a A) Foo() int {
-	return int(a)
+   return int(a)
 }
 
 type B struct {
-	// B embeds A so B now has method Foo()
-	A
+   // B embeds A so B now has method Foo()
+   A
 }
 
 func (b B) Bar() int {
-	return int(b.A)
+   return int(b.A)
 }
 
 type I interface {
-	Foo() int
+   Foo() int
 }
 
 // to implement J we have to provide implementation for Foo() and Bar()
 type J interface {
-	I
-	Bar() int
+   I
+   Bar() int
 }
 
 func main() {
-	var j J = B{1}
-	fmt.Println(j.Foo()) // 1 
-	fmt.Println(j.Bar()) // 1
+   var j J = B{1}
+   fmt.Println(j.Foo()) // 1
+   fmt.Println(j.Bar()) // 1
 }
 ```
+[Run me](https://go.dev/play/p/ZXA6Q20Q8JW)
 
 We can embed as many types as we want.
 
@@ -354,11 +358,11 @@ func main() {
 	if val, ok := b.(I); ok {
 		fmt.Println(val.Foo())
 	} else {
-		fmt.Println("val doesn't have Foo() int and doesn't implement I")
+		fmt.Println("val doesn't implement I")
 	}
 }
-
 ```
+[Run me](https://go.dev/play/p/MpLTnEd_OFl)
 
 ### Exercise 1 - how it all worked
 Now that we have the basics we can go back and understand the code.
@@ -367,10 +371,10 @@ Let's review the code that made this possible and examine the Go features it use
 
 Run:
 ```bash
-# make tool + docker
+# make tool + podman
 make godoc
-# using docker
-docker run --rm -p 8080:8080 go-ood godoc -http=:8080
+# using podman
+podman run --rm -p 8080:8080 go-ood godoc -http=:8080
 # or, install godoc and run
 go install golang.org/x/tools/cmd/godoc@v0.1.12
 godoc -http=:8080 #assuming $GOBIN is part of your path. For help run `go help install`
@@ -454,6 +458,7 @@ func main() {
 	fmt.Println(t.Foo()) // Q: is t an object?
 }
 ```
+[Run me](https://go.dev/play/p/9akWY7Tmkh0)
 
 Whether you think t is an object or not, no gopher is complete without all the tools in the gopher toolbox so let's get (re)acquainted with them.
 
@@ -517,10 +522,10 @@ Run the game with the minion player:
 ```bash
 # go tool
 go run cmd/pnp/pnp.go
-# make + docker
+# make + podman
 make run-pnp
-# any other setup with docker 
-[docker command from before] go run github.com/ronna-s/go-ood/cmd/pnp.go
+# any other setup with podman 
+[podman command from before] go run github.com/ronna-s/go-ood/cmd/pnp.go
 ```
 
 ```go
@@ -546,12 +551,12 @@ We already have a type Minion in package `pkg/pnpdev` with some implementations 
 
 To test our players:
 ```bash
-# make + docker
+# make + podman
 make test-pnp
 # go tool
 go test github.com/ronna-s/go-ood/pkg/pnpdev
-# any other setup with docker
-[docker command from before] go test github.com/ronna-s/go-ood/pkg/pnpdev
+# any other setup with podman
+[podman command from before] go test github.com/ronna-s/go-ood/pkg/pnpdev
 ```
 
 ### Stringers
@@ -781,20 +786,20 @@ Test:
 ```bash
 # go tool
 go test github.com/ronna-s/go-ood/pkg/heap
-# make + docker
+# make + podman
 make test-heap
-# any other setup with docker 
-[docker command from before] go test github.com/ronna-s/go-ood/pkg/heap
+# any other setup with podman 
+[podman command from before] go test github.com/ronna-s/go-ood/pkg/heap
 ````
 
 Run our TOP OF THE POP app:
 ```bash
 # go tool
 go run cmd/top/top.go
-# make + docker
+# make + podman
 make run-heap
-# any other setup with docker 
-[docker command from before] go run cmd/top/top.go
+# any other setup with podman 
+[podman command from before] go run cmd/top/top.go
 ````
 
 ## Conclusion

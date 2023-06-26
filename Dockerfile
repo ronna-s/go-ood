@@ -1,4 +1,4 @@
-FROM golang:1.18.3-alpine
+FROM golang:1.20.5-alpine
 ENV CGO_ENABLED 0
 RUN go install github.com/vektra/mockery/v2@v2.14.0
 RUN go install golang.org/x/tools/cmd/godoc@v0.1.12
