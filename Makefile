@@ -1,4 +1,4 @@
-CONTAINER_ENGINE ?= docker
+CONTAINER_ENGINE ?= podman
 
 build:
 	@$(CONTAINER_ENGINE) build . -t go-ood
