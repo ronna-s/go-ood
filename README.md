@@ -246,7 +246,7 @@ func main() {
 	fmt.Println(a.Foo())
 
 	var b B
-	fmt.Printf("a:%T b:%T", a, b)
+	fmt.Printf("a:%T b:%T\n", a, b)
 }
 ```
 [Run me](https://go.dev/play/p/ZqVJbl-2E0m)
