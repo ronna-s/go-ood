@@ -85,7 +85,7 @@ func (g *Game) MainLoop(e Engine) {
 		e.GameWon()
 		return
 	}
-	p := g.PopPlayer()
+	p := g.DequeuePlayer()
 	if p == nil {
 		e.GameOver()
 		return
@@ -95,15 +95,15 @@ func (g *Game) MainLoop(e Engine) {
 		xp, health := g.React(p, action)
 		e.Reaction(xp, health, p, g.Prod.State, action, func() {
 			if p.Alive() {
-				g.PushPlayer(p)
+				g.EnqueuePlayer(p)
 			}
 			g.MainLoop(e)
 		})
 	})
 }
 
-// PopPlayer pops the next player from the queue
-func (g *Game) PopPlayer() Player {
+// DequeuePlayer pops the next player from the queue
+func (g *Game) DequeuePlayer() Player {
 	var p Player
 	if len(g.Alive) == 0 {
 		return nil
@@ -113,8 +113,8 @@ func (g *Game) PopPlayer() Player {
 	return p
 }
 
-// PushPlayer returns a player to the end of the queue
-func (g *Game) PushPlayer(p Player) {
+// EnqueuePlayer returns a player to the end of the queue
+func (g *Game) EnqueuePlayer(p Player) {
 	if p.Alive() {
 		g.Alive = append(g.Alive, p)
 	}
