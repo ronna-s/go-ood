@@ -285,7 +285,6 @@ func main() {
 
 When type `B` embeds type `A` we say that type `B` is composed of type `A`.
 Upon embedding, the methods of `A` become available to `B`, we call this "promotion".
-We can embed as many types as we want.
 
 ```go
 // https://go.dev/play/p/BcNhFRjQ988
@@ -321,6 +320,9 @@ func main() {
 	fmt.Println(j.Bar()) // 1
 }
 ```
+
+We can embed as many types as we want.
+
 
 #### The empty interface (any)
 The empty interface `interface{}` (now also comes as the built-in alias `any`), defines an interface with no methods, and therefore requires no methods. 
@@ -421,7 +423,7 @@ Just as you can write insane procedural code, you can write sane OO code. You an
 This workshop is meant to give you the tools to make better design choices.
 
 #### The C++/Java School of OO
-It is important to understand that in common OOP languages:
+It is important to know that in common OOP languages:
 - Objects are instances of a class because only classes can define methods (that's how we support messaging).
 - Classes have constructor methods that allow for safe instantiation of objects.
 - Classes can inherit methods and fields from other classes as well as override them and sometimes overload them (we will get to that later).
@@ -451,6 +453,8 @@ func main() {
 	fmt.Println(t.Foo()) // Q: is t an object?
 }
 ```
+
+Whether you think t is an object or not, no gopher is complete without all the tools in the gopher toolbox so let's get (re)acquainted with them.
 
 #### Missing CTORs?
 Go doesn't provide us constructors that ensure that users of our types initialize them correctly, but as we saw, we can provide our own ctor function to make our types easy to use.
@@ -638,9 +642,18 @@ I like this simple explanation by (Gabriele Tomassetti)[https://tomassetti.me/co
 > - portability;
 > - consistency
 
+It's about automating a process of writing repetitive error-prone code.
+Code generation is similar to meta-programming but we compile it and that makes it safer to run.
+Consider the simple [stringer](https://pkg.go.dev/golang.org/x/tools/cmd/stringer)
+Consider [Mockery](http://github.com/vektra/mockery)
+Both were used to generate code for this workshop.
+
+Also, as a favour to me, please commit your generated code. A codebase is expected to be complete and runnable.
+
 ### Emerging patterns
 #### Complex CTORs with no function overloading
 [Functional options](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
+
 #### Default variables 
 Default variables are very useful Singleton values.
 Examples: [net/http](https://pkg.go.dev/net/http).
@@ -661,8 +674,9 @@ func main() {
 }
 ```
 
-#### Short Lived Objects vs. Long Lived Objects
+### Short Lived Objects vs. Long Lived Objects
 [Consider this conversation](https://twitter.com/francesc/status/1293556263196844032)
+
 #### Context keys as types
 [Article](https://medium.com/@matryer/context-keys-in-go-5312346a868d)
 
