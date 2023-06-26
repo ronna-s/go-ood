@@ -1,6 +1,6 @@
 module github.com/ronna-s/go-ood
 
-go 1.18
+go 1.20
 
 require (
 	github.com/charmbracelet/bubbles v0.14.0
