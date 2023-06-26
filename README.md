@@ -189,7 +189,6 @@ The difference is, that if you use a pointer explicitly (and pointers are explic
 Teaser: what will the following code do?
 
 ```go
-// https://go.dev/play/p/iOx0L_p65jz
 package main
 
 import "fmt"
@@ -197,13 +196,15 @@ import "fmt"
 type A struct{}
 
 func (a *A) Foo() string {
-	return "Hi from foo"
+   return "Hi from foo"
 }
 func main() {
-	var a *A //a is nil
-	fmt.Println(a.Foo())
+   var a *A //a is nil, the zero value of the pointer
+   fmt.Println(a)
+   fmt.Println(a.Foo())
 }
 ```
+[Run me](https://go.dev/play/p/lDSjAfSoZx7)
 
 This code worked because under the hood, the method `a.Foo()` is just sugar syntax to the function `Foo` on the Type level that takes the receiver as a first parameter. 
 
