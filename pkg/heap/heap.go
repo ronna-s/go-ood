@@ -2,11 +2,6 @@
 // By providing a generic heap we can avoid messy interface conversions and provide a friendly interface
 package heap
 
-type Ordered[T any] interface {
-	Less(T) bool
-}
-type Heap[T Ordered[T]] []T
-
 func New[T Ordered[T]](s []T) Heap[T] {
 	h := Heap[T](s)
 	h.Init()

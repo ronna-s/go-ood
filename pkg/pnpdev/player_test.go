@@ -15,11 +15,11 @@ func TestGopher(t *testing.T) {
 	t.Run("Skills", func(t *testing.T) {
 		g := NewGopher()
 		skills := []pnp.Skill{pnp.TypeSafety, pnp.Interfaces, pnp.Reflect, pnp.Generics, pnp.Boredom}
-		g.X = 1
+		g.X = 1 // x<=10
 		assert.ElementsMatch(t, skills[:3], g.Skills())
-		g.X = 11
+		g.X = 11 // x<=100
 		assert.ElementsMatch(t, skills[:4], g.Skills())
-		g.X = 101
+		g.X = 101 //
 		assert.ElementsMatch(t, skills[:5], g.Skills())
 	})
 	t.Run("AsciiArt renders the player's ascii art with the player state", func(t *testing.T) {

@@ -71,5 +71,6 @@ func (m Minion) AsciiArt() string {
 }
 
 func (m Minion) String() string {
+	panic("panic!!!!")
 	return "Minion"
 }

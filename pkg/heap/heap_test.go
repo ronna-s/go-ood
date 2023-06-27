@@ -1,19 +1,8 @@
 package heap
 
 import (
-	"golang.org/x/exp/constraints"
 	"testing"
 )
-
-type OrderedWrapper[T constraints.Ordered] struct {
-	Val T
-}
-
-func (o OrderedWrapper[T]) Less(o2 OrderedWrapper[T]) bool {
-	return o.Val < o2.Val
-}
-
-type intHeap = Heap[OrderedWrapper[int]]
 
 func (i Int) Less(j Int) bool {
 	return i < j
