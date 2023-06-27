@@ -4,14 +4,6 @@ import (
 	"testing"
 )
 
-func (i Int) Less(j Int) bool {
-	return i < j
-}
-
-type Int int
-
-//type intHeap []Int
-
 func verify(t *testing.T, h intHeap, i int) {
 	t.Helper()
 	n := len(h)
