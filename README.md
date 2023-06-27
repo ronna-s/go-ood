@@ -11,6 +11,8 @@ If you are planning to use the go tool directly you can skip this step.
 
 If planning to use podman and you don't have the make tool, run:
 ```bash
+podman machine init
+podman machine start
 podman build . -t go-ood
 ```
 
@@ -18,9 +20,6 @@ If you have the make tool and podman, run:
 ```bash
 make build
 ```
-
-## Schedule
-TBA
 
 <hr>
 
@@ -487,7 +486,10 @@ In the case where you need to express this you will end up doing the same as you
 In addition, common language that offer inheritance often force you to inherit from a common Object class which is why objects can only be class instances (and can't be just values with methods, like in Go).
 
 #### The Alan Kay School of OO
-Alan Kay is considered to the person who coined the term Object-Oriented
+Alan Kay is considered to be the person who coined the term Object-Oriented, and he applied his ideas about OO to his language Smalltalk.
+In his mind, an object should take in messages and check if it can handle it or not at runtime, a concept very close to duck-typing and extreme late binding. 
+He later criticized heavily C++ and Java for going in a very different direction to this.      
+
 #### Missing Messaging?
 
 Using interface type assertion (or conversion), we can check at runtime if a type has a method (or a set of method) of the exact signature we would like to invoke, and call it.
